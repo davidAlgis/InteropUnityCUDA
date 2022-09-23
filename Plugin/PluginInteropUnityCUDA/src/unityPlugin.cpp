@@ -30,7 +30,6 @@ extern "C"
 
 		s_DeviceType = s_Graphics->GetRenderer();
 		_currentTex = createTextureAPI(textureHandle, w, h, s_DeviceType);
-		g_cudaRegister = false;
 	}
 
 
