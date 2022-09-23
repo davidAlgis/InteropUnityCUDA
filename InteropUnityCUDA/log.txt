@@ -1,0 +1,189 @@
+Log file - Project : CudaInterop - Begin at : Fri Sep 23 14:14:07 2022
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Unity plugin load
+gl3w init
+
+128
+Texture Constructor
+Texture_OpenGLCoreES constructor
+128
+OpenGL error 0x0502 at : C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture_OpenGLCoreES.cpp - 42
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 46
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 58
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 60
+
+Error : Cuda error: 400 invalid resource handle C:\Users\NyxUser\Documents\David Algis\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\texture.cpp 38
+

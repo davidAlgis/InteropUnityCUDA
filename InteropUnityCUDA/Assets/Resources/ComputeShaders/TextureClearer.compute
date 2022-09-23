@@ -1,0 +1,59 @@
+#pragma kernel TextureArrayClearer1
+#pragma kernel TextureClearer1
+#pragma kernel TextureArrayClearer2
+#pragma kernel TextureClearer2
+#pragma kernel TextureArrayClearer4
+#pragma kernel TextureClearer4
+
+
+#define NUM_THREADS_DIM_X 8
+#define NUM_THREADS_DIM_Y 8
+#define NUM_THREADS_DIM_Z 1
+
+RWTexture2DArray<float> rtArray1;
+RWTexture2DArray<float2> rtArray2;
+RWTexture2DArray<float4> rtArray4;
+RWTexture2D<float> rt1;
+RWTexture2D<float2> rt2;
+RWTexture2D<float4> rt4;
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureArrayClearer1(uint3 id : SV_DispatchThreadID)
+{
+	rtArray1[id.xyz] = 0;
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureClearer1(uint3 id : SV_DispatchThreadID)
+{
+	rt1[id.xy] = 0;
+}
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureArrayClearer2(uint3 id : SV_DispatchThreadID)
+{
+	rtArray2[id.xyz] = 0;
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureClearer2(uint3 id : SV_DispatchThreadID)
+{
+	rt2[id.xy] = 0;
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureArrayClearer4(uint3 id : SV_DispatchThreadID)
+{
+	rtArray4[id.xyz] = 0;
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, NUM_THREADS_DIM_Z)]
+void TextureClearer4(uint3 id : SV_DispatchThreadID)
+{
+	rt4[id.xy] = 0;
+}

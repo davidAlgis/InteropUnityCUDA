@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdParty">
+      <UniqueIdentifier>{3095977A-1C4D-D9C7-8554-B223712B74B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdParty\gl3w">
+      <UniqueIdentifier>{5C2021B5-C8AB-8E79-D1BC-116E3DC7EA79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdParty\gl3w\src">
+      <UniqueIdentifier>{73AC4DA7-DF0D-2BB5-687B-7167D4DB6174}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\openGLInclude.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderAPI.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\unityPlugin.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderAPI.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderAPI_D3D11.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderAPI_D3D12.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderAPI_OpenGLCoreES.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderAPI_Vulkan.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture_OpenGLCoreES.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\unityPlugin.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdParty\gl3w\src\gl3w.c">
+      <Filter>thirdParty\gl3w\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

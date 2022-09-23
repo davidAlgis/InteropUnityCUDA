@@ -1,0 +1,79 @@
+#pragma kernel ArrayToRenderTexture1
+#pragma kernel RenderTextureToArray1
+#pragma kernel ArrayToRenderTexture2
+#pragma kernel RenderTextureToArray2
+#pragma kernel ArrayToRenderTexture4
+#pragma kernel RenderTextureToArray4
+
+#define NUM_THREADS_DIM_X 1
+#define NUM_THREADS_DIM_Y 1
+
+//to handle each nbr of channels
+// we need one texture per nbr of channels
+RWTexture2D<float> rt1;
+RWTexture2D<float2> rt2;
+RWTexture2D<float4> rt4;
+
+StructuredBuffer<float> arrayIn1;
+StructuredBuffer<float2> arrayIn2;
+StructuredBuffer<float4> arrayIn4;
+
+RWStructuredBuffer<float> arrayOut1;
+RWStructuredBuffer<float2> arrayOut2;
+RWStructuredBuffer<float4> arrayOut4;
+
+uint res;
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void ArrayToRenderTexture1(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	
+	rt1[id.yx] = arrayIn1[indexInArray];
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void ArrayToRenderTexture2(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	rt2[id.yx] = arrayIn2[indexInArray];
+}
+
+
+
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void ArrayToRenderTexture4(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	rt4[id.yx] = arrayIn4[indexInArray];
+	
+}
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void RenderTextureToArray1(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	arrayOut1[indexInArray] = rt1[id.yx];
+}
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void RenderTextureToArray2(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	arrayOut2[indexInArray] = rt2[id.yx];
+}
+
+
+
+[numthreads(NUM_THREADS_DIM_X, NUM_THREADS_DIM_Y, 1)]
+void RenderTextureToArray4(uint3 id : SV_DispatchThreadID)
+{
+	const uint indexInArray = res*id.x+id.y;
+	arrayOut4[indexInArray] = rt4[id.yx];
+}
+
