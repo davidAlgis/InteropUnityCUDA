@@ -19,7 +19,6 @@ void gpuAssert(cudaError_t code, const char* file, int line)
 
 Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
 {
-    Log::log().debugLog("Texture Constructor");
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;

@@ -19,13 +19,9 @@ public:
 
 };
 
-Texture_OpenGLCoreES::Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight) 
+Texture_OpenGLCoreES::Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight)
 	: Texture(textureHandle, textureWidth, textureHeight)
-{
-	Log::log().debugLog("Texture_OpenGLCoreES constructor");
-	registerTextureInCUDA();
-}
-
+{}
 
 Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 {
@@ -33,14 +29,17 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 	CUDA_CHECK(cudaGetLastError());
 };
 
+/// <summary>
+/// Has to be call after the first issue plugin event 
+/// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html 
+/// </summary>
 void Texture_OpenGLCoreES::registerTextureInCUDA()
 {
 	// Update texture data, and free the memory buffer
-	Log::log().debugLog(std::to_string((int)_textureHandle));
 	GLuint gltex = (GLuint)(size_t)(_textureHandle);
 	glBindTexture(GL_TEXTURE_2D, gltex);
 	GL_CHECK();
-	//CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));
+	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));
 }
 
 

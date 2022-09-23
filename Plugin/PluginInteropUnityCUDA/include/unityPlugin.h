@@ -16,6 +16,7 @@ extern "C"
 }
 
 
+static bool  g_cudaRegister = false;
 static RenderAPI* s_CurrentAPI = NULL;
 static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
 static IUnityInterfaces* s_UnityInterfaces = NULL;

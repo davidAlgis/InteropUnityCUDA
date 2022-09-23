@@ -30,6 +30,7 @@ extern "C"
 
 		s_DeviceType = s_Graphics->GetRenderer();
 		_currentTex = createTextureAPI(textureHandle, w, h, s_DeviceType);
+		g_cudaRegister = false;
 	}
 
 
@@ -73,7 +74,6 @@ extern "C"
 		CustomUnityPluginUnload();
 	}
 
-
 	/// <summary>
 	/// GetRenderEventFunc, an example function we export which is used to get a rendering event callback function.
 	/// </summary>
@@ -90,11 +90,24 @@ static void OnRenderEvent(int eventID)
 {
 	// Unknown / unsupported graphics device type? Do nothing
 	if (s_CurrentAPI == NULL)
+	{
+		Log::log().debugLogError("Unknown API.");
 		return;
+	}
 
-	auto surf = _currentTex->mapTextureToSurfaceObject();
-	_currentTex->writeTexture(surf);
-	_currentTex->unMapTextureToSurfaceObject(surf);
+
+	switch (eventID)
+	{
+		case 0:
+			_currentTex->registerTextureInCUDA();
+			break;
+		case 1:
+			auto surf = _currentTex->mapTextureToSurfaceObject();
+			_currentTex->writeTexture(surf);
+			_currentTex->unMapTextureToSurfaceObject(surf);
+			break;
+	}
+
 }
 
 

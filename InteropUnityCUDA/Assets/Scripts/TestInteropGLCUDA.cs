@@ -39,6 +39,7 @@ public class TestInteropGLCUDA : MonoBehaviour
     
 	    StartLog();
 	    CreateTextureAndPassToPlugin();
+	    GL.IssuePluginEvent(GetRenderEventFunc(), 0);
 		yield return StartCoroutine("CallPluginAtEndOfFrames");
     }
     
@@ -78,8 +79,6 @@ public class TestInteropGLCUDA : MonoBehaviour
 			// things it needs to do based on this ID.
 			// For our simple plugin, it does not matter which ID we pass here.
 			GL.IssuePluginEvent(GetRenderEventFunc(), 1);
-
-			// _trw.RenderTextureReaderToArray(_rt);
 			
 		}
 	}
