@@ -5,67 +5,144 @@
 #define PROJECT_NAME ""
 #endif
 
-
-Log& Log::log()
+extern "C"
 {
-    // Static are guarantee to be created only once and is thread safe
-    // To be sure this is the only instance even across multiple processes
-    // the declaration / initialisation must be declared in a compiled unit
-    // ! This function should not be inlined !
-    static Log sInstance{};
-    return sInstance;
-}
 
-Log::Log()
-{
-    //TODO: how to check the log has been open
-    m_logFile.open("log.txt", std::ios::out);
+    void GetLastLog(const char*& data, logType type)
+    {
+        Log::log().getMergedLog(data, type);
+    }
 
 
-    std::string projectName = "CudaInterop";
+    Log& Log::log()
+    {
+        // Static are guarantee to be created only once and is thread safe
+        // To be sure this is the only instance even across multiple processes
+        // the declaration / initialisation must be declared in a compiled unit
+        // ! This function should not be inlined !
+        static Log sInstance{};
+        return sInstance;
+    }
 
-    //get time now
-    time_t now = time(NULL);
-    tm now_tm = {};
-    char str[26] = {};
-    localtime_s(&now_tm, &now);
-    asctime_s(str, 26, &now_tm);
+    Log::Log()
+    {
+        _logFile.open("log.txt", std::ios::out);
 
-    m_logFile << "Log file - Project : " << projectName << " - Begin at : " << str << std::endl;
+        std::string projectName = PROJECT_NAME;
 
-    for (int i = 0; i < 256; i++)
-        m_logFile << "-";
-    m_logFile << std::endl;
-}
+        //get time now
+        time_t now = time(NULL);
+        tm now_tm = {};
+        char str[26] = {};
+        localtime_s(&now_tm, &now);
+        asctime_s(str, 26, &now_tm);
 
-Log::~Log()
-{
-    std::string projectName = "CudaInterop";
-   
+        _logFile << "Log file - Project : " << projectName << " - Begin at : " << str << std::endl;
 
-    for (int i = 0; i < 256; i++)
-        m_logFile << "-";
-    m_logFile << std::endl;
+        for (int i = 0; i < 128; i++)
+            _logFile << "-";
+        _logFile << std::endl;
 
-    //get time now
-    time_t now = time(NULL);
-    tm now_tm = {};
-    char str[26] = {};
-    localtime_s(&now_tm, &now);
-    asctime_s(str, 26, &now_tm);
+        _logInfoVector.reserve(MAX_LOG_SIZE);
+        _logWarningVector.reserve(MAX_LOG_SIZE);
+        _logErrorVector.reserve(MAX_LOG_SIZE);
+        _logBufferSum.reserve(128);
+    }
 
-    m_logFile << "End Log file - Project : " << projectName << " - End at : " << str << std::endl;
-    m_logFile.close();
-}
+    Log::~Log()
+    {
+        std::string projectName = PROJECT_NAME;
 
-void Log::debugLog(std::string text)
-{
-    m_logFile << text << std::endl;
-}
 
-void Log::debugLogError(std::string text)
-{
-    //TODO: add line and file
-    m_logFile << "Error : " << text << std::endl;
+        for (int i = 0; i < 128; i++)
+            _logFile << "-";
+        _logFile << std::endl;
+
+        //get time now
+        time_t now = time(NULL);
+        tm now_tm = {};
+        char str[26] = {};
+        localtime_s(&now_tm, &now);
+        asctime_s(str, 26, &now_tm);
+
+        _logFile << "End Log file - Project : " << projectName << " - End at : " << str << std::endl;
+        _logFile.close();
+
+
+    }
+
+
+    void Log::debugLog(const std::string text)
+    {
+        _logFile << text << std::endl;
+
+        if (_logInfoVector.size() >= MAX_LOG_SIZE)
+            _logInfoVector.pop_back();
+
+        _logInfoVector.push_back(text);
+    }
+
+
+    void Log::debugLogWarning(const std::string text)
+    {
+        _logFile << "Warning : " << text << std::endl;
+
+        if (_logWarningVector.size() >= MAX_LOG_SIZE)
+            _logWarningVector.pop_back();
+        
+        _logWarningVector.push_back(text);
+    }
+
+
+    void Log::debugLogError(const std::string text)
+    {
+        _logFile << "Error : " << text << std::endl;
+        if (_logErrorVector.size() >= MAX_LOG_SIZE)
+            _logErrorVector.pop_back();
+
+        _logErrorVector.push_back(text);
+    }
+
+    void Log::getMergedLog(const char*& data, logType logType)
+    {
+        switch (logType)
+        {
+            case logType::Info:
+            {
+                extractLog(_logInfoVector);
+                break;
+            }
+            case logType::Warning:
+            {
+                extractLog(_logWarningVector);
+                break;
+            }
+            case logType::Error:
+            {
+                extractLog(_logErrorVector);
+                break;
+            }
+            default:
+                debugLogError("Unknown log type");
+                return;
+
+        }
+
+        data = _logBufferSum.c_str();
+    }
+
+    void Log::extractLog(std::vector<std::string>& logVector)
+    {
+        _logBufferSum.clear();
+        _logBufferSum.reserve(128 * logVector.size());
+        for (auto&& str : logVector)
+        {
+            _logBufferSum += str + "\n";
+        }
+
+        //we'll clear log 
+        logVector.clear();
+    }
+
 }
 
