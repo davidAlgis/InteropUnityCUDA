@@ -45,7 +45,7 @@ workspace "Plugin"
 -- [ PluginGLInteropCUDA ] --
 ------------------------------- 
 project "PluginInteropUnityCUDA"
-local LOCATION_PROJECT = "PluginInteropUnityCUDA"
+    local LOCATION_PROJECT = "PluginInteropUnityCUDA"
     local ROOT_PROJECT = ROOT .. LOCATION_PROJECT
     location (ROOT_PROJECT)
     language "C++"
