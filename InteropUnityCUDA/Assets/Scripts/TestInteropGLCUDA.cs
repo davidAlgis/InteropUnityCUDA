@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
-using ArcBlanc.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +29,6 @@ public class TestInteropGLCUDA : MonoBehaviour
     private static extern void CustomUnityPluginUnload();
     
     private RenderTexture _rt;
-    // private TextureReaderWriter _trw;
     
     private int _res = 256;
     
@@ -39,6 +37,7 @@ public class TestInteropGLCUDA : MonoBehaviour
     
 	    StartLog();
 	    CreateTextureAndPassToPlugin();
+	    //Has to be called before eventID 1, because it registered texture in CUDA
 	    GL.IssuePluginEvent(GetRenderEventFunc(), 0);
 		yield return StartCoroutine("CallPluginAtEndOfFrames");
     }
@@ -51,8 +50,17 @@ public class TestInteropGLCUDA : MonoBehaviour
 		    Debug.LogError("Unable to find the canvas to display the function, please complete the serializefield");
 	    } 
 	    
-		// _trw = new TextureReaderWriter(_res, 4);
-	    _rt = GPUUtilities.CreateRenderTexture(_res, 0, RenderTextureFormat.ARGB32);
+	    _rt = new RenderTexture(_res, _res, 0
+                    , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+            {
+                useMipMap = false,
+                autoGenerateMips = false,
+                anisoLevel = 6,
+                filterMode = FilterMode.Trilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                enableRandomWrite = true
+            };
+
 		_rt.Create();
 	    
 		_textureDisplay.texture = _rt;

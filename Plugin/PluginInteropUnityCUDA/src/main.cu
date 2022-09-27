@@ -1,6 +1,4 @@
-﻿
-#include <device_launch_parameters.h>
-
+﻿#include <device_launch_parameters.h>
 
 __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float t) {
     const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
