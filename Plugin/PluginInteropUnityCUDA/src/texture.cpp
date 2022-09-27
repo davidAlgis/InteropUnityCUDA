@@ -23,8 +23,9 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;
     _dimBlock = { 8, 8, 1 };
-    _dimGrid = { ((textureWidth + _dimBlock.x - 1) / _dimBlock.x,
-        (textureHeight + _dimBlock.y - 1) / _dimBlock.y), 1};
+    _dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
+        (textureHeight + _dimBlock.y - 1) / _dimBlock.y, 1};
+    _pGraphicsResource = nullptr;
     
 }
 
