@@ -84,8 +84,7 @@ class PluginLoggerReader : MonoBehaviour
         {
             foreach (var log in logs)
             {
-                //we don't show the first 12 element ("Warning : ") because we use LogWarning
-                Debug.LogWarning(_prefixLog + log[12..]);
+                Debug.LogWarning(_prefixLog + log);
             }
         }
     }
@@ -101,8 +100,7 @@ class PluginLoggerReader : MonoBehaviour
         {
             foreach (var log in logs)
             {
-                //we don't show the first 9 element ("Error : ") because we use LogError
-                Debug.LogError(_prefixLog + log[9..]);
+                Debug.LogError(_prefixLog + log);
             }
         }
     }
