@@ -1,5 +1,5 @@
 #pragma once
-#include "texture.h"
+#include "texture_OpenGLCoreES.h"
 #include "openGLInclude.h"
 #include <cuda_gl_interop.h>
 // OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
@@ -8,16 +8,6 @@
 
 #if SUPPORT_OPENGL_UNIFIED
 
-
-
-class Texture_OpenGLCoreES : public Texture
-{
-public:
-	Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight);
-	~Texture_OpenGLCoreES();
-	virtual void registerTextureInCUDA();
-
-};
 
 Texture_OpenGLCoreES::Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight)
 	: Texture(textureHandle, textureWidth, textureHeight)
@@ -41,13 +31,6 @@ void Texture_OpenGLCoreES::registerTextureInCUDA()
 	GL_CHECK();
 	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));
 }
-
-
-Texture* createTextureAPI_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight)
-{
-	return new Texture_OpenGLCoreES(textureHandle, textureWidth, textureHeight);
-}
-
 
 
 #endif // #if SUPPORT_OPENGL_UNIFIED

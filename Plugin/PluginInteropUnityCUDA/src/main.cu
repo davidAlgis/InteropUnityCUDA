@@ -22,3 +22,9 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfa
     writeTex << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, t);
 
 }
+
+
+void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock)
+{
+    
+}

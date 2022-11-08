@@ -4,8 +4,23 @@
     <Filter Include="include">
       <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Buffer">
+      <UniqueIdentifier>{523D9BF9-3E0B-8FFF-279F-FF25130C6B64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Texture">
+      <UniqueIdentifier>{E94D9672-55D9-0337-5EEA-862BCAF45F37}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Buffer">
+      <UniqueIdentifier>{7638B107-62F0-F254-CBF7-CBB0B7CE8D45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RenderAPI">
+      <UniqueIdentifier>{9662D9BB-0223-55F2-CB5D-9E6F37DD99CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Texture">
+      <UniqueIdentifier>{8DAD6B43-F962-E438-8257-DE0FEE0BDB3C}</UniqueIdentifier>
     </Filter>
     <Filter Include="thirdParty">
       <UniqueIdentifier>{3095977A-1C4D-D9C7-8554-B223712B74B8}</UniqueIdentifier>
@@ -18,13 +33,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Buffer\buffer.h">
+      <Filter>include\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Buffer\buffer_OpenGLCoreES.h">
+      <Filter>include\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture\texture.h">
+      <Filter>include\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture\texture_OpenGLCoreES.h">
+      <Filter>include\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\cudaInclude.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\factory.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\openGLInclude.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\renderAPI.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\texture.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\unityPlugin.h">
@@ -32,28 +62,37 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Buffer\buffer.cpp">
+      <Filter>src\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Buffer\buffer_OpenGLCoreES.cpp">
+      <Filter>src\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderAPI\renderAPI.cpp">
+      <Filter>src\RenderAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderAPI\renderAPI_D3D11.cpp">
+      <Filter>src\RenderAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderAPI\renderAPI_D3D12.cpp">
+      <Filter>src\RenderAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderAPI\renderAPI_OpenGLCoreES.cpp">
+      <Filter>src\RenderAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderAPI\renderAPI_Vulkan.cpp">
+      <Filter>src\RenderAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\texture.cpp">
+      <Filter>src\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\texture_OpenGLCoreES.cpp">
+      <Filter>src\Texture</Filter>
+    </ClCompile>
     <ClCompile Include="src\dllmain.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderAPI.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderAPI_D3D11.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderAPI_D3D12.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderAPI_OpenGLCoreES.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderAPI_Vulkan.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture_OpenGLCoreES.cpp">
+    <ClCompile Include="src\factory.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\unityPlugin.cpp">

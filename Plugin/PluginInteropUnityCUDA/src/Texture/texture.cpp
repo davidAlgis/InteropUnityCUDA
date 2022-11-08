@@ -1,20 +1,8 @@
+#pragma once
 #include "texture.h"
 
 
 void kernelCallerWriteTexture(const dim3 dimGrid,const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
-
-void gpuAssert(cudaError_t code, const char* file, int line)
-{
-    if (code != cudaSuccess)
-    {
-        char buffer[2048];
-        sprintf_s(buffer, "Cuda error: %i %s %s %d\n", code, cudaGetErrorString(code), file, line);
-        std::string strError(buffer);
-        Log::log().debugLogError(buffer);
-    }
-}
-
-
 
 
 Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
@@ -61,34 +49,3 @@ void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj)
 }
 
 
-
-Texture* createTextureAPI(void* textureHandle, int textureWidth, int textureHeight, UnityGfxRenderer apiType)
-{
-//#	if SUPPORT_D3D11
-//	if (apiType == kUnityGfxRendererD3D11)
-//	{
-//		extern Texture* CreateRenderAPI_D3D11();
-//		return CreateRenderAPI_D3D11();
-//	}
-//#	endif // if SUPPORT_D3D11
-//
-//#	if SUPPORT_D3D12
-//	if (apiType == kUnityGfxRendererD3D12)
-//	{
-//		extern RenderAPI* CreateRenderAPI_D3D12();
-//		return CreateRenderAPI_D3D12();
-//	}
-//#	endif // if SUPPORT_D3D12
-
-
-#	if SUPPORT_OPENGL_UNIFIED
-	if (apiType == kUnityGfxRendererOpenGLCore || apiType == kUnityGfxRendererOpenGLES20 || apiType == kUnityGfxRendererOpenGLES30)
-	{
-		extern Texture* createTextureAPI_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight);
-		return createTextureAPI_OpenGLCoreES(textureHandle, textureWidth, textureHeight);
-	}
-#	endif // if SUPPORT_OPENGL_UNIFIED
-
-	// Unknown or unsupported graphics API
-	return NULL;
-}

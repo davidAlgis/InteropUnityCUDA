@@ -1,9 +1,6 @@
 #pragma once
 #include "log.h"
-#include "cuda_runtime.h"
-
-#define CUDA_CHECK(ans) { gpuAssert((ans), __FILE__, __LINE__); }
-void gpuAssert(cudaError_t code, const char* file, int line);
+#include "cudaInclude.h"
 
 
 class Texture
@@ -26,9 +23,3 @@ class Texture
 		dim3 _dimBlock;
 		dim3 _dimGrid;
 };
-
-
-
-// Create a graphics API implementation instance for the given API type.
-Texture* createTextureAPI(void* textureHandle, int textureWidth, int textureHeight, UnityGfxRenderer apiType);
-

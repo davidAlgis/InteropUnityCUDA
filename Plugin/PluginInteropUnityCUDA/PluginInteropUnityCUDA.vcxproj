@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;PLUGINGLINTEROPCUDA_SHARED_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\Buffer;include\Texture;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -82,7 +82,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;PLUGINGLINTEROPCUDA_SHARED_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\Buffer;include\Texture;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -108,20 +108,28 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Buffer\buffer.h" />
+    <ClInclude Include="include\Buffer\buffer_OpenGLCoreES.h" />
+    <ClInclude Include="include\Texture\texture.h" />
+    <ClInclude Include="include\Texture\texture_OpenGLCoreES.h" />
+    <ClInclude Include="include\cudaInclude.h" />
+    <ClInclude Include="include\factory.h" />
     <ClInclude Include="include\openGLInclude.h" />
     <ClInclude Include="include\renderAPI.h" />
-    <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\unityPlugin.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Buffer\buffer.cpp" />
+    <ClCompile Include="src\Buffer\buffer_OpenGLCoreES.cpp" />
+    <ClCompile Include="src\RenderAPI\renderAPI.cpp" />
+    <ClCompile Include="src\RenderAPI\renderAPI_D3D11.cpp" />
+    <ClCompile Include="src\RenderAPI\renderAPI_D3D12.cpp" />
+    <ClCompile Include="src\RenderAPI\renderAPI_OpenGLCoreES.cpp" />
+    <ClCompile Include="src\RenderAPI\renderAPI_Vulkan.cpp" />
+    <ClCompile Include="src\Texture\texture.cpp" />
+    <ClCompile Include="src\Texture\texture_OpenGLCoreES.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
-    <ClCompile Include="src\renderAPI.cpp" />
-    <ClCompile Include="src\renderAPI_D3D11.cpp" />
-    <ClCompile Include="src\renderAPI_D3D12.cpp" />
-    <ClCompile Include="src\renderAPI_OpenGLCoreES.cpp" />
-    <ClCompile Include="src\renderAPI_Vulkan.cpp" />
-    <ClCompile Include="src\texture.cpp" />
-    <ClCompile Include="src\texture_OpenGLCoreES.cpp" />
+    <ClCompile Include="src\factory.cpp" />
     <ClCompile Include="src\unityPlugin.cpp" />
     <ClCompile Include="thirdParty\gl3w\src\gl3w.c" />
   </ItemGroup>

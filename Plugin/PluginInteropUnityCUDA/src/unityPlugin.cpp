@@ -1,9 +1,11 @@
 #pragma once
 #include "unityPlugin.h"
+#include "factory.h"
+#include "texture.h"
+#include "buffer.h"
 #include <iostream>
 #include <assert.h>
 #include <math.h>
-
 
 extern "C"
 {
@@ -21,7 +23,6 @@ extern "C"
 	/// <param name="h"></param>
 	void SetTextureFromUnity(void* textureHandle, int w, int h)
 	{
-		Log::log().debugLog(std::to_string((int)textureHandle));
 		if (s_Graphics == NULL)
 		{
 			Log::log().debugLogError("Unable to create texture, because Unity has not been loaded.");
@@ -29,7 +30,20 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		_currentTex = createTextureAPI(textureHandle, w, h, s_DeviceType);
+		_currentTex = Factory::createTexture(textureHandle, w, h, s_DeviceType);
+	}
+
+	void  SetBufferFromUnity(void* bufferHandle, int size, int stride)
+	{
+		if (s_Graphics == NULL)
+		{
+			Log::log().debugLogError("Unable to create texture, because Unity has not been loaded.");
+			return;
+		}
+
+		Log::log().debugLog("resgfrdg");
+		s_DeviceType = s_Graphics->GetRenderer();
+		_currentBuffer = Factory::createBuffer(bufferHandle, size, stride, s_DeviceType);
 	}
 
 
@@ -39,7 +53,6 @@ extern "C"
 	/// <param name="unityInterfaces">Unity interfaces that will be used after</param>
 	void	UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 	{
-		Log::log().debugLog("Unity plugin load");
 		s_UnityInterfaces = unityInterfaces;
 
 		s_Graphics = s_UnityInterfaces->Get<IUnityGraphics>();		
@@ -52,17 +65,11 @@ extern "C"
 			extern void RenderAPI_Vulkan_OnPluginLoad(IUnityInterfaces*);
 			RenderAPI_Vulkan_OnPluginLoad(unityInterfaces);
 		}
-#endif // SUPPORT_VULKAN
+#endif 
 
-		// Run OnGraphicsDeviceEvent(initialize) manually on plugin load
 		OnGraphicsDeviceEvent(kUnityGfxDeviceEventInitialize);
 	}
 
-
-	void CustomUnityPluginUnload()
-	{
-		Log::log().debugLog("unload");
-	}
 	
 
 	/// <summary>
@@ -70,7 +77,7 @@ extern "C"
 	/// </summary>
 	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginUnload()
 	{
-		CustomUnityPluginUnload();
+
 	}
 
 	/// <summary>
@@ -95,16 +102,23 @@ static void OnRenderEvent(int eventID)
 	}
 
 
+	cudaSurfaceObject_t surf;
+
 	switch (eventID)
 	{
 		case 0:
 			_currentTex->registerTextureInCUDA();
 			break;
+		
 		case 1:
-			auto surf = _currentTex->mapTextureToSurfaceObject();
+			surf = _currentTex->mapTextureToSurfaceObject();
 			_currentTex->writeTexture(surf);
 			_currentTex->unMapTextureToSurfaceObject(surf);
 			break;
+		case 2:
+			_currentBuffer->registerBufferInCUDA();
+			break;
+		
 	}
 
 }
@@ -133,8 +147,6 @@ static void OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
 		delete s_CurrentAPI;
 		s_CurrentAPI = NULL;
 		s_DeviceType = kUnityGfxRendererNull;
-		Log::log().debugLog("kUnityGfxDeviceEventShutdown");
-
 		s_Graphics->UnregisterDeviceEventCallback(OnGraphicsDeviceEvent);
 	}
 }
