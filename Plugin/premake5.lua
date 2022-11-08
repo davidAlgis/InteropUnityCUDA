@@ -54,6 +54,7 @@ project "PluginInteropUnityCUDA"
     kind "SharedLib" 
     
     local SourceDir = ROOT_PROJECT .. "/src/";
+    local IncludeSubDir = ROOT_PROJECT .. "/include/**";
     local IncludeDir = ROOT_PROJECT .. "/include/";
     local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
     local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
@@ -64,12 +65,15 @@ project "PluginInteropUnityCUDA"
         SourceThirdPartyGLDir .. "**.c",
         SourceDir .. "**.cpp",
         IncludeDir .. "**.h", 
-        IncludeDir .. "**.hpp"
+        IncludeDir .. "**.hpp",
+        IncludeSubDir .. "**.h",
+        IncludeSubDir .. "**.hpp"
     }
     
     includedirs
     {
         IncludeDir,
+        IncludeSubDir,
         ThirdPartyGLDir,
         PATH_UTILITIES_INCLUDE,
         PATH_UTILITIES_THIRD_PARTY_UNITY
