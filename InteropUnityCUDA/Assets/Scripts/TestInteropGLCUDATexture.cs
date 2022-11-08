@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestInteropGLCUDA : MonoBehaviour
+public class TestInteropGLCUDATexture : MonoBehaviour
 {
 	[SerializeField] private RawImage _textureDisplay;
 
