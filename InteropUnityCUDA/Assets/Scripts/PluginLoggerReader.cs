@@ -32,7 +32,8 @@ class PluginLoggerReader : MonoBehaviour
         Warning,
         Error
     };
-    void LateUpdate()
+
+    private void LateUpdate()
     {
         //will print all the plugin logs in unity
         PrintLogInfo();

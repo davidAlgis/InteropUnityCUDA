@@ -13,6 +13,7 @@ public:
 	Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight);
 	~Texture_OpenGLCoreES();
 	virtual void registerTextureInCUDA();
+	virtual void unRegisterTextureInCUDA();
 
 };
 

@@ -8,9 +8,10 @@ class Texture
 	public:
 		Texture(void* textureHandle, int textureWidth, int textureHeight);
 		virtual void registerTextureInCUDA() = 0;
+		virtual void unRegisterTextureInCUDA() = 0;
 	
 		cudaSurfaceObject_t mapTextureToSurfaceObject();
-		void writeTexture(cudaSurfaceObject_t& inputSurfObj);
+		void writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time);
 		void unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj);
 
 	protected:

@@ -29,8 +29,13 @@ void Texture_OpenGLCoreES::registerTextureInCUDA()
 	GLuint gltex = (GLuint)(size_t)(_textureHandle);
 	glBindTexture(GL_TEXTURE_2D, gltex);
 	GL_CHECK();
-	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));
+	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));	
 }
 
+
+void Texture_OpenGLCoreES::unRegisterTextureInCUDA()
+{
+	CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
+}
 
 #endif // #if SUPPORT_OPENGL_UNIFIED

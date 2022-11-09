@@ -35,9 +35,9 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
     return inputSurfObj;
 }
 
-void Texture::writeTexture(cudaSurfaceObject_t& inputSurfObj)
+void Texture::writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time)
 {
-    kernelCallerWriteTexture(_dimGrid, _dimBlock, inputSurfObj, 0, _textureWidth, _textureHeight);
+    kernelCallerWriteTexture(_dimGrid, _dimBlock, inputSurfObj, time, _textureWidth, _textureHeight);
     CUDA_CHECK(cudaDeviceSynchronize());
 }
 
