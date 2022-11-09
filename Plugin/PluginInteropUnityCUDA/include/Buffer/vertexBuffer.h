@@ -3,16 +3,19 @@
 #include "cudaInclude.h"
 
 
-class Buffer
+class VertexBuffer
 {
 	public:
-		Buffer(void* bufferHandle, int size, int stride);
+		VertexBuffer(void* bufferHandle, int size);
 		virtual void registerBufferInCUDA() = 0;
+		virtual void unRegisterBufferInCUDA() = 0;
+		float4* mapResources();
+		void writeBuffer(float4* vertexPtr, const float time);
+		void unmapResources();
 
 	protected:
 		void* _bufferHandle;
 		int _size;
-		int _stride;
 		cudaGraphicsResource* _pGraphicsResource;
 
 

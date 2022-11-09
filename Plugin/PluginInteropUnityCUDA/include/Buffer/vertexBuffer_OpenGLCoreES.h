@@ -1,16 +1,17 @@
 #pragma once
 // OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
 // Supports several flavors: Core, ES2, ES3
-#include "buffer.h"
+#include "vertexBuffer.h"
 
 #if SUPPORT_OPENGL_UNIFIED
 
-class Buffer_OpenGLCoreES : public Buffer
+class VertexBuffer_OpenGLCoreES : public VertexBuffer
 {
 public:
-	Buffer_OpenGLCoreES(void* bufferHandle, int size, int stride);
-	~Buffer_OpenGLCoreES();
+	VertexBuffer_OpenGLCoreES(void* bufferHandle, int size);
+	~VertexBuffer_OpenGLCoreES();
 	virtual void registerBufferInCUDA();
+	virtual void unRegisterBufferInCUDA();
 
 };
 

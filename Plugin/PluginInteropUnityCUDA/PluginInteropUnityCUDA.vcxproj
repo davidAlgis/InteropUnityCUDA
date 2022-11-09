@@ -71,10 +71,11 @@
       <ImportLibrary>..\..\InteropUnityCUDA\Assets\Plugin\PluginInteropUnityCUDA.lib</ImportLibrary>
     </Link>
     <CudaCompile>
-    	<TargetMachinePlatform>64</TargetMachinePlatform>
-    <CodeGeneration></CodeGeneration>
-    	<AdditionalOptions>-arch=sm_52 -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -t0</AdditionalOptions>
-    	<MaxRegCount>32</MaxRegCount>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>
+      </CodeGeneration>
+      <AdditionalOptions>-arch=sm_52 -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -t0</AdditionalOptions>
+      <MaxRegCount>32</MaxRegCount>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -100,16 +101,17 @@
       <ImportLibrary>..\..\InteropUnityCUDA\Assets\Plugin\PluginInteropUnityCUDA.lib</ImportLibrary>
     </Link>
     <CudaCompile>
-    	<TargetMachinePlatform>64</TargetMachinePlatform>
-    <CodeGeneration></CodeGeneration>
-    	<FastMath>true</FastMath>
-    	<AdditionalOptions>-arch=sm_52 -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -t0</AdditionalOptions>
-    	<MaxRegCount>32</MaxRegCount>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>
+      </CodeGeneration>
+      <FastMath>true</FastMath>
+      <AdditionalOptions>-arch=sm_52 -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -t0</AdditionalOptions>
+      <MaxRegCount>32</MaxRegCount>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Buffer\buffer.h" />
-    <ClInclude Include="include\Buffer\buffer_OpenGLCoreES.h" />
+    <ClInclude Include="include\Buffer\vertexBuffer.h" />
+    <ClInclude Include="include\Buffer\vertexBuffer_OpenGLCoreES.h" />
     <ClInclude Include="include\Texture\texture.h" />
     <ClInclude Include="include\Texture\texture_OpenGLCoreES.h" />
     <ClInclude Include="include\cudaInclude.h" />
@@ -119,8 +121,8 @@
     <ClInclude Include="include\unityPlugin.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Buffer\buffer.cpp" />
-    <ClCompile Include="src\Buffer\buffer_OpenGLCoreES.cpp" />
+    <ClCompile Include="src\Buffer\vertexBuffer.cpp" />
+    <ClCompile Include="src\Buffer\vertexBuffer_OpenGLCoreES.cpp" />
     <ClCompile Include="src\RenderAPI\renderAPI.cpp" />
     <ClCompile Include="src\RenderAPI\renderAPI_D3D11.cpp" />
     <ClCompile Include="src\RenderAPI\renderAPI_D3D12.cpp" />
@@ -138,6 +140,6 @@
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 11.7.targets" />
   </ImportGroup>
   <ItemGroup>
-  	<CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu"/>
+    <CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu" />
   </ItemGroup>
 </Project>

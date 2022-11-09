@@ -1,16 +1,16 @@
-#include "buffer_OpenGLCoreES.h"
+#include "vertexBuffer_OpenGLCoreES.h"
 #include "texture_OpenGLCoreES.h"
 
 namespace Factory
 {
-	Buffer* createBuffer(void* bufferHandle, int size, int stride, UnityGfxRenderer apiType)
+	VertexBuffer* createBuffer(void* bufferHandle, int size, UnityGfxRenderer apiType)
 	{
-		Buffer* buffer = NULL;
+		VertexBuffer* buffer = NULL;
 		// if SUPPORT_OPENGL_UNIFIED
 #if SUPPORT_OPENGL_UNIFIED
 		if (apiType == kUnityGfxRendererOpenGLCore || apiType == kUnityGfxRendererOpenGLES20 || apiType == kUnityGfxRendererOpenGLES30)
 		{
-			buffer = new Buffer_OpenGLCoreES(bufferHandle, size, stride);
+			buffer = new VertexBuffer_OpenGLCoreES(bufferHandle, size);
 		}
 #endif 
 

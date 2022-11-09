@@ -33,10 +33,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Buffer\buffer.h">
+    <ClInclude Include="include\Buffer\vertexBuffer.h">
       <Filter>include\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Buffer\buffer_OpenGLCoreES.h">
+    <ClInclude Include="include\Buffer\vertexBuffer_OpenGLCoreES.h">
       <Filter>include\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\Texture\texture.h">
@@ -62,10 +62,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Buffer\buffer.cpp">
+    <ClCompile Include="src\Buffer\vertexBuffer.cpp">
       <Filter>src\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buffer\buffer_OpenGLCoreES.cpp">
+    <ClCompile Include="src\Buffer\vertexBuffer_OpenGLCoreES.cpp">
       <Filter>src\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderAPI\renderAPI.cpp">
@@ -101,5 +101,8 @@
     <ClCompile Include="thirdParty\gl3w\src\gl3w.c">
       <Filter>thirdParty\gl3w\src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 #pragma once
-class Buffer;
+class VertexBuffer;
 class Texture;
 
 namespace Factory
 {
-	Buffer* createBuffer(void* bufferHandle, int size, int stride, UnityGfxRenderer apiType);
+	VertexBuffer* createBuffer(void* bufferHandle, int size, UnityGfxRenderer apiType);
 	Texture* createTexture(void* textureHandle, int textureWidth, int textureHeight, UnityGfxRenderer apiType);
 }
 

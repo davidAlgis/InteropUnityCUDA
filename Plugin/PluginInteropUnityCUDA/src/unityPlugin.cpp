@@ -2,19 +2,13 @@
 #include "unityPlugin.h"
 #include "factory.h"
 #include "texture.h"
-#include "buffer.h"
+#include "vertexBuffer.h"
 #include <iostream>
 #include <assert.h>
 #include <math.h>
 
 extern "C"
 {
-    void StartLog()
-    {
-        Log::log().debugLog("");
-    }
-
-
 	/// <summary>
 	/// SetTextureFromUnity, an example function we export which is called by one of the scripts.
 	/// </summary>
@@ -30,10 +24,10 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		_currentTex = Factory::createTexture(textureHandle, w, h, s_DeviceType);
+		_currentTex.reset(Factory::createTexture(textureHandle, w, h, s_DeviceType));
 	}
 
-	void  SetBufferFromUnity(void* bufferHandle, int size, int stride)
+	void  SetBufferFromUnity(void* bufferHandle, int size)
 	{
 		if (s_Graphics == NULL)
 		{
@@ -41,9 +35,13 @@ extern "C"
 			return;
 		}
 
-		Log::log().debugLog("resgfrdg");
 		s_DeviceType = s_Graphics->GetRenderer();
-		_currentBuffer = Factory::createBuffer(bufferHandle, size, stride, s_DeviceType);
+		_currentBuffer.reset(Factory::createBuffer(bufferHandle, size, s_DeviceType));
+	}
+
+	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetTime(float time)
+	{
+		_time = time;
 	}
 
 
@@ -77,7 +75,6 @@ extern "C"
 	/// </summary>
 	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginUnload()
 	{
-
 	}
 
 	/// <summary>
@@ -86,6 +83,19 @@ extern "C"
 	UnityRenderingEvent GetRenderEventFunc()
 	{
 		return OnRenderEvent;
+	}
+
+	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityShutdown()
+	{
+		if (_currentTex != NULL)
+		{
+			_currentTex->unRegisterTextureInCUDA();
+		}
+
+		if (_currentBuffer != NULL)
+		{
+			_currentBuffer->unRegisterBufferInCUDA();
+		}
 	}
 
 }
@@ -103,6 +113,7 @@ static void OnRenderEvent(int eventID)
 
 
 	cudaSurfaceObject_t surf;
+	float4* ptr;
 
 	switch (eventID)
 	{
@@ -112,11 +123,16 @@ static void OnRenderEvent(int eventID)
 		
 		case 1:
 			surf = _currentTex->mapTextureToSurfaceObject();
-			_currentTex->writeTexture(surf);
+			_currentTex->writeTexture(surf, _time);
 			_currentTex->unMapTextureToSurfaceObject(surf);
 			break;
 		case 2:
 			_currentBuffer->registerBufferInCUDA();
+			break;
+		case 3:
+			ptr = _currentBuffer->mapResources();
+			_currentBuffer->writeBuffer(ptr, _time);
+			_currentBuffer->unmapResources();
 			break;
 		
 	}
@@ -133,12 +149,14 @@ static void OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
 		assert(s_CurrentAPI == NULL);
 		s_DeviceType = s_Graphics->GetRenderer();
 		s_CurrentAPI = CreateRenderAPI(s_DeviceType);
+		Log::log().debugLog("initialize");
 	}
 
 	// Let the implementation process the device related events
 	if (s_CurrentAPI)
 	{
 		s_CurrentAPI->ProcessDeviceEvent(eventType, s_UnityInterfaces);
+		Log::log().debugLog("process");
 	}
 
 	// Cleanup graphics API implementation upon shutdown
@@ -148,6 +166,8 @@ static void OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
 		s_CurrentAPI = NULL;
 		s_DeviceType = kUnityGfxRendererNull;
 		s_Graphics->UnregisterDeviceEventCallback(OnGraphicsDeviceEvent);
+		Log::log().debugLog("cleanup");
+		
 	}
 }
 

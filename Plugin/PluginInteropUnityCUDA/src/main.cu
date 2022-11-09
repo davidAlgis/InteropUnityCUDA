@@ -1,6 +1,7 @@
 ﻿#include <device_launch_parameters.h>
+#include <vector_functions.h>
 
-__global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float t) {
+__global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float time) {
     const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -8,7 +9,7 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
 
         uchar4 c;
         c.x = 0;
-        c.y = (unsigned char)(t*100 + 128) % 255;
+        c.y = (unsigned char)(time *100 + 128) % 255;
         c.z = 0;
         c.w = 255;
 
@@ -16,15 +17,27 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
     }
 }
 
-
-void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height) 
+__global__ void writeVertexBuffer(float4* pos, int size, float time)
 {
-    writeTex << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, t);
+    unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
+    //unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+    // write output vertex
+    if (x < size)
+    {
+        pos[x] = make_float4(time*x, time* 1/(x+1), time*x*x, time*1.0f);
+    }
+}
+
+
+void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float time, const int width, const int height)
+{
+    writeTex << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, time);
 
 }
 
 
-void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock)
+void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock, float4* vertexPtr,const int size, const float time)
 {
-    
+    writeVertexBuffer << <dimGrid, dimBlock >> > (vertexPtr, size, time);
 }

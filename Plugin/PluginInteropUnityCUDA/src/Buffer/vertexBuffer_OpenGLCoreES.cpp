@@ -1,5 +1,5 @@
 #pragma once
-#include "buffer_OpenGLCoreES.h"
+#include "vertexBuffer_OpenGLCoreES.h"
 #include "openGLInclude.h"
 #include <cuda_gl_interop.h>
 // OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
@@ -8,11 +8,11 @@
 
 #if SUPPORT_OPENGL_UNIFIED
 
-Buffer_OpenGLCoreES::Buffer_OpenGLCoreES(void* bufferHandle, int size, int stride)
-	: Buffer(bufferHandle, size, stride)
+VertexBuffer_OpenGLCoreES::VertexBuffer_OpenGLCoreES(void* bufferHandle, int size)
+	: VertexBuffer(bufferHandle, size)
 {}
 
-Buffer_OpenGLCoreES::~Buffer_OpenGLCoreES()
+VertexBuffer_OpenGLCoreES::~VertexBuffer_OpenGLCoreES()
 {
 	GL_CHECK();
 	CUDA_CHECK(cudaGetLastError());
@@ -22,12 +22,17 @@ Buffer_OpenGLCoreES::~Buffer_OpenGLCoreES()
 /// Has to be call after the first issue plugin event 
 /// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html 
 /// </summary>
-void Buffer_OpenGLCoreES::registerBufferInCUDA()
+void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 {
 	// Update texture data, and free the memory buffer
-	GLuint glBuffer = (GLuint)(size_t)(_bufferHandle);
+	GLuint glBuffer = (GLuint)(_bufferHandle);
 	GL_CHECK();
-	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_pGraphicsResource, glBuffer, cudaGraphicsRegisterFlagsWriteDiscard));
+	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_pGraphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
+}
+
+void VertexBuffer_OpenGLCoreES::unRegisterBufferInCUDA()
+{
+	CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
 }
 
 
