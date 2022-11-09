@@ -23,7 +23,7 @@ public class TestInteropGLCUDATexture : MonoBehaviour
     private static extern IntPtr GetRenderEventFunc();
     
     [DllImport(_dllName)]
-    private static extern void StartLog();
+    private static extern void SetTime(float time);
     
     [DllImport(_dllName)]
     private static extern void CustomUnityPluginUnload();
@@ -35,14 +35,18 @@ public class TestInteropGLCUDATexture : MonoBehaviour
     IEnumerator Start ()
     {
     
-	    StartLog();
 	    CreateTextureAndPassToPlugin();
 	    //Has to be called before eventID 1, because it registered texture in CUDA
 	    GL.IssuePluginEvent(GetRenderEventFunc(), 0);
 		yield return StartCoroutine("CallPluginAtEndOfFrames");
     }
-    
-    
+
+
+    private void Update()
+    {
+	    SetTime(Time.realtimeSinceStartup);
+    }
+
     private void CreateTextureAndPassToPlugin()
     {
 	    if (_textureDisplay == null)
@@ -71,7 +75,6 @@ public class TestInteropGLCUDATexture : MonoBehaviour
 		// // Call Apply() so it's actually uploaded to the GPU
 		// _rt.Apply();
 		// Pass texture pointer to the plugin
-		print((int)_rt.GetNativeTexturePtr());
 		SetTextureFromUnity (_rt.GetNativeTexturePtr(), _rt.width, _rt.height);
 		
 	}
