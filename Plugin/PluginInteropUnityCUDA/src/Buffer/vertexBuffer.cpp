@@ -19,12 +19,10 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 float4* VertexBuffer::mapResources()
 {
     float4* vertexPtr;
-    Log::log().debugLog("map resources");
     CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource, 0));
     size_t num_bytes;
     CUDA_CHECK(cudaGraphicsResourceGetMappedPointer((void**)&vertexPtr, &num_bytes,
         _pGraphicsResource));
-    Log::log().debugLog("can acess to " + std::to_string(num_bytes) + " bytes");
     return vertexPtr;
 }
 

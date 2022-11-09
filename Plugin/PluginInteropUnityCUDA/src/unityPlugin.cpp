@@ -149,14 +149,12 @@ static void OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
 		assert(s_CurrentAPI == NULL);
 		s_DeviceType = s_Graphics->GetRenderer();
 		s_CurrentAPI = CreateRenderAPI(s_DeviceType);
-		Log::log().debugLog("initialize");
 	}
 
 	// Let the implementation process the device related events
 	if (s_CurrentAPI)
 	{
 		s_CurrentAPI->ProcessDeviceEvent(eventType, s_UnityInterfaces);
-		Log::log().debugLog("process");
 	}
 
 	// Cleanup graphics API implementation upon shutdown
@@ -166,7 +164,6 @@ static void OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
 		s_CurrentAPI = NULL;
 		s_DeviceType = kUnityGfxRendererNull;
 		s_Graphics->UnregisterDeviceEventCallback(OnGraphicsDeviceEvent);
-		Log::log().debugLog("cleanup");
 		
 	}
 }
