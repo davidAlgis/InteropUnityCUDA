@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 public class TestInteropGLCUDABuffer : MonoBehaviour
 {
@@ -27,7 +28,8 @@ public class TestInteropGLCUDABuffer : MonoBehaviour
     
     [DllImport(_dllName)]
     private static extern IntPtr GetRenderEventFunc();
-    
+
+    [SerializeField] private ParticlesDrawer _particlesDrawer;
     [SerializeField] private TMP_Text _tmpText;
     [SerializeField] private int _sizeBuffer = 256;
     private ComputeBuffer _computeBuffer;
@@ -35,7 +37,13 @@ public class TestInteropGLCUDABuffer : MonoBehaviour
     
     IEnumerator Start ()
     {
-    
+
+	    if (_particlesDrawer == null)
+	    {
+		    Debug.LogError("Set particles drawer in inspector !");
+		    yield break;
+	    }
+	    
 	    CreateComputeBufferAndPassToPlugin();
 	    //Has to be called before eventID 1, because it registered texture in CUDA
 		GL.IssuePluginEvent(GetRenderEventFunc(), 2);
@@ -46,22 +54,12 @@ public class TestInteropGLCUDABuffer : MonoBehaviour
     private void CreateComputeBufferAndPassToPlugin()
     {
 	    int stride = Marshal.SizeOf(typeof(float4));
+	    //allocate memory for compute buffer
 	    _computeBuffer = new ComputeBuffer(_sizeBuffer, stride);
-	    
+	    _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
 	    _cpuArray = new float4[_sizeBuffer];
-	    for(int i=0; i<_sizeBuffer;i++)
-	    {
-		    _cpuArray[i] = new float4(i, i*2, i+1, 1);
-	    }
-
 	    
-	    _computeBuffer.SetData(_cpuArray);
-	    
-	    for(int i=0; i<_sizeBuffer;i++)
-	    {
-		    _cpuArray[i] = new float4(0, 1*i, 2*i, 3*i);
-	    }
-	    
+	    //send pointer on native pointer to register it in graphics api and 
 	    SetBufferFromUnity(_computeBuffer.GetNativeBufferPtr(), _sizeBuffer);
 		
 	}
@@ -82,7 +80,6 @@ public class TestInteropGLCUDABuffer : MonoBehaviour
 			// Issue a plugin event with arbitrary integer identifier.
 			// The plugin can distinguish between different
 			// things it needs to do based on this ID.
-			// For our simple plugin, it does not matter which ID we pass here.
 			GL.IssuePluginEvent(GetRenderEventFunc(), 3);
 		}
 	}
