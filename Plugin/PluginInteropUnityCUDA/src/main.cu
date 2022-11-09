@@ -25,7 +25,7 @@ __global__ void writeVertexBuffer(float4* pos, int size, float time)
     // write output vertex
     if (x < size)
     {
-        pos[x] = make_float4(time*x, time* 1/(x+1), time*x*x, time*1.0f);
+        pos[x] = make_float4( x%20 - 10.0f,0.0f, 0, 1.0f);
     }
 }
 
