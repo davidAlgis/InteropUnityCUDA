@@ -30,22 +30,11 @@ namespace Utilities
             _particlesComputeBuffer = computeBuffer;
             _particlesSizeForRender = particlesSizeForRender;
             
-            var x = new float4[_nbrParticles];
-            for (int i = 0; i < _nbrParticles; i++)
-                x[i] = new float4(0f,0f,0f, 1f);
-            
-            _particlesComputeBuffer.SetData(x);
             _material.SetBuffer(_particlesProp, computeBuffer);
         }
 
         private void OnPostRender()
         {
-            var x = new float4[_nbrParticles];
-            for (int i = 0; i < _nbrParticles; i++)
-                x[i] = new float4(0f,0f,0f, 1f);
-            
-            _particlesComputeBuffer.SetData(x);;
-            
             _material.SetPass(0);
             _material.SetBuffer(_particlesProp, _particlesComputeBuffer);
             _material.SetFloat(_sizeParticles, _particlesSizeForRender);
