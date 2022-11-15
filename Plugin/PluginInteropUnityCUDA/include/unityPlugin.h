@@ -3,6 +3,8 @@
 #include "log.h"
 #include "renderAPI.h"
 #include <memory>
+#include <map>
+#include "Action.h"
 
 class Texture;
 class VertexBuffer;
@@ -19,10 +21,14 @@ extern "C"
 }
 
 
+
 static RenderAPI* s_CurrentAPI = NULL;
 static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
 static IUnityInterfaces* s_UnityInterfaces = NULL;
 static IUnityGraphics* s_Graphics = NULL;
+
+static std::map<Action::Key, Action> _registerActions;
+static int RegisterAction(const Action::Key key, Action action);
 std::unique_ptr<Texture> _currentTex = NULL;
 std::unique_ptr<VertexBuffer> _currentBuffer = NULL;
 static float _time;

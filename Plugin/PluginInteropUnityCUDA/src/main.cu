@@ -23,12 +23,10 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
 __global__ void writeVertexBuffer(float4* pos, int size, float time)
 {
     unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
-    //unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
-
+    
     // write output vertex
     if (x < size)
     {
-        //pos[x] = make_float4(x % 20 - 10.0f, 0.0f, 0, 1.0f);
         pos[x] = make_float4( cos(2*PI*time/x), sin(2*PI*time/x), 0.0f,1.0f);
     }
 }

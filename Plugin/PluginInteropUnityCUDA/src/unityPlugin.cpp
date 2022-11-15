@@ -6,6 +6,7 @@
 #include <iostream>
 #include <assert.h>
 #include <math.h>
+#include <utility>
 
 extern "C"
 {
@@ -102,6 +103,22 @@ extern "C"
 
 
 
+int RegisterAction(Action& action)
+{
+	auto key = action.GetKey();
+	//if the key isn't not already in map, we add it
+	if (_registerActions.find(key) == _registerActions.end())
+	{
+		//equivalent to a insert (https://en.cppreference.com/w/cpp/container/map/operator_at)
+		_registerActions[key] = action;
+		return 0;
+	}
+	//if the key was already in map we don't add it and return -1
+	return -1;	
+}
+
+
+
 static void OnRenderEvent(int eventID)
 {
 	// Unknown / unsupported graphics device type? Do nothing
@@ -111,7 +128,14 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 
-
+	if (_registerActions.find(eventID) == _registerActions.end())
+	{
+		Log::log().debugLogError("Unknown event : " + std::to_string(eventID) + " has been called");
+		return;
+	}
+	else
+		_registerActions[eventID].DoAction();
+		
 	cudaSurfaceObject_t surf;
 	float4* ptr;
 
