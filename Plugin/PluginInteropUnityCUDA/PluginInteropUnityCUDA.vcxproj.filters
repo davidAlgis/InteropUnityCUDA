@@ -33,6 +33,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Action.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\Buffer\vertexBuffer.h">
       <Filter>include\Buffer</Filter>
     </ClInclude>
@@ -101,8 +104,5 @@
     <ClCompile Include="thirdParty\gl3w\src\gl3w.c">
       <Filter>thirdParty\gl3w\src</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu" />
   </ItemGroup>
 </Project>

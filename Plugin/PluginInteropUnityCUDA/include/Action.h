@@ -1,8 +1,6 @@
 #pragma once
 #include <functional>
 
-class Data;
-
 class Action
 {
 public:
@@ -15,5 +13,5 @@ public:
 	Action& operator=(Action&&) = default;
 
 	virtual Key GetKey() const = 0;
-	virtual bool DoAction(const Data& data) = 0;
+	virtual bool DoAction(const int time) = 0;
 };
