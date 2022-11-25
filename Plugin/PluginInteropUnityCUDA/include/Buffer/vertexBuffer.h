@@ -3,7 +3,7 @@
 #include "cudaInclude.h"
 
 
-class VertexBuffer
+class UNITY_INTERFACE_EXPORT VertexBuffer
 {
 	public:
 		VertexBuffer(void* bufferHandle, int size);

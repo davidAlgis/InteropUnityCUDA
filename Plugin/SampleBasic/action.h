@@ -1,8 +1,7 @@
 #pragma once
 #include <functional>
-#include "framework.h"
 
-class UNITY_INTERFACE_EXPORT Action
+class Action
 {
 public:
 	using Key = int;

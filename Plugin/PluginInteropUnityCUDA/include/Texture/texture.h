@@ -3,7 +3,7 @@
 #include "cudaInclude.h"
 
 
-class Texture
+class UNITY_INTERFACE_EXPORT Texture
 {
 	public:
 		Texture(void* textureHandle, int textureWidth, int textureHeight);

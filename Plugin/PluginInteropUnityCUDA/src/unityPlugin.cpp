@@ -102,17 +102,16 @@ extern "C"
 }
 
 
-
-int RegisterAction(Action& action)
+int RegisterAction(Action* action)
 {
-	auto key = action.GetKey();
+	/*auto key = action.GetKey();
 	//if the key isn't not already in map, we add it
 	if (_registerActions.find(key) == _registerActions.end())
 	{
 		//equivalent to a insert (https://en.cppreference.com/w/cpp/container/map/operator_at)
 		_registerActions[key] = action;
 		return 0;
-	}
+	}*/
 	//if the key was already in map we don't add it and return -1
 	return -1;	
 }
@@ -134,7 +133,8 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 	else
-		_registerActions[eventID].DoAction();
+		int a = 0;
+		//_registerActions[eventID].DoAction();
 		
 	cudaSurfaceObject_t surf;
 	float4* ptr;
