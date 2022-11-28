@@ -29,10 +29,12 @@ static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
 static IUnityInterfaces* s_UnityInterfaces = NULL;
 static IUnityGraphics* s_Graphics = NULL;
 
-static std::map<Action::Key, Action*> _registerActions;
+static std::map<int, Action*> _registerActions;
+
 std::unique_ptr<Texture> _currentTex = NULL;
 std::unique_ptr<VertexBuffer> _currentBuffer = NULL;
 static float _time;
+static int _keyAction = 0;
 
 static void UNITY_INTERFACE_API OnRenderEvent(int eventID);
 

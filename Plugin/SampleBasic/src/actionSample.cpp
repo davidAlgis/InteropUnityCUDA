@@ -27,13 +27,12 @@ namespace SampleBasic {
 
 extern "C" {
 
-	SampleBasic::ActionSample* UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API createActionToto(Action::Key key)
+	UNITY_INTERFACE_EXPORT SampleBasic::ActionSample* UNITY_INTERFACE_API createActionToto()
 	{
-		return (new SampleBasic::ActionSample(key));
+		return (new SampleBasic::ActionSample());
 	}
 
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API
-		setTextureActionToto(SampleBasic::ActionSample* actionToto, Texture* texture)
+	UNITY_INTERFACE_EXPORT void setTextureActionToto(SampleBasic::ActionSample* actionToto, Texture* texture)
 	{
 		actionToto->setTexture(texture);
 	}

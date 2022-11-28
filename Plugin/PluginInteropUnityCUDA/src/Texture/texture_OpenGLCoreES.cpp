@@ -22,10 +22,10 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 /// <summary>
 /// Has to be call after the first issue plugin event 
 /// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html 
+/// register a graphics resources defined from the texture openGL
 /// </summary>
 void Texture_OpenGLCoreES::registerTextureInCUDA()
 {
-	// Update texture data, and free the memory buffer
 	GLuint gltex = (GLuint)(size_t)(_textureHandle);
 	glBindTexture(GL_TEXTURE_2D, gltex);
 	GL_CHECK();

@@ -17,7 +17,12 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
     
 }
 
-
+/// <summary>
+/// Use the graphics resources registered by graphics API
+/// to map it to cuda array and then create a surface object
+/// that will be used in kernel
+/// </summary>
+/// <returns></returns>
 cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
 {
     cudaArray* arrayPtr;
@@ -35,12 +40,21 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
     return inputSurfObj;
 }
 
+/// <summary>
+/// Call cuda kernel
+/// </summary>
+/// <param name="inputSurfObj">surface object to write on</param>
+/// <param name="time">actual time used in application</param>
 void Texture::writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time)
 {
     kernelCallerWriteTexture(_dimGrid, _dimBlock, inputSurfObj, time, _textureWidth, _textureHeight);
     CUDA_CHECK(cudaDeviceSynchronize());
 }
 
+/// <summary>
+/// Unmap the cuda array from graphics resources and destroy surface object
+/// </summary>
+/// <param name="inputSurfObj">surface object to destroy</param>
 void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj)
 {
     CUDA_CHECK(cudaGraphicsUnmapResources(1, &_pGraphicsResource));

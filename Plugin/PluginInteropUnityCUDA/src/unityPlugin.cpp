@@ -104,16 +104,13 @@ extern "C"
 
 int RegisterAction(Action* action)
 {
-	/*auto key = action.GetKey();
-	//if the key isn't not already in map, we add it
-	if (_registerActions.find(key) == _registerActions.end())
-	{
-		//equivalent to a insert (https://en.cppreference.com/w/cpp/container/map/operator_at)
-		_registerActions[key] = action;
-		return 0;
-	}*/
-	//if the key was already in map we don't add it and return -1
-	return -1;	
+	int key = _keyAction;
+	_keyAction++;
+
+	//equivalent to a insert (https://en.cppreference.com/w/cpp/container/map/operator_at)
+	_registerActions[key] = action;
+
+	return key;
 }
 
 
@@ -133,33 +130,35 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 	else
-		int a = 0;
-		//_registerActions[eventID].DoAction();
-		
-	cudaSurfaceObject_t surf;
-	float4* ptr;
-
-	switch (eventID)
 	{
-		case 0:
-			_currentTex->registerTextureInCUDA();
-			break;
-		
-		case 1:
-			surf = _currentTex->mapTextureToSurfaceObject();
-			_currentTex->writeTexture(surf, _time);
-			_currentTex->unMapTextureToSurfaceObject(surf);
-			break;
-		case 2:
-			_currentBuffer->registerBufferInCUDA();
-			break;
-		case 3:
-			ptr = _currentBuffer->mapResources();
-			_currentBuffer->writeBuffer(ptr, _time);
-			_currentBuffer->unmapResources();
-			break;
-		
+		Log::log().debugLog("do action " + std::to_string(eventID));
+		_registerActions[eventID]->DoAction(_time);
 	}
+		
+	//cudaSurfaceObject_t surf;
+	//float4* ptr;
+
+	//switch (eventID)
+	//{
+	//	case 0:
+	//		_currentTex->registerTextureInCUDA();
+	//		break;
+	//	
+	//	case 1:
+	//		surf = _currentTex->mapTextureToSurfaceObject();
+	//		_currentTex->writeTexture(surf, _time);
+	//		_currentTex->unMapTextureToSurfaceObject(surf);
+	//		break;
+	//	case 2:
+	//		_currentBuffer->registerBufferInCUDA();
+	//		break;
+	//	case 3:
+	//		ptr = _currentBuffer->mapResources();
+	//		_currentBuffer->writeBuffer(ptr, _time);
+	//		_currentBuffer->unmapResources();
+	//		break;
+	//	
+	//}
 
 }
 

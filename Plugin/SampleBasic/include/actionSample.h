@@ -1,17 +1,13 @@
 #pragma once
 #include "action.h"
-#include "log.h"
 #include "texture.h"
 
 namespace SampleBasic {
 	class ActionSample : public Action {
 	public:
-		ActionSample(Action::Key key) : Action(key) {}
+		ActionSample() : Action() {}
 		ActionSample(const ActionSample&) = default;
 		ActionSample(ActionSample&&) = default;
-
-		// TODO: verify this
-		~ActionSample() = default;
 		ActionSample& operator=(const ActionSample&) = default;
 		ActionSample& operator=(ActionSample&&) = default;
 
@@ -26,8 +22,7 @@ namespace SampleBasic {
 
 extern "C" {
 
-	SampleBasic::ActionSample* UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API createActionToto(int key);
+	UNITY_INTERFACE_EXPORT SampleBasic::ActionSample* UNITY_INTERFACE_API createActionToto();
 
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API setTextureActionToto(SampleBasic::ActionSample*,
-		Texture*);
+	UNITY_INTERFACE_EXPORT void setTextureActionToto(SampleBasic::ActionSample* actionToto, Texture* texture);
 }
