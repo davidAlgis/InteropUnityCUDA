@@ -5,9 +5,12 @@ local ROOT = "./"
 local PATH_TARGET = "../InteropUnityCUDA/Assets/Plugin"
 local PATH_SAMPLE_PROJECT = "SampleBasic"
 local PATH_UTILITIES = ROOT .. "Utilities"
+local PATH_PLUGIN_INTEROP = ROOT .. "PluginInteropUnityCUDA"
 local NAME_UTILITIES_LIB = "Utilities.lib"
 local NAME_PLUGIN_INTEROP_LIB = "PluginInteropUnityCUDA.lib"
 local PATH_UTILITIES_INCLUDE = PATH_UTILITIES .. "/include/"
+local PATH_PLUGIN_INTEROP_INCLUDE = PATH_PLUGIN_INTEROP .. "/include/"
+local PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR = PATH_PLUGIN_INTEROP_INCLUDE .. "**"
 local PATH_UTILITIES_THIRD_PARTY_UNITY = PATH_UTILITIES .. "/thirdParty/unity/include/"
 
 require('premake5-cuda')
@@ -47,8 +50,7 @@ workspace "Plugin"
 -- [ PluginGLInteropCUDA ] --
 ------------------------------- 
 project "PluginInteropUnityCUDA"
-    local LOCATION_PROJECT = "PluginInteropUnityCUDA"
-    local ROOT_PROJECT = ROOT .. LOCATION_PROJECT
+    local ROOT_PROJECT = PATH_PLUGIN_INTEROP
     location (ROOT_PROJECT)
     language "C++"
     targetdir (PATH_TARGET, "SampleBasic")
@@ -56,8 +58,8 @@ project "PluginInteropUnityCUDA"
     kind "SharedLib" 
     
     local SourceDir = ROOT_PROJECT .. "/src/";
-    local IncludeSubDir = ROOT_PROJECT .. "/include/**";
-    local IncludeDir = ROOT_PROJECT .. "/include/";
+    local IncludeSubDir = PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR;
+    local IncludeDir = PATH_PLUGIN_INTEROP_INCLUDE;
     local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
     local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
 
@@ -162,6 +164,8 @@ project "SampleBasic"
         IncludeSubDir,
         ThirdPartyGLDir,
         PATH_UTILITIES_INCLUDE,
+        PATH_PLUGIN_INTEROP_INCLUDE,
+        PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR,
         PATH_UTILITIES_THIRD_PARTY_UNITY
     }
 

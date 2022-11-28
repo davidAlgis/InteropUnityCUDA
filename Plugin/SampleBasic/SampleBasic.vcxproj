@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;PLUGINGLINTEROPCUDA_SHARED_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\PluginInteropUnityCUDA\include;..\PluginInteropUnityCUDA\include\Buffer;..\PluginInteropUnityCUDA\include\Texture;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -82,7 +82,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;PLUGINGLINTEROPCUDA_SHARED_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;thirdParty\gl3w\include;..\Utilities\include;..\PluginInteropUnityCUDA\include;..\PluginInteropUnityCUDA\include\Buffer;..\PluginInteropUnityCUDA\include\Texture;..\Utilities\thirdParty\unity\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

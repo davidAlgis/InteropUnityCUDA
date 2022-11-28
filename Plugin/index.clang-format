@@ -1,0 +1,6 @@
+﻿---
+BasedOnStyle: Microsoft
+AccessModifierOffset: '0'
+AlignAfterOpenBracket: Align
+
+...

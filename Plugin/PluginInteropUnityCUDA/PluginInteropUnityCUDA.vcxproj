@@ -129,6 +129,7 @@
     <ClCompile Include="src\RenderAPI\renderAPI_Vulkan.cpp" />
     <ClCompile Include="src\Texture\texture.cpp" />
     <ClCompile Include="src\Texture\texture_OpenGLCoreES.cpp" />
+    <ClCompile Include="src\action.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\factory.cpp" />
     <ClCompile Include="src\unityPlugin.cpp" />
@@ -139,6 +140,6 @@
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 11.7.targets" />
   </ImportGroup>
   <ItemGroup>
-  	<CudaCompile Include="D:/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu"/>
+  	<CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu"/>
   </ItemGroup>
 </Project>
