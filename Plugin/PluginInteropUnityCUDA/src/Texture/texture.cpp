@@ -47,6 +47,7 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
 /// <param name="time">actual time used in application</param>
 void Texture::writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time)
 {
+    Log::log().debugLog(std::to_string(time));
     kernelCallerWriteTexture(_dimGrid, _dimBlock, inputSurfObj, time, _textureWidth, _textureHeight);
     CUDA_CHECK(cudaDeviceSynchronize());
 }

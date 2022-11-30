@@ -31,6 +31,7 @@ RenderAPI* CreateRenderAPI_OpenGLCoreES(UnityGfxRenderer apiType)
 
 void RenderAPI_OpenGLCoreES::CreateResources()
 {
+	Log::log().debugLog("gl3winit");
 	gl3wInit();
 	GL_CHECK();
 }

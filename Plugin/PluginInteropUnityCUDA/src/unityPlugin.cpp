@@ -16,16 +16,17 @@ extern "C"
 	/// <param name="textureHandle"></param>
 	/// <param name="w"></param>
 	/// <param name="h"></param>
-	void SetTextureFromUnity(void* textureHandle, int w, int h)
+	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API SetTextureFromUnity(void* textureHandle, int w, int h)
 	{
 		if (s_Graphics == NULL)
 		{
 			Log::log().debugLogError("Unable to create texture, because Unity has not been loaded.");
-			return;
+			return NULL;
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		_currentTex.reset(Factory::createTexture(textureHandle, w, h, s_DeviceType));
+		//_currentTex.reset(Factory::createTexture(textureHandle, w, h, s_DeviceType));
+		return Factory::createTexture(textureHandle, w, h, s_DeviceType);
 	}
 
 	void  SetBufferFromUnity(void* bufferHandle, int size)
@@ -37,12 +38,17 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		_currentBuffer.reset(Factory::createBuffer(bufferHandle, size, s_DeviceType));
+		//_currentBuffer.reset(Factory::createBuffer(bufferHandle, size, s_DeviceType));
 	}
 
 	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetTime(float time)
 	{
 		_time = time;
+	}
+
+	UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTime()
+	{
+		return _time;
 	}
 
 
@@ -52,7 +58,8 @@ extern "C"
 	/// <param name="unityInterfaces">Unity interfaces that will be used after</param>
 	void	UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 	{
-		_registerActions.reserve(16);
+		Log::log().debugLog("load");
+		//_registerActions.reserve(16);
 		s_UnityInterfaces = unityInterfaces;
 
 		s_Graphics = s_UnityInterfaces->Get<IUnityGraphics>();		
@@ -90,7 +97,7 @@ extern "C"
 
 	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityShutdown()
 	{
-		if (_currentTex != NULL)
+		/*if (_currentTex != NULL)
 		{
 			_currentTex->unRegisterTextureInCUDA();
 		}
@@ -98,7 +105,12 @@ extern "C"
 		if (_currentBuffer != NULL)
 		{
 			_currentBuffer->unRegisterBufferInCUDA();
-		}
+		}*/
+	}
+
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API StartLog()
+	{
+		Log::log().debugLog("Initialize Log");
 	}
 
 }
@@ -110,6 +122,12 @@ int RegisterAction(Action* action)
 	_registerActions.emplace_back(action);
 
 	return _registerActions.size() -1;
+}
+
+UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API InitializeRegisterActions(int reserveCapacity)
+{
+	_registerActions.clear();
+	_registerActions.reserve(reserveCapacity);
 }
 
 
@@ -131,7 +149,7 @@ static void OnRenderEvent(int eventID)
 	else
 	{
 		Log::log().debugLog("do action " + std::to_string(eventID));
-		_registerActions[eventID]->DoAction(_time);
+		_registerActions[eventID]->DoAction();
 	}
 
 	/*if (_registerActions.find(eventID) == _registerActions.end())

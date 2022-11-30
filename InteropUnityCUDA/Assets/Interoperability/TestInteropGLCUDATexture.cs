@@ -34,8 +34,8 @@ public class TestInteropGLCUDATexture : MonoBehaviour
     
     IEnumerator Start ()
     {
-    
 	    CreateTextureAndPassToPlugin();
+	    yield break;
 	    //Has to be called before eventID 1, because it registered texture in CUDA
 	    GL.IssuePluginEvent(GetRenderEventFunc(), 0);
 		yield return StartCoroutine("CallPluginAtEndOfFrames");
@@ -44,7 +44,7 @@ public class TestInteropGLCUDATexture : MonoBehaviour
 
     private void Update()
     {
-	    SetTime(Time.realtimeSinceStartup);
+	    //SetTime(Time.realtimeSinceStartup);
     }
 
     private void CreateTextureAndPassToPlugin()

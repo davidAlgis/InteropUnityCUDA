@@ -13,5 +13,5 @@ public:
 	Action& operator=(const Action&) = default;
 	Action& operator=(Action&&) = default;
 
-	virtual bool DoAction(const int time) = 0;
+	virtual int DoAction() = 0;
 };

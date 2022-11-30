@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ActionUnity
@@ -10,42 +9,61 @@ namespace ActionUnity
 
     /// <summary>
     /// This class will handle interoperability between Unity/Graphics API/GPGPU Technology
-    /// It is used to send graphics type (buffer, texture,...) to interoperability plugin
-    /// Moreover, it's used to register and call particular action (other unity plugin
+    /// It is used to register and call particular action (other unity plugin
     /// that are using interoperability plugin)
     /// </summary>
-    public class InteropHandler : MonoBehaviour
+    public abstract class InteropHandler : MonoBehaviour
     {
-        const string _dllPluginInterop = "PluginInteropUnityCUDA";
+        private const string _dllPluginInterop = "PluginInteropUnityCUDA";
 
         [DllImport(_dllPluginInterop)]
-        protected static extern void SetBufferFromUnity(IntPtr buffer, int size);
-
-        [DllImport(_dllPluginInterop)]
-        protected static extern void SetTextureFromUnity(IntPtr texture, int w, int h);
-
-        [DllImport(_dllPluginInterop)]
-        protected static extern IntPtr GetRenderEventFunc();
-
-        [DllImport(_dllPluginInterop)]
-        protected static extern int RegisterAction(IntPtr action);
-
-        private Dictionary<int, ActionUnity> _registeredActions = new Dictionary<int, ActionUnity>();
-        private Dictionary<string, int> _actionsNames = new Dictionary<string, int>();
-
-        // Start is called before the first frame update
-        void Awake()
-        {
-            //Here create and register your actions
-            ActionUnitySample actionUnitySample = new ActionUnitySample();
-            int key = RegisterActionUnity(actionUnitySample, "sample");
-        }
+        protected static extern IntPtr SetTextureFromUnity(IntPtr texture, int w, int h);
         
-        private void Update()
+        [DllImport(_dllPluginInterop)]
+        private static extern void StartLog();
+        
+        
+        [DllImport(_dllPluginInterop)]
+        private static extern void SetTime(float time);
+        
+        [DllImport(_dllPluginInterop)]
+        private static extern IntPtr GetRenderEventFunc();
+
+        [DllImport(_dllPluginInterop)]
+        private static extern int RegisterAction(IntPtr action);
+        
+        [DllImport(_dllPluginInterop)]
+        protected static extern int DoAction(int eventID);
+        
+        
+        [DllImport(_dllPluginInterop)]
+        private static extern void InitializeRegisterActions(int reserveCapacity);
+        
+        
+
+        private readonly Dictionary<int, ActionUnity> _registeredActions = new();
+        protected readonly Dictionary<string, int> _actionsNames = new();
+
+        protected virtual int ReserveCapacity => 16;
+
+        protected void Start() 
         {
-            //Here call your actions
-            StartCoroutine(CallActionAtEndOfFrames("sample"));
+            StartLog();
+            InitializeRegisterActions(ReserveCapacity);
+            // GL.IssuePluginEvent(GetRenderEventFunc(), -1);
+            //Here create and register your actions
+            InitializeActions();
         }
+
+        protected virtual void InitializeActions() { }
+
+        protected void Update()
+        {
+            SetTime(Time.time);
+            CallActions();
+        }
+
+        protected virtual void CallActions(){}
 
         protected IEnumerator CallActionAtEndOfFrames(string actionName)
         {
@@ -63,6 +81,7 @@ namespace ActionUnity
                 GL.IssuePluginEvent(GetRenderEventFunc(), index);
             }
         }
+        
         protected int RegisterActionUnity(ActionUnity action, string actionName)
         {
             if (_actionsNames.ContainsKey(actionName))

@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91927084920e39e45a87a42f94d53134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefixLog: 'Plugin - '
+  _prefixLog: 'Plugin Texture - '
 --- !u!4 &542792870
 Transform:
   m_ObjectHideFlags: 0
