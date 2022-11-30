@@ -13,7 +13,7 @@ namespace SampleBasic {
 
 		const auto log10_10 = log10(10.0);
 		const auto one = 1.0 + 0.0 * time;
-
+		Log::log().debugLog("do ActionSample " + std::to_string(one));
 		return fabs(log10_10 - one) < epsilon;
 	}
 

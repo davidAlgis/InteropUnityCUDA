@@ -29,7 +29,7 @@ static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
 static IUnityInterfaces* s_UnityInterfaces = NULL;
 static IUnityGraphics* s_Graphics = NULL;
 
-static std::map<int, Action*> _registerActions;
+static std::vector<Action*> _registerActions;
 
 std::unique_ptr<Texture> _currentTex = NULL;
 std::unique_ptr<VertexBuffer> _currentBuffer = NULL;

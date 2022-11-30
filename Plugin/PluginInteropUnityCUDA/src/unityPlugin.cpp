@@ -52,6 +52,7 @@ extern "C"
 	/// <param name="unityInterfaces">Unity interfaces that will be used after</param>
 	void	UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 	{
+		_registerActions.reserve(16);
 		s_UnityInterfaces = unityInterfaces;
 
 		s_Graphics = s_UnityInterfaces->Get<IUnityGraphics>();		
@@ -86,6 +87,7 @@ extern "C"
 		return OnRenderEvent;
 	}
 
+
 	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityShutdown()
 	{
 		if (_currentTex != NULL)
@@ -104,13 +106,10 @@ extern "C"
 
 int RegisterAction(Action* action)
 {
-	int key = _keyAction;
-	_keyAction++;
 
-	//equivalent to a insert (https://en.cppreference.com/w/cpp/container/map/operator_at)
-	_registerActions[key] = action;
+	_registerActions.emplace_back(action);
 
-	return key;
+	return _registerActions.size() -1;
 }
 
 
@@ -124,7 +123,7 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 
-	if (_registerActions.find(eventID) == _registerActions.end())
+	if (eventID >= _registerActions.size())
 	{
 		Log::log().debugLogError("Unknown event : " + std::to_string(eventID) + " has been called");
 		return;
@@ -134,6 +133,17 @@ static void OnRenderEvent(int eventID)
 		Log::log().debugLog("do action " + std::to_string(eventID));
 		_registerActions[eventID]->DoAction(_time);
 	}
+
+	/*if (_registerActions.find(eventID) == _registerActions.end())
+	{
+		Log::log().debugLogError("Unknown event : " + std::to_string(eventID) + " has been called");
+		return;
+	}
+	else
+	{
+		Log::log().debugLog("do action " + std::to_string(eventID));
+		_registerActions[eventID]->DoAction(_time);
+	}*/
 		
 	//cudaSurfaceObject_t surf;
 	//float4* ptr;
