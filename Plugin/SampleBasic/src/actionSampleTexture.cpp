@@ -1,5 +1,5 @@
 #pragma once
-#include "actionSample.h"
+#include "ActionSampleTexture.h"
 #include "action.h"
 #include "unityPlugin.h"
 #include <memory>
@@ -7,24 +7,24 @@
 
 namespace SampleBasic {
 
-	ActionSample::ActionSample(void* texturePtr, int width, int height) : Action()
+	ActionSampleTexture::ActionSampleTexture(void* texturePtr, int width, int height) : Action()
 	{
 		_texture = CreateTextureInterop(texturePtr, width, height);
 		_hasBeenRegistered = false;
 	}
 
-	ActionSample::~ActionSample()
+	ActionSampleTexture::~ActionSampleTexture()
 	{
 		_texture->unRegisterTextureInCUDA();
 	}
 
-	inline int ActionSample::Start()
+	inline int ActionSampleTexture::Start()
 	{
 		_texture->registerTextureInCUDA();
 		return 0;
 	}
 
-	int ActionSample::Update()
+	int ActionSampleTexture::Update()
 	{		
 		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
 		_texture->writeTexture(surf, GetTime());
@@ -32,19 +32,18 @@ namespace SampleBasic {
 		return 0;
 	}
 
-	inline int ActionSample::OnDestroy()
+	inline int ActionSampleTexture::OnDestroy()
 	{
 		return 0;
 	}
-
 
 } // namespace SampleBasic
 
 
 extern "C" {
 
-	UNITY_INTERFACE_EXPORT SampleBasic::ActionSample* UNITY_INTERFACE_API createActionSampleBasic(void* texturePtr, int width, int height)
+	UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleTexture* UNITY_INTERFACE_API createActionSampleTextureBasic(void* texturePtr, int width, int height)
 	{
-		return (new SampleBasic::ActionSample(texturePtr, width, height));
+		return (new SampleBasic::ActionSampleTexture(texturePtr, width, height));
 	}
 } // extern "C"

@@ -33,7 +33,7 @@ extern "C"
 		if (s_Graphics == NULL)
 		{
 			Log::log().debugLogError("Unable to create texture, because Unity has not been loaded.");
-			return;
+			return NULL;
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();

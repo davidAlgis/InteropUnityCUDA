@@ -9,12 +9,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\actionSample.h">
+    <ClInclude Include="include\actionSampleTexture.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\actionSample.cpp">
+    <ClCompile Include="src\actionSampleTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

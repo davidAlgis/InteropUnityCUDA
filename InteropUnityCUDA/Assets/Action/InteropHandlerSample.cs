@@ -39,8 +39,8 @@ namespace ActionUnity
 	        base.InitializeActions();
             CreateTexture();
             print(_rt.GetNativeTexturePtr());
-            ActionUnitySample actionUnitySample = new ActionUnitySample(_rt);
-            RegisterActionUnity(actionUnitySample, "sample");
+            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_rt);
+            RegisterActionUnity(actionUnitySampleTexture, "sample");
             CallActionStart("sample");
         }
 
