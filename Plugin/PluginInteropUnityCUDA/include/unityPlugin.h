@@ -12,17 +12,18 @@ class VertexBuffer;
 
 extern "C"
 {
-	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API SetTextureFromUnity(void* textureHandle, int w, int h);
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetBufferFromUnity(void* bufferHandle, int size);
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetTime(float time);
+	UNITY_INTERFACE_EXPORT Texture* CreateTextureInterop(void* textureHandle, int w, int h);
+	UNITY_INTERFACE_EXPORT VertexBuffer*  CreateVertexBufferInterop(void* bufferHandle, int size);
+
+	UNITY_INTERFACE_EXPORT void  UNITY_INTERFACE_API SetTime(float time);
 	UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTime();
 
-	UnityRenderingEvent UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API GetRenderEventFunc();
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityShutdown();
+	UNITY_INTERFACE_EXPORT UnityRenderingEvent  UNITY_INTERFACE_API GetRenderEventFunc();
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityShutdown();
 
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API StartLog();
 
-	int UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API RegisterAction(Action* action);
+	UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API RegisterAction(Action* action);
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API InitializeRegisterActions(int reserveCapacity);
 }
 

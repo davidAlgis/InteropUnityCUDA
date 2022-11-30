@@ -9,7 +9,7 @@ namespace SampleBasic {
 
 	ActionSample::ActionSample(void* texturePtr, int width, int height) : Action()
 	{
-		_texture = SetTextureFromUnity(texturePtr, width, height);
+		_texture = CreateTextureInterop(texturePtr, width, height);
 		_hasBeenRegistered = false;
 	}
 
@@ -18,18 +18,22 @@ namespace SampleBasic {
 		_texture->unRegisterTextureInCUDA();
 	}
 
-	int ActionSample::DoAction()
+	inline int ActionSample::Start()
 	{
-		if (_hasBeenRegistered == false)
-		{
-			_texture->registerTextureInCUDA();
-			_hasBeenRegistered = true;
-		}
-		
-		Log::log().debugLog("do ActionSample ");
+		_texture->registerTextureInCUDA();
+		return 0;
+	}
+
+	int ActionSample::Update()
+	{		
 		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
 		_texture->writeTexture(surf, GetTime());
 		_texture->unMapTextureToSurfaceObject(surf);
+		return 0;
+	}
+
+	inline int ActionSample::OnDestroy()
+	{
 		return 0;
 	}
 

@@ -16,12 +16,9 @@ namespace ActionUnity
     {
         private const string _dllPluginInterop = "PluginInteropUnityCUDA";
 
-        [DllImport(_dllPluginInterop)]
-        protected static extern IntPtr SetTextureFromUnity(IntPtr texture, int w, int h);
         
         [DllImport(_dllPluginInterop)]
         private static extern void StartLog();
-        
         
         [DllImport(_dllPluginInterop)]
         private static extern void SetTime(float time);
@@ -31,9 +28,6 @@ namespace ActionUnity
 
         [DllImport(_dllPluginInterop)]
         private static extern int RegisterAction(IntPtr action);
-        
-        [DllImport(_dllPluginInterop)]
-        protected static extern int DoAction(int eventID);
         
         
         [DllImport(_dllPluginInterop)]
@@ -55,31 +49,36 @@ namespace ActionUnity
             InitializeActions();
         }
 
+        
         protected virtual void InitializeActions() { }
 
         protected void Update()
         {
             SetTime(Time.time);
-            CallActions();
+            CallUpdateActions();
         }
 
-        protected virtual void CallActions(){}
-
-        protected IEnumerator CallActionAtEndOfFrames(string actionName)
+        protected virtual void CallUpdateActions(){}
+        
+        
+        protected void CallActionByName(string actionName, ActionType actionType)
         {
-            yield return new WaitForEndOfFrame();
-
-            GL.IssuePluginEvent(GetRenderEventFunc(), _actionsNames[actionName]);
+            GL.IssuePluginEvent(GetRenderEventFunc(), 3*_actionsNames[actionName] + (int)actionType);
         }
         
-        protected IEnumerator CallEachRegisteredActionAtEndOfFrames()
+        protected void CallActionStart(string actionName)
         {
-            yield return new WaitForEndOfFrame();
-
-            foreach (int index in _registeredActions.Keys)
-            {
-                GL.IssuePluginEvent(GetRenderEventFunc(), index);
-            }
+            CallActionByName(actionName,ActionType.Start);
+        }
+        
+        protected void CallActionUpdate(string actionName)
+        {
+            CallActionByName(actionName,ActionType.Update);
+        }
+        
+        protected void CallActionOnDestroy(string actionName)
+        {
+            CallActionByName(actionName,ActionType.OnDestroy);
         }
         
         protected int RegisterActionUnity(ActionUnity action, string actionName)
@@ -97,6 +96,14 @@ namespace ActionUnity
             _registeredActions.Add(key, action);
             return key;
         }
+        
+        
+        
+        protected enum ActionType
+        {
+            Start,
+            Update,
+            OnDestroy
+        }
     }
-
 }

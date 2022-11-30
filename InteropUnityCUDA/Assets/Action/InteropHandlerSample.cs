@@ -41,12 +41,13 @@ namespace ActionUnity
             print(_rt.GetNativeTexturePtr());
             ActionUnitySample actionUnitySample = new ActionUnitySample(_rt);
             RegisterActionUnity(actionUnitySample, "sample");
+            CallActionStart("sample");
         }
 
-        protected override void CallActions()
+        protected override void CallUpdateActions()
         {
-	        base.CallActions();
-            StartCoroutine(CallActionAtEndOfFrames("sample"));
+	        base.CallUpdateActions();
+            CallActionUpdate("sample");
         }
     }
 

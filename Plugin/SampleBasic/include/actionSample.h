@@ -12,7 +12,9 @@ namespace SampleBasic {
 		ActionSample& operator=(const ActionSample&) = default;
 		ActionSample& operator=(ActionSample&&) = default;
 
-		inline int DoAction() override;
+		inline int Start() override;
+		inline int Update() override;
+		inline int OnDestroy() override;
 
 	private:
 		Texture* _texture;

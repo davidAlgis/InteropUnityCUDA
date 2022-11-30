@@ -16,7 +16,7 @@ extern "C"
 	/// <param name="textureHandle"></param>
 	/// <param name="w"></param>
 	/// <param name="h"></param>
-	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API SetTextureFromUnity(void* textureHandle, int w, int h)
+	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API CreateTextureInterop(void* textureHandle, int w, int h)
 	{
 		if (s_Graphics == NULL)
 		{
@@ -25,11 +25,10 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		//_currentTex.reset(Factory::createTexture(textureHandle, w, h, s_DeviceType));
 		return Factory::createTexture(textureHandle, w, h, s_DeviceType);
 	}
 
-	void  SetBufferFromUnity(void* bufferHandle, int size)
+	UNITY_INTERFACE_EXPORT VertexBuffer* UNITY_INTERFACE_API CreateVertexBufferInterop(void* bufferHandle, int size)
 	{
 		if (s_Graphics == NULL)
 		{
@@ -38,10 +37,10 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
-		//_currentBuffer.reset(Factory::createBuffer(bufferHandle, size, s_DeviceType));
+		return Factory::createBuffer(bufferHandle, size, s_DeviceType);
 	}
 
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetTime(float time)
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTime(float time)
 	{
 		_time = time;
 	}
@@ -56,7 +55,7 @@ extern "C"
 	/// Initialize the correct API
 	/// </summary>
 	/// <param name="unityInterfaces">Unity interfaces that will be used after</param>
-	void	UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 	{
 		Log::log().debugLog("load");
 		//_registerActions.reserve(16);
@@ -89,23 +88,15 @@ extern "C"
 	/// <summary>
 	/// GetRenderEventFunc, an example function we export which is used to get a rendering event callback function.
 	/// </summary>
-	UnityRenderingEvent GetRenderEventFunc()
+	UNITY_INTERFACE_EXPORT UnityRenderingEvent UNITY_INTERFACE_API GetRenderEventFunc()
 	{
 		return OnRenderEvent;
 	}
 
 
-	void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityShutdown()
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityShutdown()
 	{
-		/*if (_currentTex != NULL)
-		{
-			_currentTex->unRegisterTextureInCUDA();
-		}
 
-		if (_currentBuffer != NULL)
-		{
-			_currentBuffer->unRegisterBufferInCUDA();
-		}*/
 	}
 
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API StartLog()
@@ -113,21 +104,20 @@ extern "C"
 		Log::log().debugLog("Initialize Log");
 	}
 
-}
+	UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API RegisterAction(Action* action)
+	{
 
+		_registerActions.emplace_back(action);
 
-int RegisterAction(Action* action)
-{
+		return _registerActions.size() - 1;
+	}
 
-	_registerActions.emplace_back(action);
+	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API InitializeRegisterActions(int reserveCapacity)
+	{
+		_registerActions.clear();
+		_registerActions.reserve(reserveCapacity);
+	}
 
-	return _registerActions.size() -1;
-}
-
-UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API InitializeRegisterActions(int reserveCapacity)
-{
-	_registerActions.clear();
-	_registerActions.reserve(reserveCapacity);
 }
 
 
@@ -141,28 +131,29 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 
-	if (eventID >= _registerActions.size())
+	int realEventID = eventID / 3;
+
+	if (realEventID >= _registerActions.size())
 	{
-		Log::log().debugLogError("Unknown event : " + std::to_string(eventID) + " has been called");
+		Log::log().debugLogError("Unknown event : " + std::to_string(realEventID) + " has been called");
 		return;
 	}
 	else
 	{
-		Log::log().debugLog("do action " + std::to_string(eventID));
-		_registerActions[eventID]->DoAction();
+		switch (eventID % 3)
+		{
+			case 0:
+				_registerActions[realEventID]->Start();
+				break;
+			case 1:
+				_registerActions[realEventID]->Update();
+				break;
+			case 2:
+				_registerActions[realEventID]->OnDestroy();
+				break;
+		}
 	}
 
-	/*if (_registerActions.find(eventID) == _registerActions.end())
-	{
-		Log::log().debugLogError("Unknown event : " + std::to_string(eventID) + " has been called");
-		return;
-	}
-	else
-	{
-		Log::log().debugLog("do action " + std::to_string(eventID));
-		_registerActions[eventID]->DoAction(_time);
-	}*/
-		
 	//cudaSurfaceObject_t surf;
 	//float4* ptr;
 

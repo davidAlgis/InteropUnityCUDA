@@ -13,5 +13,9 @@ public:
 	Action& operator=(const Action&) = default;
 	Action& operator=(Action&&) = default;
 
-	virtual int DoAction() = 0;
+	//The name of the function are just here to make indication about their first purposes 
+	//but you can use them in another purposes.
+	virtual int Start() = 0;
+	virtual int Update() = 0;
+	virtual int OnDestroy() = 0;
 };
