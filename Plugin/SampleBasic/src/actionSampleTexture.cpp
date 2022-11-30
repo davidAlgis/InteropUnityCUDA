@@ -1,7 +1,7 @@
 #pragma once
 #include "ActionSampleTexture.h"
-#include "action.h"
 #include "unityPlugin.h"
+#include "texture.h"
 #include <memory>
 
 
@@ -10,13 +10,8 @@ namespace SampleBasic {
 	ActionSampleTexture::ActionSampleTexture(void* texturePtr, int width, int height) : Action()
 	{
 		_texture = CreateTextureInterop(texturePtr, width, height);
-		_hasBeenRegistered = false;
 	}
 
-	ActionSampleTexture::~ActionSampleTexture()
-	{
-		_texture->unRegisterTextureInCUDA();
-	}
 
 	inline int ActionSampleTexture::Start()
 	{
@@ -34,6 +29,7 @@ namespace SampleBasic {
 
 	inline int ActionSampleTexture::OnDestroy()
 	{
+		_texture->unRegisterTextureInCUDA();
 		return 0;
 	}
 

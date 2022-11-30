@@ -9,11 +9,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\actionSampleVertexBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\actionSampleTexture.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\actionSampleVertexBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\actionSampleTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>

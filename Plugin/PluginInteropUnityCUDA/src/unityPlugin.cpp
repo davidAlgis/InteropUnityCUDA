@@ -57,7 +57,6 @@ extern "C"
 	/// <param name="unityInterfaces">Unity interfaces that will be used after</param>
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 	{
-		Log::log().debugLog("load");
 		//_registerActions.reserve(16);
 		s_UnityInterfaces = unityInterfaces;
 
@@ -153,31 +152,6 @@ static void OnRenderEvent(int eventID)
 				break;
 		}
 	}
-
-	//cudaSurfaceObject_t surf;
-	//float4* ptr;
-
-	//switch (eventID)
-	//{
-	//	case 0:
-	//		_currentTex->registerTextureInCUDA();
-	//		break;
-	//	
-	//	case 1:
-	//		surf = _currentTex->mapTextureToSurfaceObject();
-	//		_currentTex->writeTexture(surf, _time);
-	//		_currentTex->unMapTextureToSurfaceObject(surf);
-	//		break;
-	//	case 2:
-	//		_currentBuffer->registerBufferInCUDA();
-	//		break;
-	//	case 3:
-	//		ptr = _currentBuffer->mapResources();
-	//		_currentBuffer->writeBuffer(ptr, _time);
-	//		_currentBuffer->unmapResources();
-	//		break;
-	//	
-	//}
 
 }
 

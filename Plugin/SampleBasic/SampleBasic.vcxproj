@@ -110,9 +110,11 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\actionSampleVertexBuffer.h" />
     <ClInclude Include="include\actionSampleTexture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\actionSampleVertexBuffer.cpp" />
     <ClCompile Include="src\actionSampleTexture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

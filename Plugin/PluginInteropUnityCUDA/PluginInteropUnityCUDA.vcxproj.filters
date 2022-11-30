@@ -105,7 +105,4 @@
       <Filter>thirdParty\gl3w\src</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="C:/Users/NyxUser/Documents/David Algis/InteropUnityCUDA/Plugin/PluginInteropUnityCUDA/src/main.cu" />
-  </ItemGroup>
 </Project>
