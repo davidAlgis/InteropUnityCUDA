@@ -30,6 +30,10 @@ void VertexBuffer::writeBuffer(float4* vertexPtr, const float time)
 {
     kernelCallerWriteBuffer(_dimGrid, _dimBlock, vertexPtr, _size, time);
     cudaDeviceSynchronize();
+    float4* v = (float4*)malloc(_size);
+    cudaMemcpy(v, vertexPtr, _size, cudaMemcpyDeviceToHost);
+    Log::log().debugLog(std::to_string(v[2].x));
+
 }
 
 void VertexBuffer::unmapResources()
