@@ -2,7 +2,6 @@
 #include "ActionSampleVertexBuffer.h"
 #include "unityPlugin.h"
 #include "VertexBuffer.h"
-#include <memory>
 
 
 namespace SampleBasic {
@@ -21,6 +20,7 @@ namespace SampleBasic {
 	int ActionSampleVertexBuffer::Update()
 	{		
 		float4* ptr = _vertexBuffer->mapResources();
+		Log::log().debugLog("update vertex buffer with time " + std::to_string(GetTime()));
 		_vertexBuffer->writeBuffer(ptr, GetTime());
 		_vertexBuffer->unmapResources();
 		return 0;

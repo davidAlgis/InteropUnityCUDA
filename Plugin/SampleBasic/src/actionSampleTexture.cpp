@@ -2,7 +2,6 @@
 #include "ActionSampleTexture.h"
 #include "unityPlugin.h"
 #include "texture.h"
-#include <memory>
 
 
 namespace SampleBasic {
@@ -43,3 +42,4 @@ extern "C" {
 		return (new SampleBasic::ActionSampleTexture(texturePtr, width, height));
 	}
 } // extern "C"
+
