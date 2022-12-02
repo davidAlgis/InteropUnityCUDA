@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ActionUnity
 {
-
 	public class ActionUnitySampleTexture : ActionUnity
 	{
 		const string _dllSampleBasic = "SampleBasic";
@@ -12,9 +11,13 @@ namespace ActionUnity
 		[DllImport(_dllSampleBasic)]
 		private static extern IntPtr createActionSampleTextureBasic(IntPtr texturePtr, int width, int height);
 		
-		public ActionUnitySampleTexture(RenderTexture rt) : base()
+		/// <summary>
+		/// create a pointer to actionSampleTexture object that has been created in native plugin
+		/// </summary>
+		/// <param name="renderTexture">render texture that will be used in interoperability</param>
+		public ActionUnitySampleTexture(RenderTexture renderTexture) : base()
 		{
-			_actionPtr = createActionSampleTextureBasic(rt.GetNativeTexturePtr(), rt.width, rt.height);
+			_actionPtr = createActionSampleTextureBasic(renderTexture.GetNativeTexturePtr(), renderTexture.width, renderTexture.height);
 		}
 	}
 

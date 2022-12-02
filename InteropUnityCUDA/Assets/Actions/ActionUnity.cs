@@ -3,26 +3,19 @@ using UnityEngine;
 
 namespace ActionUnity
 {
+    /// <summary>
+    /// This class is an abstract class to store Action class (the one from the native plugin)
+    /// You need to derived from this class and get a pointer to the action class by adding an appropriate
+    /// function in native plugin.
+    /// </summary>
     public abstract class ActionUnity
     {
-        private int _key = -1;
         protected IntPtr _actionPtr;
         
         public IntPtr ActionPtr => _actionPtr;
 
         protected ActionUnity()
         {
-        }
-
-        public void InitializeKey(int key)
-        {
-            if (_key != -1)
-            {
-                Debug.LogError("Cannot edit a key that has already been initialized");
-                return;
-            }
-
-            _key = key;
         }
     }
 
