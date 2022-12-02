@@ -3,6 +3,9 @@
 //contains the macro to export and import in dll
 #include "log.h"
 
+/// <summary>
+/// Base class to derive from if you want to execute some function on graphics object
+/// </summary>
 class UNITY_INTERFACE_EXPORT Action
 {
 public:

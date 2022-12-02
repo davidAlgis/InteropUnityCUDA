@@ -153,9 +153,8 @@ namespace ActionUnity
         /// Register an action in PluginInteropUnityCUDA. This is necessary to call an action with CallAction functions.
         /// </summary>
         /// <param name="action">ActionUnity used to register the action, the member _actionPtr must be filled
-        ///     before using this function.</param>
+        /// before using this function.</param>
         /// <param name="actionName">Id of the action, use this id to call your action</param>
-        /// <returns></returns>
         protected void RegisterActionUnity(ActionUnity action, string actionName)
         {
             if (_actionsNames.ContainsKey(actionName))

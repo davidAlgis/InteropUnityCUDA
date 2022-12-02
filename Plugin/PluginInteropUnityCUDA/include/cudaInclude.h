@@ -1,7 +1,7 @@
 #pragma once
 #include "cuda_runtime.h"
 
-
+// use this macro if you want to check cuda function
 #define CUDA_CHECK(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 
 inline void gpuAssert(cudaError_t code, const char* file, int line)

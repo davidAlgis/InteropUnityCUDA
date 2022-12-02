@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <log.h>
 
+// use this macro to check if open gl was well executed
 #define GL_CHECK(){ glAssert( __FILE__, __LINE__);} 
 inline VOID glAssert(const char* file, const int line)
 {

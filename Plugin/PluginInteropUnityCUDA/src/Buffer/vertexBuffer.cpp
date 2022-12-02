@@ -6,7 +6,8 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 {
     _bufferHandle = bufferHandle;
     _size = size;
-    _dimBlock = { 8, 8, 1 };
+    // set a default size of grid and block to avoid calculating it each time
+    _dimBlock = { 8, 1, 1 };
     _dimGrid = { (size + _dimBlock.x - 1) / _dimBlock.x,
         1, 1};
     _pGraphicsResource = nullptr;
@@ -15,16 +16,21 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 
 float4* VertexBuffer::mapResources()
 {
-    float4* vertexPtr;
+    // map resource
     CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource, 0));
-    size_t num_bytes;
-    CUDA_CHECK(cudaGraphicsResourceGetMappedPointer((void**)&vertexPtr, &num_bytes,
+    // pointer toward an array of float4 on device memory : the compute buffer
+    float4* vertexPtr;
+    // number of bytes that has been readed
+    size_t numBytes;
+    // map the resources on a float4 array that can be modify on device
+    CUDA_CHECK(cudaGraphicsResourceGetMappedPointer((void**)&vertexPtr, &numBytes,
         _pGraphicsResource));
     return vertexPtr;
 }
 
 void VertexBuffer::unmapResources()
 {
+    // unmap the resources
     cudaGraphicsUnmapResources(1, &_pGraphicsResource, 0);
 }
 

@@ -14,19 +14,20 @@ VertexBuffer_OpenGLCoreES::VertexBuffer_OpenGLCoreES(void* bufferHandle, int siz
 
 VertexBuffer_OpenGLCoreES::~VertexBuffer_OpenGLCoreES()
 {
+	// final check to be sure there was no mistake
 	GL_CHECK();
 	CUDA_CHECK(cudaGetLastError());
 };
 
 /// <summary>
-/// Has to be call after the first issue plugin event 
-/// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html 
+/// Register the buffer from OpenGL to CUDA
 /// </summary>
 void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 {
-	// Update texture data, and free the memory buffer
+	// cast the pointer on the buffer of unity to gluint
 	GLuint glBuffer = (GLuint)(_bufferHandle);
 	GL_CHECK();
+	//register the buffer to cuda : it initialize the _pGraphicsResource
 	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_pGraphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
 }
 

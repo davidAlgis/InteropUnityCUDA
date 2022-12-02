@@ -3,19 +3,12 @@
 #include "factory.h"
 #include "texture.h"
 #include "vertexBuffer.h"
-#include <iostream>
 #include <assert.h>
-#include <math.h>
 #include <utility>
 
 extern "C"
 {
-	/// <summary>
-	/// SetTextureFromUnity, an example function we export which is called by one of the scripts.
-	/// </summary>
-	/// <param name="textureHandle"></param>
-	/// <param name="w"></param>
-	/// <param name="h"></param>
+
 	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API CreateTextureInterop(void* textureHandle, int w, int h)
 	{
 		if (s_Graphics == NULL)
@@ -25,6 +18,7 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
+		// create a texture in function of graphics API
 		return Factory::createTexture(textureHandle, w, h, s_DeviceType);
 	}
 
@@ -37,6 +31,7 @@ extern "C"
 		}
 
 		s_DeviceType = s_Graphics->GetRenderer();
+		// create a buffer in function of graphics API
 		return Factory::createBuffer(bufferHandle, size, s_DeviceType);
 	}
 
@@ -84,9 +79,6 @@ extern "C"
 	{
 	}
 
-	/// <summary>
-	/// GetRenderEventFunc, an example function we export which is used to get a rendering event callback function.
-	/// </summary>
 	UNITY_INTERFACE_EXPORT UnityRenderingEvent UNITY_INTERFACE_API GetRenderEventFunc()
 	{
 		return OnRenderEvent;
@@ -103,7 +95,7 @@ extern "C"
 		Log::log().debugLog("Initialize Log");
 	}
 
-	UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API RegisterAction(Action* action)
+	UNITY_INTERFACE_EXPORT size_t UNITY_INTERFACE_API RegisterAction(Action* action)
 	{
 
 		_registerActions.emplace_back(action);
@@ -130,6 +122,7 @@ static void OnRenderEvent(int eventID)
 		return;
 	}
 
+	// there is 3 function per actions
 	int realEventID = eventID / 3;
 
 	if (realEventID >= _registerActions.size())

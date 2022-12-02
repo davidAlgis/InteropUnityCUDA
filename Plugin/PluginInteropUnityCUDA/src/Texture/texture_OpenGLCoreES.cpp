@@ -26,9 +26,11 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 /// </summary>
 void Texture_OpenGLCoreES::registerTextureInCUDA()
 {
+	// cast the pointer on the texture of unity to gluint
 	GLuint gltex = (GLuint)(size_t)(_textureHandle);
 	glBindTexture(GL_TEXTURE_2D, gltex);
 	GL_CHECK();
+	// register the texture to cuda : it initialize the _pGraphicsResource
 	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));	
 }
 

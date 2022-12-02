@@ -8,6 +8,7 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;
+    // set a default size of grid and block to avoid calculating it each time
     _dimBlock = { 8, 8, 1 };
     _dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
         (textureHeight + _dimBlock.y - 1) / _dimBlock.y, 1};
@@ -23,8 +24,10 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
 /// <returns></returns>
 cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
 {
-    cudaArray* arrayPtr;
+    // map the resource to cuda
     cudaGraphicsMapResources(1, &_pGraphicsResource);
+    // cuda array on which the resources will be sended 
+    cudaArray* arrayPtr;
     //https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
     CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(&arrayPtr, _pGraphicsResource, 0, 0));
 
@@ -39,10 +42,6 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
 }
 
 
-/// <summary>
-/// Unmap the cuda array from graphics resources and destroy surface object
-/// </summary>
-/// <param name="inputSurfObj">surface object to destroy</param>
 void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj)
 {
     CUDA_CHECK(cudaGraphicsUnmapResources(1, &_pGraphicsResource));
