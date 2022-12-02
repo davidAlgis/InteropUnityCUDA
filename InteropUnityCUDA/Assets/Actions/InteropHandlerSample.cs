@@ -92,6 +92,16 @@ namespace ActionUnity
             CallFunctionUpdateInAction(_ActionTextureName);
             CallFunctionUpdateInAction(_ActionVertexBufferName);
         }
+
+        /// <summary>
+        /// call onDestroy function of the two registered actions
+        /// </summary>
+        protected override void OnDestroyActions()
+        {
+            base.OnDestroyActions();
+            CallFunctionOnDestroyInAction(_ActionTextureName);
+            CallFunctionOnDestroyInAction(_ActionVertexBufferName);
+        }
     }
 
 }
