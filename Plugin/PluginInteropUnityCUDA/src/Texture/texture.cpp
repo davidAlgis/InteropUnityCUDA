@@ -2,8 +2,6 @@
 #include "texture.h"
 
 
-void kernelCallerWriteTexture(const dim3 dimGrid,const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
-
 
 Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
 {
@@ -40,16 +38,6 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
     return inputSurfObj;
 }
 
-/// <summary>
-/// Call cuda kernel
-/// </summary>
-/// <param name="inputSurfObj">surface object to write on</param>
-/// <param name="time">actual time used in application</param>
-void Texture::writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time)
-{
-    kernelCallerWriteTexture(_dimGrid, _dimBlock, inputSurfObj, time, _textureWidth, _textureHeight);
-    CUDA_CHECK(cudaDeviceSynchronize());
-}
 
 /// <summary>
 /// Unmap the cuda array from graphics resources and destroy surface object
@@ -61,5 +49,26 @@ void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj)
     CUDA_CHECK(cudaDestroySurfaceObject(inputSurfObj));
     CUDA_CHECK(cudaGetLastError());
 }
+
+dim3 Texture::getDimBlock() const
+{
+    return _dimBlock;
+}
+
+dim3 Texture::getDimGrid() const
+{
+    return _dimGrid;
+}
+
+int Texture::getWidth() const
+{
+    return _textureWidth;
+}
+
+int Texture::getHeight() const
+{
+    return _textureHeight;
+}
+
 
 

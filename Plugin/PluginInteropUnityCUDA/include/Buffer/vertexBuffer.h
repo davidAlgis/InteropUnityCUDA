@@ -10,8 +10,10 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		virtual void registerBufferInCUDA() = 0;
 		virtual void unRegisterBufferInCUDA() = 0;
 		float4* mapResources();
-		void writeBuffer(float4* vertexPtr, const float time);
 		void unmapResources();
+		dim3 getDimBlock() const;
+		dim3 getDimGrid() const;
+		int getSize() const;
 
 	protected:
 		void* _bufferHandle;

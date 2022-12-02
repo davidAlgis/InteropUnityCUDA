@@ -2,9 +2,6 @@
 #include "vertexBuffer.h"
 
 
-
-void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock, float4* vertexPtr, const int size, const float time);
-
 VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 {
     _bufferHandle = bufferHandle;
@@ -26,17 +23,22 @@ float4* VertexBuffer::mapResources()
     return vertexPtr;
 }
 
-void VertexBuffer::writeBuffer(float4* vertexPtr, const float time)
-{
-    kernelCallerWriteBuffer(_dimGrid, _dimBlock, vertexPtr, _size, time);
-    cudaDeviceSynchronize();
-    float4* v = (float4*)malloc(_size);
-    cudaMemcpy(v, vertexPtr, _size, cudaMemcpyDeviceToHost);
-    Log::log().debugLog(std::to_string(v[2].x));
-
-}
-
 void VertexBuffer::unmapResources()
 {
     cudaGraphicsUnmapResources(1, &_pGraphicsResource, 0);
+}
+
+int VertexBuffer::getSize() const
+{
+    return _size;
+}
+
+dim3 VertexBuffer::getDimBlock() const
+{
+    return _dimBlock;
+}
+
+dim3 VertexBuffer::getDimGrid() const
+{
+    return _dimGrid;
 }

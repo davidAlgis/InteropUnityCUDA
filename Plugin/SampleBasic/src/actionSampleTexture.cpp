@@ -4,6 +4,8 @@
 #include "texture.h"
 
 
+void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
+
 namespace SampleBasic {
 
 	ActionSampleTexture::ActionSampleTexture(void* texturePtr, int width, int height) : Action()
@@ -20,8 +22,10 @@ namespace SampleBasic {
 
 	int ActionSampleTexture::Update()
 	{		
+
 		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
-		_texture->writeTexture(surf, GetTime());
+		kernelCallerWriteTexture(_texture->getDimBlock(), _texture->getDimBlock(), surf, GetTime(), _texture->getWidth(), _texture->getHeight());
+		cudaDeviceSynchronize();
 		_texture->unMapTextureToSurfaceObject(surf);
 		return 0;
 	}

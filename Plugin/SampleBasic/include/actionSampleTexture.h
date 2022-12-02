@@ -19,6 +19,5 @@ namespace SampleBasic {
 
 extern "C" {
 
-	UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleTexture* UNITY_INTERFACE_API 
-		createActionSampleTextureBasic(void* texturePtr, int width, int height);
+	UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleTexture* UNITY_INTERFACE_API createActionSampleTextureBasic(void* texturePtr, int width, int height);
 }

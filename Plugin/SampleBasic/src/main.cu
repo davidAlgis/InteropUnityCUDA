@@ -1,6 +1,6 @@
 ﻿#include <device_launch_parameters.h>
 #include <vector_functions.h>
-#include <cmath>
+#include "math_constants.h"
 
 #define PI 3.1415926f
 
@@ -27,7 +27,7 @@ __global__ void writeVertexBuffer(float4* pos, int size, float time)
     // write output vertex
     if (x < size)
     {
-        pos[x] = make_float4( cos(2*PI*time/x), sin(2*PI*time/x), 0.0f,1.0f);
+        pos[x] = make_float4( cos(2* CUDART_PI_F *time/x), sin(2* CUDART_PI_F *time/x), 0.0f,1.0f);
     }
 }
 

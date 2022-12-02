@@ -3,6 +3,7 @@
 #include "unityPlugin.h"
 #include "VertexBuffer.h"
 
+void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock, float4* vertexPtr, const int size, const float time);
 
 namespace SampleBasic {
 
@@ -20,8 +21,15 @@ namespace SampleBasic {
 	int ActionSampleVertexBuffer::Update()
 	{		
 		float4* ptr = _vertexBuffer->mapResources();
-		Log::log().debugLog("update vertex buffer with time " + std::to_string(GetTime()));
-		_vertexBuffer->writeBuffer(ptr, GetTime());
+
+		kernelCallerWriteBuffer(_vertexBuffer->getDimGrid(), _vertexBuffer->getDimBlock(), ptr, _vertexBuffer->getSize(), GetTime());
+		cudaDeviceSynchronize();
+
+		float4* v = (float4*)malloc(_vertexBuffer->getSize());
+		cudaMemcpy(v, ptr, _vertexBuffer->getSize(), cudaMemcpyDeviceToHost);
+		Log::log().debugLog(std::to_string(v[2].x));
+
+
 		_vertexBuffer->unmapResources();
 		return 0;
 	}

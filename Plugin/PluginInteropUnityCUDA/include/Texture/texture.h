@@ -11,8 +11,11 @@ class UNITY_INTERFACE_EXPORT Texture
 		virtual void unRegisterTextureInCUDA() = 0;
 	
 		cudaSurfaceObject_t mapTextureToSurfaceObject();
-		void writeTexture(cudaSurfaceObject_t& inputSurfObj, const float time);
 		void unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj);
+		dim3 getDimBlock() const;
+		dim3 getDimGrid() const;
+		int getWidth() const;
+		int getHeight() const;
 
 	protected:
 		void* _textureHandle;
