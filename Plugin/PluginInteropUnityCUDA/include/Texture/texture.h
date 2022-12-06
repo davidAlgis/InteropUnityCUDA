@@ -13,7 +13,8 @@ class UNITY_INTERFACE_EXPORT Texture
 		/// GetNativeTexturePtr https://docs.unity3d.com/ScriptReference/Texture.GetNativeTexturePtr.html) </param>
 		/// <param name="textureWidth">the width of the texture</param>
 		/// <param name="textureHeight">the height of the texture</param>
-		Texture(void* textureHandle, int textureWidth, int textureHeight);
+		/// <param name="textureDepth">the depth of the texture</param>
+		Texture(void* textureHandle, int textureWidth, int textureHeight, int textureDepth);
 
 
 		/// <summary>
@@ -58,6 +59,11 @@ class UNITY_INTERFACE_EXPORT Texture
 		/// </summary>
 		int getHeight() const;
 
+		/// <summary>
+		/// Get the depth of the texture
+		/// </summary>
+		int getDepth() const;
+
 	protected:
 		// Pointer to the texture created in Unity
 		void* _textureHandle;
@@ -65,10 +71,13 @@ class UNITY_INTERFACE_EXPORT Texture
 		int _textureWidth;
 		// height of the texture
 		int _textureHeight;
+		// depth of the texture <2 <=> to Texture2D; >1 <=> Texture2DArray
+		int _textureDepth;
 		// Resource that can be used to retrieve the surface object for CUDA
 		cudaGraphicsResource* _pGraphicsResource;
 
 	private:
+
 		dim3 _dimBlock;
 		dim3 _dimGrid;
 };

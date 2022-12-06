@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utilities;
 
@@ -11,10 +12,15 @@ namespace ActionUnity
     {
         // the id which will be use in registration of action texture
         private const string _ActionTextureName = "sampleTexture";
+        // the id which will be use in registration of action texture array
+        private const string _ActionTextureArrayName = "sampleTextureArray";
         // the id which will be use in registration of action vertex buffer
         private const string _ActionVertexBufferName = "sampleVertexBuffer";
 
-        [SerializeField] private RawImage _rawImage;
+        // raw image for texture 
+        [SerializeField] private RawImage _rawImageOneTexture;
+        [SerializeField] private RawImage _rawImageTextureArray0;
+        [SerializeField] private RawImage _rawImageTextureArray1;
         [SerializeField] private ParticlesDrawer _particlesDrawer;
         
         [SerializeField] private int _sizeTexture = 256;
@@ -22,7 +28,10 @@ namespace ActionUnity
         
 
         
-        private RenderTexture _rt;
+        private RenderTexture _renderTexture;
+        private RenderTexture _renderTextureArray;
+        private RenderTexture _renderTextureForDisplay0;
+        private RenderTexture _renderTextureForDisplay1;
         private ComputeBuffer _computeBuffer;
         private float4[] _cpuArray;
 
@@ -31,7 +40,34 @@ namespace ActionUnity
         /// </summary>
         private void CreateTexture()
         {
-            _rt = new RenderTexture(_sizeTexture, _sizeTexture, 0
+            _renderTexture = new RenderTexture(_sizeTexture, _sizeTexture, 0
+                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+            {
+                useMipMap = false,
+                autoGenerateMips = false,
+                anisoLevel = 6,
+                filterMode = FilterMode.Trilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                enableRandomWrite = true
+            };
+            
+            _rawImageOneTexture.texture = _renderTexture;
+        }
+        
+        private void CreateTextureArray()
+        {
+            _renderTextureForDisplay0 = new RenderTexture(_sizeTexture, _sizeTexture, 0
+                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+            {
+                useMipMap = false,
+                autoGenerateMips = false,
+                anisoLevel = 6,
+                filterMode = FilterMode.Trilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                enableRandomWrite = true
+            };
+            
+            _renderTextureForDisplay1 = new RenderTexture(_sizeTexture, _sizeTexture, 0
                 , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
             {
                 useMipMap = false,
@@ -42,8 +78,8 @@ namespace ActionUnity
                 enableRandomWrite = true
             };
 
-            print(_rt.Create());
-            _rawImage.texture = _rt;
+            _rawImageOneTexture.texture = _renderTextureForDisplay0;
+            _rawImageTextureArray1.texture = _renderTextureForDisplay1;
         }
 
         /// <summary>
@@ -74,11 +110,15 @@ namespace ActionUnity
 
             CreateBuffer();
             CreateTexture();
-            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_rt);
+            CreateTextureArray();
+            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_renderTexture);
+            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTexture);
             ActionUnitySampleVertexBuffer actionUnitySampleVertexBuffer = new ActionUnitySampleVertexBuffer(_computeBuffer, _sizeBuffer);
             RegisterActionUnity(actionUnitySampleTexture, _ActionTextureName);
             RegisterActionUnity(actionUnitySampleVertexBuffer, _ActionVertexBufferName);
+            RegisterActionUnity(actionUnitySampleTextureArray, _ActionTextureArrayName);
             CallFunctionStartInAction(_ActionTextureName);
+            CallFunctionStartInAction(_ActionTextureArrayName);
             CallFunctionStartInAction(_ActionVertexBufferName);
         }
 

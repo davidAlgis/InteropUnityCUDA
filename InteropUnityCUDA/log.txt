@@ -1,4 +1,10 @@
-Log file - Project :  - Begin at : Wed Nov 30 17:53:06 2022
+Log file - Project :  - Begin at : Tue Dec  6 18:35:40 2022
 
 --------------------------------------------------------------------------------------------------------------------------------
 Initialize Log
+Error : Cuda error: 1 invalid argument D:\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\Texture\texture_OpenGLCoreES.cpp 37
+
+Error : Cuda error: 1 invalid argument D:\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\Texture\texture_OpenGLCoreES.cpp 37
+
+Error : Cuda error: 400 invalid resource handle D:\InteropUnityCUDA\Plugin\PluginInteropUnityCUDA\src\Texture\texture.cpp 34
+

@@ -22,7 +22,8 @@ extern "C"
 	/// GetNativeTexturePtr https://docs.unity3d.com/ScriptReference/Texture.GetNativeTexturePtr.html) </param>
 	/// <param name="width">the width of the texture</param>
 	/// <param name="height">the height of the texture</param>
-	UNITY_INTERFACE_EXPORT Texture* CreateTextureInterop(void* textureHandle, int w, int h);
+	/// <param name="depth">depth of 0 or 1 are equivalent to a simple texture 2D when it greater than 1 it will be a texture 2D array </param>
+	UNITY_INTERFACE_EXPORT Texture* CreateTextureInterop(void* textureHandle, int w, int h, int depth);
 
 	/// <summary>
 	/// Create a vertex buffer object for interoperability from a compute buffer pointer of unity

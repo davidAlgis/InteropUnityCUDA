@@ -19,7 +19,7 @@ namespace Factory
 	}
 
 
-	Texture* createTexture(void* textureHandle, int textureWidth, int textureHeight, UnityGfxRenderer apiType)
+	Texture* createTexture(void* textureHandle, int textureWidth, int textureHeight, int textureDepth, UnityGfxRenderer apiType)
 	{
 		Texture* texture = NULL;
 		//#	if SUPPORT_D3D11
@@ -42,7 +42,7 @@ namespace Factory
 #if SUPPORT_OPENGL_UNIFIED
 		if (apiType == kUnityGfxRendererOpenGLCore || apiType == kUnityGfxRendererOpenGLES20 || apiType == kUnityGfxRendererOpenGLES30)
 		{
-			texture = new Texture_OpenGLCoreES(textureHandle, textureWidth, textureHeight);
+			texture = new Texture_OpenGLCoreES(textureHandle, textureWidth, textureHeight, textureDepth);
 		}
 #endif 
 

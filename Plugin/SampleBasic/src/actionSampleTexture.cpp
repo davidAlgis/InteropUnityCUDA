@@ -10,7 +10,7 @@ namespace SampleBasic {
 
 	ActionSampleTexture::ActionSampleTexture(void* texturePtr, int width, int height) : Action()
 	{
-		_texture = CreateTextureInterop(texturePtr, width, height);
+		_texture = CreateTextureInterop(texturePtr, width, height, 1);
 	}
 
 

@@ -9,7 +9,7 @@
 extern "C"
 {
 
-	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API CreateTextureInterop(void* textureHandle, int w, int h)
+	UNITY_INTERFACE_EXPORT Texture* UNITY_INTERFACE_API CreateTextureInterop(void* textureHandle, int w, int h, int depth)
 	{
 		if (s_Graphics == NULL)
 		{
@@ -19,7 +19,7 @@ extern "C"
 
 		s_DeviceType = s_Graphics->GetRenderer();
 		// create a texture in function of graphics API
-		return Factory::createTexture(textureHandle, w, h, s_DeviceType);
+		return Factory::createTexture(textureHandle, w, h, depth, s_DeviceType);
 	}
 
 	UNITY_INTERFACE_EXPORT VertexBuffer* UNITY_INTERFACE_API CreateVertexBufferInterop(void* bufferHandle, int size)

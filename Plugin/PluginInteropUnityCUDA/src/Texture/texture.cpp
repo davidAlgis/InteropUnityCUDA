@@ -3,12 +3,14 @@
 
 
 
-Texture::Texture(void* textureHandle, int textureWidth, int textureHeight)
+Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int textureDepth)
 {
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;
+    _textureDepth = textureDepth;
     // set a default size of grid and block to avoid calculating it each time
+    // TODO : update this for texture depth
     _dimBlock = { 8, 8, 1 };
     _dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
         (textureHeight + _dimBlock.y - 1) / _dimBlock.y, 1};
@@ -68,6 +70,12 @@ int Texture::getHeight() const
 {
     return _textureHeight;
 }
+
+int Texture::getDepth() const
+{
+    return _textureDepth;
+}
+
 
 
 

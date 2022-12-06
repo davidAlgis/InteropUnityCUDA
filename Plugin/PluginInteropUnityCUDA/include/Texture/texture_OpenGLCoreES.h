@@ -10,7 +10,7 @@
 class Texture_OpenGLCoreES : public Texture
 {
 public:
-	Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight);
+	Texture_OpenGLCoreES(void* textureHandle, int textureWidth, int textureHeight, int textureDepth);
 	~Texture_OpenGLCoreES();
 	virtual void registerTextureInCUDA();
 	virtual void unRegisterTextureInCUDA();
