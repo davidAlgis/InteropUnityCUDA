@@ -56,6 +56,20 @@ namespace ActionUnity
         
         private void CreateTextureArray()
         {
+            _renderTextureArray = new RenderTexture(_sizeTexture, _sizeTexture, 0
+                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+            {
+                useMipMap = false,
+                autoGenerateMips = false,
+                anisoLevel = 6,
+                filterMode = FilterMode.Trilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                enableRandomWrite = true,
+                volumeDepth = 3,
+                dimension =  TextureDimension.Tex2DArray
+            };
+            
+            
             _renderTextureForDisplay0 = new RenderTexture(_sizeTexture, _sizeTexture, 0
                 , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
             {
@@ -78,7 +92,8 @@ namespace ActionUnity
                 enableRandomWrite = true
             };
 
-            _rawImageOneTexture.texture = _renderTextureForDisplay0;
+            _renderTextureArray.Create();
+            _rawImageTextureArray0.texture = _renderTextureForDisplay0;
             _rawImageTextureArray1.texture = _renderTextureForDisplay1;
         }
 

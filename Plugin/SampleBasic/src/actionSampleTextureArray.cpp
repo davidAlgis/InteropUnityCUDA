@@ -10,7 +10,7 @@ namespace SampleBasic {
 
 	ActionSampleTextureArray::ActionSampleTextureArray(void* texturePtr, int width, int height, int depth) : Action()
 	{
-		_texture = CreateTextureInterop(texturePtr, width, height, 1);
+		_texture = CreateTextureInterop(texturePtr, width, height, depth);
 	}
 
 
@@ -22,7 +22,6 @@ namespace SampleBasic {
 
 	int ActionSampleTextureArray::Update()
 	{		
-
 		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
 		kernelCallerWriteTextureArray(_texture->getDimBlock(), _texture->getDimBlock(), surf, GetTime(), _texture->getWidth(), _texture->getHeight(), _texture->getDepth());
 		cudaDeviceSynchronize();
