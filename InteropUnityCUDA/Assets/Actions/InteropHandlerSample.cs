@@ -51,6 +51,7 @@ namespace ActionUnity
                 enableRandomWrite = true
             };
             
+            _renderTexture.Create();
             _rawImageOneTexture.texture = _renderTexture;
         }
         
@@ -122,19 +123,19 @@ namespace ActionUnity
                 Debug.LogError("Set particles drawer in inspector !");
                 return;
             }
-
+            
             CreateBuffer();
             CreateTexture();
             CreateTextureArray();
             ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_renderTexture);
-            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTexture);
             ActionUnitySampleVertexBuffer actionUnitySampleVertexBuffer = new ActionUnitySampleVertexBuffer(_computeBuffer, _sizeBuffer);
+            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTextureArray);
             RegisterActionUnity(actionUnitySampleTexture, _ActionTextureName);
             RegisterActionUnity(actionUnitySampleVertexBuffer, _ActionVertexBufferName);
             RegisterActionUnity(actionUnitySampleTextureArray, _ActionTextureArrayName);
             CallFunctionStartInAction(_ActionTextureName);
-            CallFunctionStartInAction(_ActionTextureArrayName);
             CallFunctionStartInAction(_ActionVertexBufferName);
+            CallFunctionStartInAction(_ActionTextureArrayName);
         }
 
 
@@ -144,8 +145,13 @@ namespace ActionUnity
         protected override void UpdateActions()
         {
             base.UpdateActions();
+            CallFunctionUpdateInAction(_ActionTextureArrayName);
             CallFunctionUpdateInAction(_ActionTextureName);
             CallFunctionUpdateInAction(_ActionVertexBufferName);
+            Graphics.CopyTexture(_renderTextureArray,0,_renderTextureForDisplay0,0);
+            Graphics.CopyTexture(_renderTextureArray,1,_renderTextureForDisplay1,0);
+            _rawImageTextureArray0.texture = _renderTextureForDisplay0;
+            _rawImageTextureArray1.texture = _renderTextureForDisplay1;
         }
 
         /// <summary>
@@ -154,6 +160,7 @@ namespace ActionUnity
         protected override void OnDestroyActions()
         {
             base.OnDestroyActions();
+            CallFunctionOnDestroyInAction(_ActionTextureArrayName);
             CallFunctionOnDestroyInAction(_ActionTextureName);
             CallFunctionOnDestroyInAction(_ActionVertexBufferName);
         }

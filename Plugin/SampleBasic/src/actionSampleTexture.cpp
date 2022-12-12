@@ -24,7 +24,7 @@ namespace SampleBasic {
 	{		
 
 		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
-		kernelCallerWriteTexture(_texture->getDimBlock(), _texture->getDimBlock(), surf, GetTime(), _texture->getWidth(), _texture->getHeight());
+		kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(), surf, GetTime(), _texture->getWidth(), _texture->getHeight());
 		cudaDeviceSynchronize();
 		_texture->unMapTextureToSurfaceObject(surf);
 		return 0;

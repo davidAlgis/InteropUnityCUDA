@@ -5,6 +5,8 @@
 
 
 void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float time, const int width, const int height, const int depth);
+void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
+
 
 namespace SampleBasic {
 
@@ -22,10 +24,14 @@ namespace SampleBasic {
 
 	int ActionSampleTextureArray::Update()
 	{		
-		cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
-		kernelCallerWriteTextureArray(_texture->getDimBlock(), _texture->getDimBlock(), surf, GetTime(), _texture->getWidth(), _texture->getHeight(), _texture->getDepth());
+		for (int i = 0; i < _texture->getDepth(); i++)
+		{
+			cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject(i);
+			kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(), surf, GetTime()+2*i, _texture->getWidth(), _texture->getHeight());
+			_texture->unMapTextureToSurfaceObject(surf);
+		}
+
 		cudaDeviceSynchronize();
-		_texture->unMapTextureToSurfaceObject(surf);
 		return 0;
 	}
 

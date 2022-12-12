@@ -24,14 +24,14 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int t
 /// that will be used in kernel
 /// </summary>
 /// <returns></returns>
-cudaSurfaceObject_t Texture::mapTextureToSurfaceObject()
+cudaSurfaceObject_t Texture::mapTextureToSurfaceObject(int indexInArray)
 {
     // map the resource to cuda
     cudaGraphicsMapResources(1, &_pGraphicsResource);
     // cuda array on which the resources will be sended 
     cudaArray* arrayPtr;
     //https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(&arrayPtr, _pGraphicsResource, 0, 0));
+    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(&arrayPtr, _pGraphicsResource, indexInArray, 0));
 
     // Wrap the cudaArray in a surface object
     cudaResourceDesc resDesc;

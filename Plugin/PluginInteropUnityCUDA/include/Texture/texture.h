@@ -30,8 +30,10 @@ class UNITY_INTERFACE_EXPORT Texture
 		/// <summary>
 		/// Map a cuda array to the graphics resources and wrap it into a surface object of cuda
 		/// </summary>
+		/// <param name="indexInArray"> Array index for array textures or cubemap face index as 
+		/// defined by cudaGraphicsCubeFace for cubemap textures for the subresource to access </param>
 		/// <returns>a cuda surface object on device memory and which can be edited in cuda</returns>
-		cudaSurfaceObject_t mapTextureToSurfaceObject();
+		cudaSurfaceObject_t mapTextureToSurfaceObject(int indexInArray = 0);
 
 		/// <summary>
 		///  Unmap the cuda array from graphics resources and destroy surface object
