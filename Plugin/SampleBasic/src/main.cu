@@ -21,27 +21,6 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
 }
 
 
-__global__ void writeTexArray(cudaSurfaceObject_t surf, int width, int height, int depth, float time) {
-    const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
-    const unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
-
-    if (x < width && y < height) {
-
-        uchar4 c;
-        c.x = 0;
-        c.y = (unsigned char)(time * 100 + 128) % 255;
-        c.z = 0;
-        c.w = 255;
-
-        //this isn't optimize...
-        for (int j = 0; j < depth; j++)
-        {
-            surf3Dwrite(c, surf, 4 * x, y, j);
-        }
-
-    }
-}
-
 __global__ void writeVertexBuffer(float4* pos, int size, float time)
 {
     unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -59,13 +38,6 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfa
     writeTex << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, time);
 
 }
-
-void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float time, const int width, const int height, const int depth)
-{
-    writeTexArray << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, depth, time);
-
-}
-
 
 
 void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock, float4* vertexPtr,const int size, const float time)

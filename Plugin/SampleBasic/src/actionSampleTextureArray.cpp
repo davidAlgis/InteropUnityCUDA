@@ -3,8 +3,6 @@
 #include "unityPlugin.h"
 #include "texture.h"
 
-
-void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float time, const int width, const int height, const int depth);
 void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
 
 
