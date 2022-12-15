@@ -39,7 +39,7 @@ Shader "Draw Particles"
                 vertexIn vs;
                 vs.pos = UnityObjectToClipPos(particles[id]);
             	
-            	vs.color = colorParticles;
+            	vs.color = colorParticles*sin(_Time.y);
 				
             	
             	return vs;
@@ -47,7 +47,7 @@ Shader "Draw Particles"
 
             float4 pixelShader(vertexIn ps) : SV_TARGET
             {
-            	return colorParticles;
+            	return colorParticles*sin(_Time.y);
             }
 
 			[maxvertexcount(4)]

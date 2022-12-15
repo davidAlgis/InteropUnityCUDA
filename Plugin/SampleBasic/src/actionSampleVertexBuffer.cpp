@@ -20,7 +20,7 @@ namespace SampleBasic {
 
 	int ActionSampleVertexBuffer::Update()
 	{		
-		float4* ptr = _vertexBuffer->mapResources();
+		float4* ptr = _vertexBuffer->mapResources<float4>();
 
 		kernelCallerWriteBuffer(_vertexBuffer->getDimGrid(), _vertexBuffer->getDimBlock(), ptr, _vertexBuffer->getSize(), GetTime());
 		cudaDeviceSynchronize();

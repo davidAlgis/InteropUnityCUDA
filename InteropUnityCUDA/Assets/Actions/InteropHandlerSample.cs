@@ -33,7 +33,6 @@ namespace ActionUnity
         private RenderTexture _renderTextureForDisplay0;
         private RenderTexture _renderTextureForDisplay1;
         private ComputeBuffer _computeBuffer;
-        private float4[] _cpuArray;
 
         /// <summary>
         /// Create a render texture _sizeTexture x _sizeTexture with 4 channel and and set _renderTexture with it
@@ -107,7 +106,6 @@ namespace ActionUnity
             //allocate memory for compute buffer
             _computeBuffer = new ComputeBuffer(_sizeBuffer, stride);
             _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
-            _cpuArray = new float4[_sizeBuffer];
         }
 
         /// <summary>

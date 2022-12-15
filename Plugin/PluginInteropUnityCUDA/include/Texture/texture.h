@@ -36,7 +36,8 @@ class UNITY_INTERFACE_EXPORT Texture
 		cudaSurfaceObject_t mapTextureToSurfaceObject(int indexInArray = 0);
 
 		/// <summary>
-		///  Unmap the cuda array from graphics resources and destroy surface object
+		/// Unmap the cuda array from graphics resources and destroy surface object
+		/// This function will wait for all previous GPU activity to complete
 		/// </summary>
 		/// <param name="inputSurfObj">the surface object that has been created with <c>mapTextureToSurfaceObject</c> function</param>
 		void unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj);
@@ -65,6 +66,11 @@ class UNITY_INTERFACE_EXPORT Texture
 		/// Get the depth of the texture
 		/// </summary>
 		int getDepth() const;
+
+		/// <summary>
+		/// Get the native texture pointer
+		/// </summary>
+		void* getNativeTexturePtr() const;
 
 	protected:
 		// Pointer to the texture created in Unity

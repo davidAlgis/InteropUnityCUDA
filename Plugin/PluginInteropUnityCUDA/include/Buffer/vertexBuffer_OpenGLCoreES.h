@@ -12,6 +12,7 @@ public:
 	~VertexBuffer_OpenGLCoreES();
 	virtual void registerBufferInCUDA();
 	virtual void unRegisterBufferInCUDA();
+	virtual int SetTextureFromBuffer(Texture& texture);
 
 };
 

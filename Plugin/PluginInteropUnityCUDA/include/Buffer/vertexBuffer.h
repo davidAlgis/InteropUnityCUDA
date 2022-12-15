@@ -1,6 +1,7 @@
 #pragma once
 #include "log.h"
 #include "cudaInclude.h"
+#include "texture.h"
 
 UNITY_INTERFACE_EXPORT struct dim3;
 
@@ -26,14 +27,35 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		/// </summary>
 		virtual void unRegisterBufferInCUDA() = 0;
 
+
+		/// <summary>
+		/// Bind the data from the buffer to the texture
+		/// </summary>
+		/// <param name="">texture on which to bind the buffer data</param>
+		virtual int SetTextureFromBuffer(Texture& texture) const = 0;
+
 		/// <summary>
 		/// Map resources to CUDA
 		/// </summary>
 		/// <returns>an array of float4* defined on device memory and which can be edited in cuda</returns>
-		float4* mapResources();
+		template <typename T>
+		T* mapResources()
+		{
+			// map resource
+			CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource, 0));
+			// pointer toward an array of float4 on device memory : the compute buffer
+			T* vertexPtr;
+			// number of bytes that has been readed
+			size_t numBytes;
+			// map the resources on a float4 array that can be modify on device
+			CUDA_CHECK(cudaGraphicsResourceGetMappedPointer((void**)&vertexPtr, &numBytes,
+				_pGraphicsResource));
+			return vertexPtr;
+		}
 
 		/// <summary>
 		/// Unmap resources from CUDA
+		/// This function will wait for all previous GPU activity to complete
 		/// </summary>
 		void unmapResources();
 
@@ -52,6 +74,9 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		/// Get the size of the buffer
 		/// </summary>
 		int getSize() const;
+
+
+
 
 	protected:
 		// Pointer to the buffer created in Unity		

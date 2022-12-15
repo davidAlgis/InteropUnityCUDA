@@ -15,7 +15,6 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int t
     _dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
         (textureHeight + _dimBlock.y - 1) / _dimBlock.y, 1};
     _pGraphicsResource = nullptr;
-    
 }
 
 /// <summary>
@@ -74,6 +73,11 @@ int Texture::getHeight() const
 int Texture::getDepth() const
 {
     return _textureDepth;
+}
+
+void* Texture::getNativeTexturePtr() const
+{
+    return _textureHandle;
 }
 
 
