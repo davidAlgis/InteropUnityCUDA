@@ -12,8 +12,15 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int t
     // set a default size of grid and block to avoid calculating it each time
     // TODO : update this for texture depth
     _dimBlock = { 8, 8, 1 };
-    _dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
+    _dimGrid = calculateDimGrid(_dimBlock, {textureWidth, textureHeight, 1});
+    dim3 dimGrid = { (textureWidth + _dimBlock.x - 1) / _dimBlock.x,
         (textureHeight + _dimBlock.y - 1) / _dimBlock.y, 1};
+    Log::log().debugLog("(" + std::to_string(dimGrid.x) + ", " +
+                        std::to_string(dimGrid.y) + ", " +
+                        std::to_string(dimGrid.z) + ")");
+    Log::log().debugLog("(" + std::to_string(_dimGrid.x) + ", " +
+                        std::to_string(_dimGrid.y) + ", " +
+                        std::to_string(_dimGrid.z) + ")");
     _pGraphicsResource = nullptr;
 }
 
