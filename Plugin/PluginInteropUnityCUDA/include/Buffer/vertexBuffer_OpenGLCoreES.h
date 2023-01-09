@@ -10,9 +10,8 @@ class VertexBuffer_OpenGLCoreES : public VertexBuffer
 public:
 	VertexBuffer_OpenGLCoreES(void* bufferHandle, int size);
 	~VertexBuffer_OpenGLCoreES();
-	void registerBufferInCUDA() override;
-	void unRegisterBufferInCUDA() override;
-	int SetTextureFromBuffer(Texture& texture) const override;
+	virtual void registerBufferInCUDA();
+	virtual void unRegisterBufferInCUDA();
 
 };
 

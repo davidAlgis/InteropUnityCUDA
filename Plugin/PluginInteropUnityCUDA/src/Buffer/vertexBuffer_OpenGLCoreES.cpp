@@ -32,24 +32,6 @@ void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_pGraphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
 }
 
-int VertexBuffer_OpenGLCoreES::SetTextureFromBuffer(Texture& texture) const 
-{
-	return 0;
-	////TODO: add some check on type
-	//if (texture.getHeight() * texture.getWidth() != _size) 
-	//{
-	//	Log::log().debugLogError("Cannot create a texture from a buffer which has a different size");
-	//	return -1;
-	//}
-
-	//// Select the appropriate buffer
-	//glBindBuffer(GL_PIXEL_UNPACK_BUFFER, (GLuint)_bufferHandle);
-	//// Select the appropriate texture
-	//glBindTexture(GL_TEXTURE_2D, (GLuint)texture.getNativeTexturePtr());
-
-	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, texture.getWidth(), texture.getHeight(), GL_BGRA, GL_UNSIGNED_BYTE, NULL);
-}
-
 void VertexBuffer_OpenGLCoreES::unRegisterBufferInCUDA()
 {
 	CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));

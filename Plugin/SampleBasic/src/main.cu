@@ -15,9 +15,10 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
         c.z = 0;
         c.w = 255;
 
-        float4 t = make_float4( c.x / 255.0f, c.y / 255.0f, c.z / 255.0f, c.w / 255.0f );
+        surf2Dwrite(c, surf, 4 * x, y);
+        //float4 t = make_float4( c.x / 255.0f, c.y / 255.0f, c.z / 255.0f, c.w / 255.0f );
 
-        surf2Dwrite(t, surf, sizeof(float4) * x, y);
+        //surf2Dwrite(t, surf, sizeof(float4) * x, y);
     }
 }
 

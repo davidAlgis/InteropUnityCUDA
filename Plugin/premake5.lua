@@ -63,6 +63,7 @@ project "PluginInteropUnityCUDA"
     local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
     local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
 
+    dependson {"Utilities"}
     files
     {
         SourceDir .. "**.c",
@@ -146,7 +147,7 @@ project "SampleBasic"
     local IncludeDir = ROOT_PROJECT .. "/include/";
     local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
     local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
-
+    dependson{"PluginInteropUnityCUDA"}
     files
     {
         SourceDir .. "**.c",

@@ -29,12 +29,6 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 
 
 		/// <summary>
-		/// Bind the data from the buffer to the texture
-		/// </summary>
-		/// <param name="">texture on which to bind the buffer data</param>
-		virtual int SetTextureFromBuffer(Texture& texture) const = 0;
-
-		/// <summary>
 		/// Map resources to CUDA
 		/// </summary>
 		/// <returns>an array of float4* defined on device memory and which can be edited in cuda</returns>
