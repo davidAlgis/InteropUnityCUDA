@@ -39,7 +39,7 @@ namespace Utilities
         {
             _material.SetPass(0);
             _material.SetBuffer(_particlesProp, _particlesComputeBuffer);
-            _particlesComputeBuffer.GetData(x,0,0,1);
+            // _particlesComputeBuffer.GetData(x,0,0,1);
             
             _material.SetFloat(_sizeParticles, _particlesSizeForRender);
             Graphics.DrawProceduralNow(MeshTopology.Points, _nbrParticles, 1);
