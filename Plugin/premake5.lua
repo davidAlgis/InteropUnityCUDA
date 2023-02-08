@@ -1,17 +1,17 @@
 -- For documentation on all premake functions please see the wiki:
 --   https://github.com/premake/premake-core/wiki
 
-local ROOT = "./"
-local PATH_TARGET = "../InteropUnityCUDA/Assets/Plugin"
-local PATH_SAMPLE_PROJECT = "SampleBasic"
-local PATH_UTILITIES = ROOT .. "Utilities"
-local PATH_PLUGIN_INTEROP = ROOT .. "PluginInteropUnityCUDA"
-local NAME_UTILITIES_LIB = "Utilities.lib"
-local NAME_PLUGIN_INTEROP_LIB = "PluginInteropUnityCUDA.lib"
-local PATH_UTILITIES_INCLUDE = PATH_UTILITIES .. "/include/"
-local PATH_PLUGIN_INTEROP_INCLUDE = PATH_PLUGIN_INTEROP .. "/include/"
-local PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR = PATH_PLUGIN_INTEROP_INCLUDE .. "**"
-local PATH_UTILITIES_THIRD_PARTY_UNITY = PATH_UTILITIES .. "/thirdParty/unity/include/"
+local root = "./"
+local pathTarget = "../InteropUnityCUDA/Assets/Plugin"
+local pathSampleProject = "SampleBasic"
+local pathUtilities = root .. "Utilities"
+local pathPluginInterop = root .. "PluginInteropUnityCUDA"
+local nameUtilitiesLib = "Utilities.lib"
+local namePluginInteropLib = "PluginInteropUnityCUDA.lib"
+local pathUtilitiesInclude = pathUtilities .. "/include/"
+local pathPluginInteropInclude = pathPluginInterop .. "/include/"
+local pathPluginInteropIncludeSubdir = pathPluginInteropInclude .. "**"
+local pathThirdPartyUnity = pathPluginInterop .. "/thirdParty/unity/include/"
 
 require('premake5-cuda')
 ---------------------------------
@@ -19,7 +19,7 @@ require('premake5-cuda')
 ---------------------------------
 -- Setting up the workspace. A workspace can have multiple Projects. 
 -- In visual studio a workspace corresponds to a solution.
-workspace "Plugin"
+workspace "PluginInteropUnity"
 
     configurations { "Debug", "Release" } -- Optimization/General config mode in VS
     platforms      { "x64"}            -- Dropdown platforms section in VS
@@ -50,16 +50,16 @@ workspace "Plugin"
 -- [ PluginGLInteropCUDA ] --
 ------------------------------- 
 project "PluginInteropUnityCUDA"
-    local ROOT_PROJECT = PATH_PLUGIN_INTEROP
+    local ROOT_PROJECT = pathPluginInterop
     location (ROOT_PROJECT)
     language "C++"
-    targetdir (PATH_TARGET, "SampleBasic")
+    targetdir (pathTarget, "SampleBasic")
     objdir (ROOT_PROJECT .. "/temp/")
     kind "SharedLib" 
     
     local SourceDir = ROOT_PROJECT .. "/src/";
-    local IncludeSubDir = PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR;
-    local IncludeDir = PATH_PLUGIN_INTEROP_INCLUDE;
+    local IncludeSubDir = pathPluginInteropIncludeSubdir;
+    local IncludeDir = pathPluginInteropInclude;
     local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
     local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
 
@@ -80,21 +80,22 @@ project "PluginInteropUnityCUDA"
         IncludeDir,
         IncludeSubDir,
         ThirdPartyGLDir,
-        PATH_UTILITIES_INCLUDE,
-        PATH_UTILITIES_THIRD_PARTY_UNITY
+        pathThirdPartyUnity,
+        pathUtilitiesInclude,
+        pathThirdPartyUnity
     }
 
 
     libdirs
     {
-        PATH_TARGET
+        pathTarget
     }
 
     filter { "system:windows" }
-        links{NAME_UTILITIES_LIB, "OpenGL32"}
+        links{nameUtilitiesLib, "OpenGL32"}
 
     filter { "system:not windows" }
-        links { "GL" , NAME_UTILITIES_LIB}
+        links { "GL" , nameUtilitiesLib}
 
     filter {}
 
@@ -134,11 +135,11 @@ project "PluginInteropUnityCUDA"
 -- [ SampleBasic ] --
 ------------------------------- 
 project "SampleBasic"
-    local LOCATION_PROJECT = PATH_SAMPLE_PROJECT
-    local ROOT_PROJECT = ROOT .. LOCATION_PROJECT
+    local LOCATION_PROJECT = pathSampleProject
+    local ROOT_PROJECT = root .. LOCATION_PROJECT
     location (ROOT_PROJECT)
     language "C++"
-    targetdir (PATH_TARGET)
+    targetdir (pathTarget)
     objdir (ROOT_PROJECT .. "/temp/")
     kind "SharedLib" 
     
@@ -164,24 +165,24 @@ project "SampleBasic"
         IncludeDir,
         IncludeSubDir,
         ThirdPartyGLDir,
-        PATH_UTILITIES_INCLUDE,
-        PATH_PLUGIN_INTEROP_INCLUDE,
-        PATH_PLUGIN_INTEROP_INCLUDE_SUBDIR,
-        PATH_UTILITIES_THIRD_PARTY_UNITY
+        pathUtilitiesInclude,
+        pathPluginInteropInclude,
+        pathPluginInteropIncludeSubdir,
+        pathThirdPartyUnity
     }
 
 
     libdirs
     {
-        PATH_TARGET
+        pathTarget
     }
 
     --here we need the dll INTEROP too
     filter { "system:windows" }
-        links{NAME_UTILITIES_LIB, "OpenGL32", NAME_PLUGIN_INTEROP_LIB}
+        links{nameUtilitiesLib, "OpenGL32", namePluginInteropLib}
 
     filter { "system:not windows" }
-        links { "GL" , NAME_UTILITIES_LIB}
+        links { "GL" , nameUtilitiesLib}
 
     filter {}
 
@@ -219,16 +220,15 @@ project "SampleBasic"
 -- [ Utilities ] --
 ------------------------------- 
 project "Utilities"
-    local ROOT_PROJECT = PATH_UTILITIES
+    local ROOT_PROJECT = pathUtilities
     location (ROOT_PROJECT)
     kind "SharedLib" 
     language "C++"
-    targetdir (PATH_TARGET)
+    targetdir (pathTarget)
     objdir (ROOT_PROJECT .. "/temp/".. LOCATION_PROJECT)
     
     local SourceDir = ROOT_PROJECT .. "/src/";
-    local IncludeDir = PATH_UTILITIES_INCLUDE;
-    local ThirdPartyUnityDir = ROOT_PROJECT .. "/thirdParty/unity/include/";
+    local IncludeDir = pathUtilitiesInclude;
     
     -- what files the visual studio project/makefile/etc should know about
     files
@@ -241,8 +241,7 @@ project "Utilities"
 
     includedirs
     {
-        IncludeDir,
-        ThirdPartyUnityDir
+        IncludeDir
     }
 
     flags { "NoImportLib" }

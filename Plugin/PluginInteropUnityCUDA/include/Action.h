@@ -1,6 +1,5 @@
 #pragma once
-//contains the macro to export and import in dll
-#include "log.h"
+#include "IUnityGraphics.h"
 #include <functional>
 
 /// <summary>
