@@ -1,6 +1,6 @@
 #pragma once
 #include "texture_OpenGLCoreES.h"
-#include "openGLInclude.h"
+#include "openGL_include.h"
 #include <cuda_gl_interop.h>
 // OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
 // Supports several flavors: Core, ES2, ES3

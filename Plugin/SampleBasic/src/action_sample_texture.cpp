@@ -1,6 +1,6 @@
 #pragma once
-#include "ActionSampleTexture.h"
-#include "unityPlugin.h"
+#include "action_sample_texture.h"
+#include "unity_plugin.h"
 #include "texture.h"
 
 

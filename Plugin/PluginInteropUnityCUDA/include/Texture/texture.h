@@ -1,6 +1,6 @@
 #pragma once
 #include "log.h"
-#include "cudaInclude.h"
+#include "cuda_include.h"
 
 
 class UNITY_INTERFACE_EXPORT Texture

@@ -1,6 +1,6 @@
 #pragma once
 #include "log.h"
-#include "cudaInclude.h"
+#include "cuda_include.h"
 #include "texture.h"
 
 UNITY_INTERFACE_EXPORT struct dim3;

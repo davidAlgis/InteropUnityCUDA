@@ -1,7 +1,7 @@
 #pragma once
-#include <functional>
 //contains the macro to export and import in dll
 #include "log.h"
+#include <functional>
 
 /// <summary>
 /// Base class to derive from if you want to execute some function on graphics object

@@ -1,5 +1,5 @@
 #pragma once
-#include "vertexBuffer.h"
+#include "vertex_buffer.h"
 
 
 VertexBuffer::VertexBuffer(void* bufferHandle, int size)

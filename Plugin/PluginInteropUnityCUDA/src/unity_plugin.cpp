@@ -1,8 +1,8 @@
 #pragma once
-#include "unityPlugin.h"
+#include "unity_plugin.h"
 #include "factory.h"
 #include "texture.h"
-#include "vertexBuffer.h"
+#include "vertex_buffer.h"
 #include <assert.h>
 #include <utility>
 

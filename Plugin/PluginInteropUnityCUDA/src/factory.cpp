@@ -1,4 +1,4 @@
-#include "vertexBuffer_OpenGLCoreES.h"
+#include "vertex_buffer_OpenGLCoreES.h"
 #include "texture_OpenGLCoreES.h"
 
 namespace Factory

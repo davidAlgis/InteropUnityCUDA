@@ -1,4 +1,4 @@
-#include "openGLInclude.h"
+#include "openGL_include.h"
 #include "renderAPI.h"
 #include "framework.h"
 
