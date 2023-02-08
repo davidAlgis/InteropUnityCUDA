@@ -50,18 +50,18 @@ workspace "PluginInteropUnity"
 -- [ PluginGLInteropCUDA ] --
 ------------------------------- 
 project "PluginInteropUnityCUDA"
-    local ROOT_PROJECT = pathPluginInterop
-    location (ROOT_PROJECT)
+    local rootProject = pathPluginInterop
+    location (rootProject)
     language "C++"
     targetdir (pathTarget, "SampleBasic")
-    objdir (ROOT_PROJECT .. "/temp/")
+    objdir (rootProject .. "/temp/")
     kind "SharedLib" 
     
-    local SourceDir = ROOT_PROJECT .. "/src/";
+    local SourceDir = rootProject .. "/src/";
     local IncludeSubDir = pathPluginInteropIncludeSubdir;
     local IncludeDir = pathPluginInteropInclude;
-    local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
-    local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
+    local ThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/include/";
+    local SourceThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/src/";
 
     dependson {"Utilities"}
     files
@@ -135,19 +135,19 @@ project "PluginInteropUnityCUDA"
 -- [ SampleBasic ] --
 ------------------------------- 
 project "SampleBasic"
-    local LOCATION_PROJECT = pathSampleProject
-    local ROOT_PROJECT = root .. LOCATION_PROJECT
-    location (ROOT_PROJECT)
+    local locationProject = pathSampleProject
+    local rootProject = root .. locationProject
+    location (rootProject)
     language "C++"
     targetdir (pathTarget)
-    objdir (ROOT_PROJECT .. "/temp/")
+    objdir (rootProject .. "/temp/")
     kind "SharedLib" 
     
-    local SourceDir = ROOT_PROJECT .. "/src/";
-    local IncludeSubDir = ROOT_PROJECT .. "/include/**";
-    local IncludeDir = ROOT_PROJECT .. "/include/";
-    local ThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/include/";
-    local SourceThirdPartyGLDir = ROOT_PROJECT .. "/thirdParty/gl3w/src/";
+    local SourceDir = rootProject .. "/src/";
+    local IncludeSubDir = rootProject .. "/include/**";
+    local IncludeDir = rootProject .. "/include/";
+    local ThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/include/";
+    local SourceThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/src/";
     dependson{"PluginInteropUnityCUDA"}
     files
     {
@@ -220,14 +220,14 @@ project "SampleBasic"
 -- [ Utilities ] --
 ------------------------------- 
 project "Utilities"
-    local ROOT_PROJECT = pathUtilities
-    location (ROOT_PROJECT)
+    local rootProject = pathUtilities
+    location (rootProject)
     kind "SharedLib" 
     language "C++"
     targetdir (pathTarget)
-    objdir (ROOT_PROJECT .. "/temp/".. LOCATION_PROJECT)
+    objdir (rootProject .. "/temp/".. locationProject)
     
-    local SourceDir = ROOT_PROJECT .. "/src/";
+    local SourceDir = rootProject .. "/src/";
     local IncludeDir = pathUtilitiesInclude;
     
     -- what files the visual studio project/makefile/etc should know about
@@ -249,5 +249,26 @@ project "Utilities"
 
     defines {"UTILITIES_SHARED", "UTILITIES_SHARED_EXPORTS"} symbols  "On"
 
+    -- Add necessary build customization using standard Premake5
+    -- This assumes you have installed Visual Studio integration for CUDA
+    -- Here we have it set to 11.4
+    buildcustomizations "BuildCustomizations/CUDA 11.7"
+    cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
+
+    cudaMaxRegCount "32"
+    -- Let's compile for all supported architectures (and also in parallel with -t0)
+    cudaCompilerOptions {"-arch=sm_52", "-gencode=arch=compute_52,code=sm_52", "-gencode=arch=compute_60,code=sm_60",
+                         "-gencode=arch=compute_61,code=sm_61", "-gencode=arch=compute_70,code=sm_70",
+                         "-gencode=arch=compute_75,code=sm_75", "-gencode=arch=compute_80,code=sm_80",
+                         "-gencode=arch=compute_86,code=sm_86", "-gencode=arch=compute_86,code=compute_86", "-t0"}                      
+
+    -- On Windows, the link to cudart is done by the CUDA extension, but on Linux, this must be done manually
+    if os.target() == "linux" then 
+        linkoptions {"-L/usr/local/cuda/lib64 -lcudart"}
+    end
+
+    filter "configurations:release"
+    cudaFastMath "On" -- enable fast math for release
+    filter ""
 
 
