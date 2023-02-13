@@ -40,7 +40,7 @@ namespace ActionUnity
         private void CreateTexture()
         {
             _renderTexture = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
             {
                 useMipMap = false,
                 autoGenerateMips = false,
@@ -57,7 +57,7 @@ namespace ActionUnity
         private void CreateTextureArray()
         {
             _renderTextureArray = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
             {
                 useMipMap = false,
                 autoGenerateMips = false,
@@ -71,7 +71,7 @@ namespace ActionUnity
             
             
             _renderTextureForDisplay0 = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
             {
                 useMipMap = false,
                 autoGenerateMips = false,
@@ -82,7 +82,7 @@ namespace ActionUnity
             };
             
             _renderTextureForDisplay1 = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear)
+                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
             {
                 useMipMap = false,
                 autoGenerateMips = false,
