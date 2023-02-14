@@ -40,7 +40,7 @@ namespace ActionUnity
 
         protected virtual int ReserveCapacity => 16;
 
-        protected void Start()
+        public void InitializeInteropHandler()
         {
             // initialize log
             StartLog();
@@ -58,7 +58,7 @@ namespace ActionUnity
         {
         }
 
-        protected void Update()
+        public void UpdateInteropHandler()
         {
             //to update the time used in InteropDll
             SetTime(Time.time);
@@ -73,7 +73,7 @@ namespace ActionUnity
         {
         }
 
-        protected void OnDestroy()
+        public void OnDestroyInteropHandler()
         {
             OnDestroyActions();
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEngine;
@@ -108,6 +109,11 @@ namespace ActionUnity
             _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
         }
 
+        private void Start()
+        {
+            InitializeInteropHandler();
+        }
+
         /// <summary>
         /// Create the texture and the buffer. Construct action from them. Register these action in InteropUnityCUDA and
         /// call start function on it
@@ -136,6 +142,10 @@ namespace ActionUnity
             CallFunctionStartInAction(_ActionTextureArrayName);
         }
 
+        public void Update()
+        {
+            UpdateInteropHandler();
+        }
 
         /// <summary>
         /// call update function of the two registered actions
@@ -150,6 +160,11 @@ namespace ActionUnity
             Graphics.CopyTexture(_renderTextureArray,1,_renderTextureForDisplay1,0);
             _rawImageTextureArray0.texture = _renderTextureForDisplay0;
             _rawImageTextureArray1.texture = _renderTextureForDisplay1;
+        }
+
+        public void OnDestroy()
+        {
+            OnDestroyInteropHandler();
         }
 
         /// <summary>
