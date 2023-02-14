@@ -1,5 +1,6 @@
 #pragma once
 #include "action.h"
+#include "cuda_include.h"
 
 class Texture;
 
@@ -7,13 +8,13 @@ namespace SampleBasic {
 	class ActionSampleTextureArray : public Action {
 	public:
 		ActionSampleTextureArray(void* texturePtr, int width, int height, int depth);
-
 		inline int Start() override;
 		inline int Update() override;
 		inline int OnDestroy() override;
 
 	private:
 		Texture* _texture;
+		cudaSurfaceObject_t _surf;
 	};
 } // namespace SampleBasic
 

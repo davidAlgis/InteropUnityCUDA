@@ -1,7 +1,7 @@
 ﻿#include <device_launch_parameters.h>
 #include <vector_functions.h>
 #include "math_constants.h"
-
+#include "log.h"
 
 __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float time) {
     const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -9,18 +9,32 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height, float 
 
     if (x < width && y < height) {
 
-        uchar4 c;
-        c.x = 0;
-        c.y = (unsigned char)(time *100 + 128) % 255;
-        c.z = 0;
-        c.w = 255;
-
-        //surf2Dwrite(c, surf, 4 * x, y);
-        float4 t = make_float4( c.x / 255.0f, c.y / 255.0f, c.z / 255.0f, c.w / 255.0f );
+        float4 t =
+            make_float4(0, abs(cos(time)),
+                        0, 1.0f);
 
         surf2Dwrite(t, surf, sizeof(float4) * x, y);
     }
 }
+
+__global__ void writeTexArray(cudaSurfaceObject_t surf, int width, int height, int depth,
+                         float time)
+{
+    const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
+    const unsigned int z = blockIdx.z * blockDim.z + threadIdx.z;
+
+    if (x < width && y < height)
+    {
+
+        float4 t =
+            make_float4(z%2, abs(cos(time)),
+                        0, 1.0f);
+
+        surf3Dwrite(t, surf, sizeof(float4) * x, y, z);
+    }
+}
+
 
 
 __global__ void writeVertexBuffer(float4* pos, int size, float time)
@@ -39,6 +53,19 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfa
 {
     writeTex << <dimGrid, dimBlock >> > (inputSurfaceObj, width, height, time);
 
+}
+
+
+void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
+                              cudaSurfaceObject_t inputSurfaceObj,
+                              const float time, const int width,
+                              const int height, const int depth)
+{
+    Log::log().debugLog("time = " + std::to_string(time));
+    Log::log().debugLog("width = " + std::to_string(width));
+    Log::log().debugLog("height = " + std::to_string(height));
+    Log::log().debugLog("depth = " + std::to_string(depth));
+    writeTexArray<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height,depth, time);
 }
 
 

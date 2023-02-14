@@ -1,52 +1,71 @@
 #pragma once
 #include "action_sample_texture_array.h"
-#include "unity_plugin.h"
 #include "texture.h"
+#include "unity_plugin.h"
 
-void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock, cudaSurfaceObject_t inputSurfaceObj, const float t, const int width, const int height);
+void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock,
+                              cudaSurfaceObject_t inputSurfaceObj,
+                              const float t, const int width, const int height);
+void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
+                                   cudaSurfaceObject_t inputSurfaceObj,
+                                   const float time, const int width,
+                                   const int height, const int depth);
 
+namespace SampleBasic
+{
 
-namespace SampleBasic {
+ActionSampleTextureArray::ActionSampleTextureArray(void *texturePtr, int width,
+                                                   int height, int depth)
+    : Action()
+{
+    _texture = CreateTextureInterop(texturePtr, width, height, depth);
+    _surf = 0;
+}
 
-	ActionSampleTextureArray::ActionSampleTextureArray(void* texturePtr, int width, int height, int depth) : Action()
-	{
-		_texture = CreateTextureInterop(texturePtr, width, height, depth);
-	}
+inline int ActionSampleTextureArray::Start()
+{
+    _texture->registerTextureInCUDA();
+    //_surf = _texture->mapTextureToSurfaceObject();
+    return 0;
+}
 
+int ActionSampleTextureArray::Update()
+{
+   /* kernelCallerWriteTextureArray(
+        _texture->getDimGrid(), _texture->getDimBlock(),
+                             _surf, GetTime(), _texture->getWidth(),
+                             _texture->getHeight(), _texture->getDepth());*/
 
-	inline int ActionSampleTextureArray::Start()
-	{
-		_texture->registerTextureInCUDA();
-		return 0;
-	}
+    for (int i = 0; i < _texture->getDepth(); i++)
+    {
+        cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject(i);
+        kernelCallerWriteTexture(_texture->getDimGrid(),
+        _texture->getDimBlock(), surf, GetTime()+2*i, _texture->getWidth(),
+        _texture->getHeight()); _texture->unMapTextureToSurfaceObject(surf);
+    }
 
-	int ActionSampleTextureArray::Update()
-	{		
-		for (int i = 0; i < _texture->getDepth(); i++)
-		{
-			cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject(i);
-			kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(), surf, GetTime()+2*i, _texture->getWidth(), _texture->getHeight());
-			_texture->unMapTextureToSurfaceObject(surf);
-		}
+    cudaDeviceSynchronize();
+    return 0;
+}
 
-		cudaDeviceSynchronize();
-		return 0;
-	}
-
-	inline int ActionSampleTextureArray::OnDestroy()
-	{
-		_texture->unRegisterTextureInCUDA();
-		return 0;
-	}
+inline int ActionSampleTextureArray::OnDestroy()
+{
+    //_texture->unMapTextureToSurfaceObject(_surf);
+    _texture->unRegisterTextureInCUDA();
+    return 0;
+}
 
 } // namespace SampleBasic
 
+extern "C"
+{
 
-extern "C" {
-
-	UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleTextureArray* UNITY_INTERFACE_API createActionSampleTextureArrayBasic(void* texturePtr, int width, int height, int depth)
-	{
-		return (new SampleBasic::ActionSampleTextureArray(texturePtr, width, height, depth));
-	}
+    UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleTextureArray
+        *UNITY_INTERFACE_API
+        createActionSampleTextureArrayBasic(void *texturePtr, int width,
+                                            int height, int depth)
+    {
+        return (new SampleBasic::ActionSampleTextureArray(texturePtr, width,
+                                                          height, depth));
+    }
 } // extern "C"
-
