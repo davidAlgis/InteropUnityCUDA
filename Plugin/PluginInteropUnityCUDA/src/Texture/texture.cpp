@@ -15,7 +15,7 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int t
     _dimGrid = calculateDimGrid(_dimBlock,
                                 {(unsigned int)textureWidth,
                                  (unsigned int)textureHeight,
-                                 (unsigned int)_textureDepth},
+                                 (unsigned int)textureDepth},
         false);
     _pGraphicsResource = nullptr;
 }

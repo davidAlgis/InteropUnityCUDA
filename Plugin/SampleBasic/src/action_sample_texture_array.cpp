@@ -25,24 +25,25 @@ ActionSampleTextureArray::ActionSampleTextureArray(void *texturePtr, int width,
 inline int ActionSampleTextureArray::Start()
 {
     _texture->registerTextureInCUDA();
-    //_surf = _texture->mapTextureToSurfaceObject();
+    _surf = _texture->mapTextureToSurfaceObject();
     return 0;
 }
 
 int ActionSampleTextureArray::Update()
 {
-   /* kernelCallerWriteTextureArray(
+    kernelCallerWriteTextureArray(
         _texture->getDimGrid(), _texture->getDimBlock(),
                              _surf, GetTime(), _texture->getWidth(),
-                             _texture->getHeight(), _texture->getDepth());*/
+                             _texture->getHeight(), _texture->getDepth());
 
-    for (int i = 0; i < _texture->getDepth(); i++)
-    {
-        cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject(i);
-        kernelCallerWriteTexture(_texture->getDimGrid(),
-        _texture->getDimBlock(), surf, GetTime()+2*i, _texture->getWidth(),
-        _texture->getHeight()); _texture->unMapTextureToSurfaceObject(surf);
-    }
+    //for (int i = 0; i < _texture->getDepth(); i++)
+    //{
+    //    cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject(i);
+    //    kernelCallerWriteTexture(_texture->getDimGrid(),
+    //    _texture->getDimBlock(), surf, GetTime()+2*i, _texture->getWidth(),
+    //    _texture->getHeight()); 
+    //    _texture->unMapTextureToSurfaceObject(surf);
+    //}
 
     cudaDeviceSynchronize();
     return 0;
@@ -50,7 +51,7 @@ int ActionSampleTextureArray::Update()
 
 inline int ActionSampleTextureArray::OnDestroy()
 {
-    //_texture->unMapTextureToSurfaceObject(_surf);
+    _texture->unMapTextureToSurfaceObject(_surf);
     _texture->unRegisterTextureInCUDA();
     return 0;
 }

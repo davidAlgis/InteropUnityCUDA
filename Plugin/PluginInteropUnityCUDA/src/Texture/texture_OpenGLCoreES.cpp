@@ -27,11 +27,11 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 void Texture_OpenGLCoreES::registerTextureInCUDA()
 {
 	// if depth is < 2 it's a texture2D, else it's a texture2DArray
-	GLenum target = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
+	GLenum target = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_3D;
 
 	// cast the pointer on the texture of unity to gluint
 	GLuint gltex = (GLuint)(size_t)(_textureHandle);
-	glBindTexture(target, gltex);
+	//glBindTexture(target, gltex);
 	GL_CHECK();
 	// register the texture to cuda : it initialize the _pGraphicsResource
 	CUDA_CHECK(cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, target, cudaGraphicsRegisterFlagsWriteDiscard));

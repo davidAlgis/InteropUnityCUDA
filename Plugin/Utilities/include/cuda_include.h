@@ -68,6 +68,9 @@ inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation, bool getUp = tr
 
     unsigned int multipleDimBlockX =
         dimBlock.x * ((int)(numCalculation.x * invDimBlockX) + addFactor);
+    //unsigned int multipleDimBlockX =
+    //    dimBlock.x * (numCalculation.x / dimBlock.x) + addFactor);
+    // TODO remove dimBlock.x above and bellow
     unsigned int dimGridX = multipleDimBlockX / dimBlock.x;
 
     unsigned int multipleDimBlockY =
