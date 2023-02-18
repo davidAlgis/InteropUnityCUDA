@@ -118,7 +118,7 @@ static void OnRenderEvent(int eventID)
 	// Unknown / unsupported graphics device type? Do nothing
 	if (s_CurrentAPI == NULL)
 	{
-		Log::log().debugLogError("Unknown API.");
+		Log::log().debugLogError("RenderEvent stop because API is unknown.");
 		return;
 	}
 

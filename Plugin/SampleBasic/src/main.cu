@@ -61,10 +61,6 @@ void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
                               const float time, const int width,
                               const int height, const int depth)
 {
-    Log::log().debugLog("time = " + std::to_string(time));
-    Log::log().debugLog("width = " + std::to_string(width));
-    Log::log().debugLog("height = " + std::to_string(height));
-    Log::log().debugLog("depth = " + std::to_string(depth));
     writeTexArray<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height,depth, time);
 }
 

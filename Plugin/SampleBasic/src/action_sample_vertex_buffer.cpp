@@ -27,7 +27,6 @@ namespace SampleBasic {
 
 		float4* v = (float4*)malloc(_vertexBuffer->getSize());
 		cudaMemcpy(v, ptr, _vertexBuffer->getSize(), cudaMemcpyDeviceToHost);
-		Log::log().debugLog(std::to_string(v[2].x));
 
 
 		_vertexBuffer->unmapResources();
