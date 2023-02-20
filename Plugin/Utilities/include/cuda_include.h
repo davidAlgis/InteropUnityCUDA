@@ -83,7 +83,7 @@ inline void cufftAssert(int cufftResult, const char* file, int line)
 			break;
 		}
 		char buffer[2048];
-		sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult, cufftInterpret, file, line);
+		sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult, cufftInterpret.c_str(), file, line);
 		std::string strError(buffer);
 		Log::log().debugLogError(buffer);
 	}
