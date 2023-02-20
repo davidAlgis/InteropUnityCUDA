@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"build_systems":
+    [
+        {
+            "name": "PluginInteropUnity - Build",
+            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:build"],
+            "working_dir": "${project_path:${folder}}",
+		    "encoding": "utf-8",
+        },
+        {
+            "name": "PluginInteropUnity - Rebuild",
+            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:rebuild"],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "PluginInteropUnity - Clean",
+            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:clean"],
+            "working_dir": "${project_path:${folder}}",
+            "encoding": "utf-8",
+        }
+
+    ]
+}

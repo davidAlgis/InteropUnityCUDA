@@ -1,5 +1,15 @@
--- For documentation on all premake functions please see the wiki:
---   https://github.com/premake/premake-core/wiki
+function loadrequire(module, linkToRepository)
+    local function requiref(module)
+        require(module)
+    end
+    res = pcall(requiref,module)
+    if not(res) then
+        print("Could not find module :"
+        , module," it's available at this link : "
+        , linkToRepository)
+    end
+end
+
 
 local root = "./"
 local pathTarget = "../InteropUnityCUDA/Assets/Plugin"
@@ -13,7 +23,9 @@ local pathPluginInteropInclude = pathPluginInterop .. "/include/"
 local pathPluginInteropIncludeSubdir = pathPluginInteropInclude .. "**"
 local pathThirdPartyUnity = pathPluginInterop .. "/thirdParty/unity/include/"
 
-require('premake5-cuda')
+loadrequire('premake5-cuda', "https://github.com/theComputeKid/premake5-cuda")
+print("We use export compile commands module to export compilation database for clang. If you don't have the module you won't be able to compile with clang, BUT you can still compile with visual studio !")
+loadrequire('export-compile-commands', "https://github.com/null-black/premake-export-compile-commands")
 ---------------------------------
 -- [ WORKSPACE CONFIGURATION   --
 ---------------------------------
