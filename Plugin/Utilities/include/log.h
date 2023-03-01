@@ -1,8 +1,10 @@
 #pragma once
 #include "framework.h" 
 #include <fstream>  
-#include <string>
 #include <vector>
+#include <functional>
+#include <string>
+#include <iostream>
 
 extern "C"
 {
@@ -34,6 +36,9 @@ extern "C"
         std::vector<std::string> _logWarningVector;
         std::vector<std::string> _logErrorVector;
         std::string _logBufferSum;
+        std::function<void(std::string, std::fstream&)> _infoPrintFunction;
+        std::function<void(std::string, std::fstream&)> _warningPrintFunction;
+        std::function<void(std::string, std::fstream&)> _errorPrintFunction;
 
     public:
         // SINGLETON
@@ -47,6 +52,26 @@ extern "C"
 
         Log();
         ~Log();
+
+        /// <summary>
+        /// This function is called when debulLog is called, it will write the string in parameters 
+        /// and the fstream is the log file 
+        /// </summary>
+        void setInfoPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
+
+
+        /// <summary>
+        /// This function is called when debulLogWarning is called, it will write the string in parameters 
+        /// and the fstream is the log file 
+        /// </summary>
+        void setWarningPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
+
+
+        /// <summary>
+        /// This function is called when debulLogError is called, it will write the string in parameters 
+        /// and the fstream is the log file 
+        /// </summary>
+        void setErrorPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
 
         /// <summary>
         /// It will merge all log and separate them by '\n' 
