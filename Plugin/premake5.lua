@@ -115,7 +115,7 @@ project "PluginInteropUnityCUDA"
     -- Add necessary build customization using standard Premake5
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
-    buildcustomizations "BuildCustomizations/CUDA 11.7"
+    buildcustomizations "BuildCustomizations/CUDA 12.1"
     cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     -- CUDA specific properties
@@ -202,7 +202,7 @@ project "SampleBasic"
     -- Add necessary build customization using standard Premake5
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
-    buildcustomizations "BuildCustomizations/CUDA 11.7"
+    buildcustomizations "BuildCustomizations/CUDA 12.1"
     cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     -- CUDA specific properties
@@ -264,7 +264,7 @@ project "Utilities"
     -- Add necessary build customization using standard Premake5
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
-    buildcustomizations "BuildCustomizations/CUDA 11.7"
+    buildcustomizations "BuildCustomizations/CUDA 12.1"
     cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     cudaMaxRegCount "32"
