@@ -5,25 +5,136 @@
 			"path": "."
 		}
 	],
-	"build_systems":
-    [
+	    "build_systems": [
         {
             "name": "PluginInteropUnity - Build",
-            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:build"],
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "shell_cmd": "MsBuild PluginInteropUnity.sln /t:build",
             "working_dir": "${project_path:${folder}}",
-		    "encoding": "utf-8",
         },
         {
             "name": "PluginInteropUnity - Rebuild",
-            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:rebuild"],
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "PluginInteropUnity.sln",
+                "/t:rebuild"
+            ],
             "working_dir": "${project_path:${folder}}",
         },
         {
             "name": "PluginInteropUnity - Clean",
-            "cmd": ["MsBuild","PluginInteropUnity.sln","/t:clean"],
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "PluginInteropUnity.sln",
+                "/t:clean"
+            ],
             "working_dir": "${project_path:${folder}}",
-            "encoding": "utf-8",
-        }
-
+        },
+        {
+            "name": "Proj - Utilities Plugin - Build",
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "-target:Utilities",
+                "/t:build"
+            ],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "Proj - SampleBasic - Build",
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "-target:SampleBasic",
+                "/t:build"
+            ],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "Proj - PluginInteropUnityCUDA - Build",
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "-target:PluginInteropUnityCUDA",
+                "/t:build"
+            ],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "Proj - HybridizationInterop - Build",
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "-target:HybridizationInterop",
+                "/t:build"
+            ],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "PluginInterop - Unity",
+            "cmd": [
+                "echo",
+                "Execute command : ",
+                "&&",
+                "WHERE.exe",
+                "Unity.exe",
+                "&&",
+                "echo",
+                "-projectPath",
+                "${project_path:${folder}}\\..\\InteropUnityCUDA",
+                "&&",
+                "echo",
+                "Starting Unity... please wait...",
+                "&&",
+                "Unity",
+                "-projectPath",
+                "${project_path:${folder}}\\..\\InteropUnityCUDA",
+                
+            ],
+            "shell": true,
+        },
+        {
+            "name": "PluginInterop - Premake5 Vs",
+            "cmd": [
+                "premake5",
+                "--file=${project_path:${folder}}\\premake5.lua",
+                "vs2019",
+                "&&",
+                "premake5",
+                "--file=${project_path:${folder}}\\premake5.lua",
+                "export-compile-commands"
+            ],
+            "shell": true,
+        },
     ]
 }
