@@ -1,10 +1,5 @@
 #pragma once
 #include "vertex_buffer_OpenGLCoreES.h"
-#include "openGL_include.h"
-#include <cuda_gl_interop.h>
-// OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
-// Supports several flavors: Core, ES2, ES3
-
 
 #if SUPPORT_OPENGL_UNIFIED
 
@@ -24,8 +19,9 @@ VertexBuffer_OpenGLCoreES::~VertexBuffer_OpenGLCoreES()
 /// </summary>
 void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 {
-	// cast the pointer on the buffer of unity to gluint
-	GLuint glBuffer = (GLuint)(_bufferHandle);
+	// cast the pointer on the buffer of unity to gluint 
+	// (first to size_t to avoid a warning C4311)
+	GLuint glBuffer = (GLuint)(size_t)(_bufferHandle);
 	//glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBuffer);
 	GL_CHECK();
 	//register the buffer to cuda : it initialize the _pGraphicsResource
