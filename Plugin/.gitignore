@@ -4,6 +4,11 @@
 # Remove compilation commands.json that are linked to path, they have to be regenerated with premake
 **/compile_commands.json*
 
+# Workspace files are user-specific
+*.sublime-workspace
+
+**/.clangd*
+
 ### C++ ###
 # Prerequisites
 *.d
