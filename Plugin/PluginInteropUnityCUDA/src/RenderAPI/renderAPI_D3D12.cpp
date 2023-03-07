@@ -22,15 +22,11 @@ public:
 	virtual void ProcessDeviceEvent(UnityGfxDeviceEventType type, IUnityInterfaces* interfaces);
 
 private:
-	UINT64 AlignPow2(UINT64 value);
-	UINT64 GetAlignedSize(int width, int height, int pixelSize, int rowPitch);
-	ID3D12Resource* GetUploadResource(UINT64 size);
 	void CreateResources();
 	void ReleaseResources();
 
 private:
 	IUnityGraphicsD3D12v2* s_D3D12;
-	ID3D12Resource* s_D3D12Upload;
 	ID3D12CommandAllocator* s_D3D12CmdAlloc;
 	ID3D12GraphicsCommandList* s_D3D12CmdList;
 	UINT64 s_D3D12FenceValue = 0;
@@ -49,86 +45,11 @@ const UINT kNodeMask = 0;
 
 RenderAPI_D3D12::RenderAPI_D3D12()
 	: s_D3D12(NULL)
-	, s_D3D12Upload(NULL)
 	, s_D3D12CmdAlloc(NULL)
 	, s_D3D12CmdList(NULL)
 	, s_D3D12FenceValue(0)
 	, s_D3D12Event(NULL)
 {
-}
-
-UINT64 RenderAPI_D3D12::AlignPow2(UINT64 value)
-{
-	UINT64 aligned = pow(2, (int)log2(value));
-	return aligned >= value ? aligned : aligned * 2;
-}
-
-UINT64 RenderAPI_D3D12::GetAlignedSize( int width, int height, int pixelSize, int rowPitch)
-{
-	UINT64 size = width * height * pixelSize;
-
-	size = AlignPow2(size);
-
-	if (size < D3D12_SMALL_RESOURCE_PLACEMENT_ALIGNMENT)
-	{
-		return D3D12_SMALL_RESOURCE_PLACEMENT_ALIGNMENT;
-	}
-	else if (width * pixelSize < rowPitch)
-	{
-		return rowPitch * height;
-	}
-	else
-	{
-		return size;
-	}
-}
-
-ID3D12Resource* RenderAPI_D3D12::GetUploadResource(UINT64 size)
-{
-	if (s_D3D12Upload)
-	{
-		D3D12_RESOURCE_DESC desc = s_D3D12Upload->GetDesc();
-		if (desc.Width == size)
-			return s_D3D12Upload;
-		else
-			s_D3D12Upload->Release();
-	}
-
-	// Texture upload buffer
-	D3D12_HEAP_PROPERTIES heapProps = {};
-	heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;
-	heapProps.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProps.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	heapProps.CreationNodeMask = kNodeMask;
-	heapProps.VisibleNodeMask = kNodeMask;
-
-	D3D12_RESOURCE_DESC heapDesc = {};
-	heapDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	heapDesc.Alignment = 0;
-	heapDesc.Width = size;
-	heapDesc.Height = 1;
-	heapDesc.DepthOrArraySize = 1;
-	heapDesc.MipLevels = 1;
-	heapDesc.Format = DXGI_FORMAT_UNKNOWN;
-	heapDesc.SampleDesc.Count = 1;
-	heapDesc.SampleDesc.Quality = 0;
-	heapDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	heapDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
-
-	ID3D12Device* device = s_D3D12->GetDevice();
-	HRESULT hr = device->CreateCommittedResource(
-		&heapProps,
-		D3D12_HEAP_FLAG_NONE,
-		&heapDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&s_D3D12Upload));
-	if (FAILED(hr))
-	{
-		OutputDebugStringA("Failed to CreateCommittedResource.\n");
-	}
-
-	return s_D3D12Upload;
 }
 
 
@@ -153,7 +74,6 @@ void RenderAPI_D3D12::CreateResources()
 
 void RenderAPI_D3D12::ReleaseResources()
 {
-	SAFE_RELEASE(s_D3D12Upload);
 	if (s_D3D12Event)
 		CloseHandle(s_D3D12Event);
 	SAFE_RELEASE(s_D3D12CmdList);
