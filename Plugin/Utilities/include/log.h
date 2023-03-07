@@ -25,7 +25,7 @@ extern "C"
     /// <param name="type">Type of log to get</param>
     void UTILITIES_API GetLastLog(const char*& data, logType type);
 
-    class UTILITIES_API Log
+    class Log
     {
     private:
 
@@ -42,36 +42,36 @@ extern "C"
 
     public:
         // SINGLETON
-        static Log& log();
+        UTILITIES_API static Log& log();
 
-        Log(const Log&) = delete;
-        Log& operator=(const Log&) = delete;
-        Log(Log&&) = delete;
-        Log& operator=(Log&&) = delete;
+        UTILITIES_API Log(const Log&) = delete;
+        UTILITIES_API Log& operator=(const Log&) = delete;
+        UTILITIES_API Log(Log&&) = delete;
+        UTILITIES_API Log& operator=(Log&&) = delete;
 
 
-        Log();
-        ~Log();
+        UTILITIES_API Log();
+        UTILITIES_API ~Log();
 
         /// <summary>
         /// This function is called when debulLog is called, it will write the string in parameters 
         /// and the fstream is the log file 
         /// </summary>
-        void setInfoPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
+        UTILITIES_API void setInfoPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
 
 
         /// <summary>
         /// This function is called when debulLogWarning is called, it will write the string in parameters 
         /// and the fstream is the log file 
         /// </summary>
-        void setWarningPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
+        UTILITIES_API void setWarningPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
 
 
         /// <summary>
         /// This function is called when debulLogError is called, it will write the string in parameters 
         /// and the fstream is the log file 
         /// </summary>
-        void setErrorPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
+        UTILITIES_API void setErrorPrintFunction(std::function<void(std::string, std::fstream&)> printFunc);
 
         /// <summary>
         /// It will merge all log and separate them by '\n' 
@@ -80,20 +80,20 @@ extern "C"
         /// merge of all log and separate them by '\n'. We use a reference to 
         /// a const char* to permit marshalling</param>
         /// <param name="type">Type of log to get</param>
-        void getMergedLog(const char*& data, logType type);
+        UTILITIES_API void getMergedLog(const char*& data, logType type);
 
         /// <summary>
         /// Call this function to write an info in log
         /// </summary>
         /// <param name="text">info to write in log</param>
-        void debugLog(const std::string text);
+        UTILITIES_API void debugLog(const std::string text);
 
         /// <summary>
         /// Call this function to write an warning in log
         /// This will add Warning : before message
         /// </summary>
         /// <param name="text">warning to write in log</param>
-        void debugLogWarning(const std::string text);
+        UTILITIES_API void debugLogWarning(const std::string text);
 
 
         /// <summary>
@@ -101,9 +101,9 @@ extern "C"
         /// This will add Error : before message
         /// </summary>
         /// <param name="text">error to write in log</param>
-        void debugLogError(const std::string text);
+        UTILITIES_API void debugLogError(const std::string text);
 
-        void extractLog(std::vector<std::string>& logVector);
+        UTILITIES_API void extractLog(std::vector<std::string>& logVector);
     };
 
 }

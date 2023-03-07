@@ -3,7 +3,7 @@
 #include "cuda_include.h"
 #include "log.h"
 
-class UNITY_INTERFACE_EXPORT Texture
+class Texture
 {
     public:
     /// <summary>
@@ -15,20 +15,21 @@ class UNITY_INTERFACE_EXPORT Texture
     /// </param> <param name="textureWidth">the width of the texture</param>
     /// <param name="textureHeight">the height of the texture</param>
     /// <param name="textureDepth">the depth of the texture</param>
-    Texture(void *textureHandle, int textureWidth, int textureHeight,
+    UNITY_INTERFACE_EXPORT Texture(void *textureHandle, int textureWidth,
+                                  int textureHeight,
             int textureDepth);
 
     /// <summary>
     /// Register the texture in CUDA, this has to be override because it depends
     /// on the graphics api
     /// </summary>
-    virtual void registerTextureInCUDA() = 0;
+    UNITY_INTERFACE_EXPORT virtual void registerTextureInCUDA() = 0;
 
     /// <summary>
     /// Unregister the texture in CUDA, this has to be override because it
     /// depends on the graphics api
     /// </summary>
-    virtual void unRegisterTextureInCUDA() = 0;
+    UNITY_INTERFACE_EXPORT virtual void unRegisterTextureInCUDA() = 0;
 
     /// <summary>
     /// Map a cuda array to the graphics resources and wrap it into a surface
@@ -38,7 +39,8 @@ class UNITY_INTERFACE_EXPORT Texture
     /// face index as defined by cudaGraphicsCubeFace for cubemap textures for
     /// the subresource to access </param> <returns>a cuda surface object on
     /// device memory and which can be edited in cuda</returns>
-    cudaSurfaceObject_t mapTextureToSurfaceObject(int indexInArray = 0);
+    UNITY_INTERFACE_EXPORT cudaSurfaceObject_t mapTextureToSurfaceObject(
+        int indexInArray = 0);
 
 
     /// <summary>
@@ -47,42 +49,45 @@ class UNITY_INTERFACE_EXPORT Texture
     /// </summary>
     /// <param name="inputSurfObj">the surface object that has been created with
     /// <c>mapTextureToSurfaceObject</c> function</param>
-    void unMapTextureToSurfaceObject(cudaSurfaceObject_t &inputSurfObj);
+    UNITY_INTERFACE_EXPORT void unMapTextureToSurfaceObject(
+        cudaSurfaceObject_t &inputSurfObj);
 
-    cudaTextureObject_t mapTextureToTextureObject(int indexInArray = 0);
+    UNITY_INTERFACE_EXPORT cudaTextureObject_t mapTextureToTextureObject(
+        int indexInArray = 0);
 
-    void unMapTextureToTextureObject(cudaTextureObject_t &texObj);
+    UNITY_INTERFACE_EXPORT void unMapTextureToTextureObject(
+        cudaTextureObject_t &texObj);
 
     /// <summary>
     /// Get the default dimension block (8,8,1)
     /// </summary>
-    dim3 getDimBlock() const;
+    UNITY_INTERFACE_EXPORT dim3 getDimBlock() const;
 
     /// <summary>
     /// Get the default dimension grid ((sizeBuffer + 7)/8,((sizeBuffer +
     /// 7)/8,1)
     /// </summary>
-    dim3 getDimGrid() const;
+    UNITY_INTERFACE_EXPORT dim3 getDimGrid() const;
 
     /// <summary>
     /// Get the width of the texture
     /// </summary>
-    int getWidth() const;
+    UNITY_INTERFACE_EXPORT int getWidth() const;
 
     /// <summary>
     /// Get the height of the texture
     /// </summary>
-    int getHeight() const;
+    UNITY_INTERFACE_EXPORT int getHeight() const;
 
     /// <summary>
     /// Get the depth of the texture
     /// </summary>
-    int getDepth() const;
+    UNITY_INTERFACE_EXPORT int getDepth() const;
 
     /// <summary>
     /// Get the native texture pointer
     /// </summary>
-    void *getNativeTexturePtr() const;
+    UNITY_INTERFACE_EXPORT void *getNativeTexturePtr() const;
 
     protected:
     // Pointer to the texture created in Unity

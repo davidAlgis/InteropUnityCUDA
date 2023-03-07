@@ -4,9 +4,7 @@
 #include "cuda_include.h"
 #include "log.h"
 
-UNITY_INTERFACE_EXPORT struct dim3;
-
-class UNITY_INTERFACE_EXPORT VertexBuffer
+class VertexBuffer
 {
 	public:
 
@@ -16,17 +14,17 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		/// <param name="bufferHandle">A pointer of computeBuffer with float4 that has been generated with Unity (see function
 		/// GetNativeBufferPtr https://docs.unity3d.com/ScriptReference/ComputeBuffer.GetNativeBufferPtr.html) </param>
 		/// <param name="size">the size of the computeBuffer</param>
-		VertexBuffer(void* bufferHandle, int size);
+		UNITY_INTERFACE_EXPORT VertexBuffer(void* bufferHandle, int size);
 
 		/// <summary>
 		/// Register the buffer in CUDA, this has to be override because it depends on the graphics api
 		/// </summary>
-		virtual void registerBufferInCUDA() = 0;
+		UNITY_INTERFACE_EXPORT virtual void registerBufferInCUDA() = 0;
 
 		/// <summary>
 		/// Unregisteregister the buffer in CUDA, this has to be override because it depends on the graphics api
 		/// </summary>
-		virtual void unRegisterBufferInCUDA() = 0;
+		UNITY_INTERFACE_EXPORT virtual void unRegisterBufferInCUDA() = 0;
 
 
 		/// <summary>
@@ -34,7 +32,7 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		/// </summary>
 		/// <returns>an array of float4* defined on device memory and which can be edited in cuda</returns>
 		template <typename T>
-		T* mapResources()
+		UNITY_INTERFACE_EXPORT T* mapResources()
 		{
 			// map resource
 			CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource, 0));
@@ -52,23 +50,23 @@ class UNITY_INTERFACE_EXPORT VertexBuffer
 		/// Unmap resources from CUDA
 		/// This function will wait for all previous GPU activity to complete
 		/// </summary>
-		void unmapResources();
+		UNITY_INTERFACE_EXPORT void unmapResources();
 
 		/// <summary>
 		/// Get the default dimension block (8,1,1)
 		/// </summary>
-		dim3 getDimBlock() const;
+		UNITY_INTERFACE_EXPORT dim3 getDimBlock() const;
 
 
 		/// <summary>
 		/// Get the default dimension grid ((sizeBuffer + 7)/8,1,1)
 		/// </summary>
-		dim3 getDimGrid() const;
+		UNITY_INTERFACE_EXPORT dim3 getDimGrid() const;
 
 		/// <summary>
 		/// Get the size of the buffer
 		/// </summary>
-		int getSize() const;
+		UNITY_INTERFACE_EXPORT int getSize() const;
 
 
 
