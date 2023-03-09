@@ -87,20 +87,6 @@
             "working_dir": "${project_path:${folder}}",
         },
         {
-            "name": "Proj - HybridizationInterop - Build",
-            "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "-target:HybridizationInterop",
-                "/t:build"
-            ],
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
             "name": "PluginInterop - Unity",
             "cmd": [
                 "echo",
