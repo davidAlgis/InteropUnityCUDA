@@ -16,7 +16,7 @@ Texture_D3D11::Texture_D3D11(void *textureHandle, int textureWidth,
 
 Texture_D3D11::~Texture_D3D11()
 {
-    _texBufferInterop->Release();
+    // _texBufferInterop->Release();
     CUDA_CHECK(cudaGetLastError());
 };
 
@@ -28,33 +28,31 @@ Texture_D3D11::~Texture_D3D11()
 void Texture_D3D11::registerTextureInCUDA()
 {
 
-    // This method initialize the buffer textures that will be registered in
-    // CUDA This method will use m_device attributes in RenderAPI_D3D11, make
-    // sure it has been well initialized.
-    int retCodeCreate = _renderAPI->createTexture2D(
-        _textureWidth, _textureHeight, _textureDepth, &_texBufferInterop);
-    // we initialize
-    if (retCodeCreate < 0)
-    {
-        Log::log().debugLogError("Could not initialize texture on DX11 for "
-                                 "copy. Interoperability has failed.");
-    }
-
-
     // we cast it here, to make it only once.
-    _texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
-    // assert(_texBufferInterop);
+    if(_textureDepth < 1)
+    {
+        auto texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
+        CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+                &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+        CUDA_CHECK(cudaGetLastError());
+    }
+    else
+    {
+        auto texUnityDX11 = (ID3D11Texture3D *)_textureHandle;
+        CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+                &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+        CUDA_CHECK(cudaGetLastError());
+    }
+    // assert(texUnityDX11);
     // D3D11_TEXTURE2D_DESC texDesc;
-    // _texBufferInterop->GetDesc(&texDesc);
+    // texUnityDX11->GetDesc(&texDesc);
 
     // DXGI_FORMAT format = texDesc.Format;
     // Log::log().debugLog(std::to_string(format));
 
     // CUDA_CHECK(cudaGetLastError());
     // register the texture to cuda : it initialize the _pGraphicsResource
-    CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
-        &_pGraphicsResource, _texBufferInterop, cudaGraphicsRegisterFlagsNone));
-    CUDA_CHECK(cudaGetLastError());
+    
 }
 
 void Texture_D3D11::unRegisterTextureInCUDA()
