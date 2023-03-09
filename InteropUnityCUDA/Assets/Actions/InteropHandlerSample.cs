@@ -127,21 +127,39 @@ namespace ActionUnity
                 Debug.LogError("Set particles drawer in inspector !");
                 return;
             }
+            InitSampleTexture();
+            // InitSampleTextureArray();
+            // InitSampleVertexBuffer();
             
-            CreateBuffer();
-            CreateTexture();
-            CreateTextureArray();
-            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_renderTexture);
-            ActionUnitySampleVertexBuffer actionUnitySampleVertexBuffer = new ActionUnitySampleVertexBuffer(_computeBuffer, _sizeBuffer);
-            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTextureArray);
-            RegisterActionUnity(actionUnitySampleTexture, _ActionTextureName);
-            RegisterActionUnity(actionUnitySampleVertexBuffer, _ActionVertexBufferName);
-            RegisterActionUnity(actionUnitySampleTextureArray, _ActionTextureArrayName);
-            CallFunctionStartInAction(_ActionTextureName);
-            CallFunctionStartInAction(_ActionVertexBufferName);
-            CallFunctionStartInAction(_ActionTextureArrayName);
         }
 
+        private void InitSampleTexture()
+        {
+            CreateTexture();
+            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_renderTexture);
+            RegisterActionUnity(actionUnitySampleTexture, _ActionTextureName);
+            CallFunctionStartInAction(_ActionTextureName);
+            
+        }
+
+        private void InitSampleTextureArray()
+        {
+            CreateTextureArray();
+            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTextureArray);
+            RegisterActionUnity(actionUnitySampleTextureArray, _ActionTextureArrayName);
+            CallFunctionStartInAction(_ActionTextureArrayName);
+            
+        }
+
+        private void InitSampleVertexBuffer()
+        {
+            CreateBuffer();
+            ActionUnitySampleVertexBuffer actionUnitySampleVertexBuffer = new ActionUnitySampleVertexBuffer(_computeBuffer, _sizeBuffer);
+            RegisterActionUnity(actionUnitySampleVertexBuffer, _ActionVertexBufferName);
+            CallFunctionStartInAction(_ActionVertexBufferName);
+            
+        }
+        
         public void Update()
         {
             UpdateInteropHandler();
@@ -153,18 +171,18 @@ namespace ActionUnity
         protected override void UpdateActions()
         {
             base.UpdateActions();
-            CallFunctionUpdateInAction(_ActionTextureArrayName);
+            // CallFunctionUpdateInAction(_ActionTextureArrayName);
             CallFunctionUpdateInAction(_ActionTextureName);
-            CallFunctionUpdateInAction(_ActionVertexBufferName);
-            Graphics.CopyTexture(_renderTextureArray,0,_renderTextureForDisplay0,0);
-            Graphics.CopyTexture(_renderTextureArray,1,_renderTextureForDisplay1,0);
-            _rawImageTextureArray0.texture = _renderTextureForDisplay0;
-            _rawImageTextureArray1.texture = _renderTextureForDisplay1;
+            // CallFunctionUpdateInAction(_ActionVertexBufferName);
+            // Graphics.CopyTexture(_renderTextureArray,0,_renderTextureForDisplay0,0);
+            // Graphics.CopyTexture(_renderTextureArray,1,_renderTextureForDisplay1,0);
+            // _rawImageTextureArray0.texture = _renderTextureForDisplay0;
+            // _rawImageTextureArray1.texture = _renderTextureForDisplay1;
         }
 
         public void OnDestroy()
         {
-            OnDestroyInteropHandler();
+            // OnDestroyInteropHandler();
         }
 
         /// <summary>
@@ -173,9 +191,9 @@ namespace ActionUnity
         protected override void OnDestroyActions()
         {
             base.OnDestroyActions();
-            CallFunctionOnDestroyInAction(_ActionTextureArrayName);
             CallFunctionOnDestroyInAction(_ActionTextureName);
-            CallFunctionOnDestroyInAction(_ActionVertexBufferName);
+            // CallFunctionOnDestroyInAction(_ActionTextureArrayName);
+            // CallFunctionOnDestroyInAction(_ActionVertexBufferName);
         }
     }
 

@@ -31,6 +31,34 @@ class Texture
     /// </summary>
     UNITY_INTERFACE_EXPORT virtual void unRegisterTextureInCUDA() = 0;
 
+
+    /// <summary>
+    /// For some API (DX11) CUDA cannot edit the texture created by Unity
+    /// therefore, we have to create a new texture that will used as a buffer
+    /// between the unity texture and the surface object that is modify by CUDA
+    /// For these API, this function will copy the content of the unity texture
+    /// to this buffer, for the other API. It'll do nothing.
+    /// If Unity texture has been modify in Unity, you have to do the copy before
+    /// reading it in CUDA. It's not necessary if you only write into the texture 
+    /// in CUDA, or if the texture has not been modify in Unity.
+    /// Tips : not necessary for write only in CUDA or read only in Unity
+    /// </summary>
+    UNITY_INTERFACE_EXPORT virtual void copyUnityTextureToAPITexture() = 0;
+
+
+    /// <summary>
+    /// For some API (DX11) CUDA cannot edit the texture created by Unity
+    /// therefore, we have to create a new texture that will used as a buffer
+    /// between the unity texture and the surface object that is modify by CUDA
+    /// For these API, this function will copy the content of the buffer texture
+    /// to the unity texture, for the other API. It'll do nothing.
+    /// If API texture has been modify by, you have to do the copy before
+    /// reading it in Unity. It's not necessary if you only read into the texture 
+    /// in CUDA, or if the texture is only write only in Unity.
+    /// Tips : not necessary for read only in CUDA or write only in Unity
+    /// </summary>
+    UNITY_INTERFACE_EXPORT virtual void copyAPITextureToUnityTexture() = 0;
+
     /// <summary>
     /// Map a cuda array to the graphics resources and wrap it into a surface
     /// object of cuda
