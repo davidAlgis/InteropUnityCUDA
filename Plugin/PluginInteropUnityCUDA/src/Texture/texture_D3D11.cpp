@@ -27,32 +27,14 @@ Texture_D3D11::~Texture_D3D11()
 /// </summary>
 void Texture_D3D11::registerTextureInCUDA()
 {
+    // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
+    ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
 
-    // we cast it here, to make it only once.
-    if(_textureDepth < 1)
-    {
-        auto texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
-        CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
-                &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
-        CUDA_CHECK(cudaGetLastError());
-    }
-    else
-    {
-        auto texUnityDX11 = (ID3D11Texture3D *)_textureHandle;
-        CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
-                &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
-        CUDA_CHECK(cudaGetLastError());
-    }
-    // assert(texUnityDX11);
-    // D3D11_TEXTURE2D_DESC texDesc;
-    // texUnityDX11->GetDesc(&texDesc);
-
-    // DXGI_FORMAT format = texDesc.Format;
-    // Log::log().debugLog(std::to_string(format));
-
-    // CUDA_CHECK(cudaGetLastError());
     // register the texture to cuda : it initialize the _pGraphicsResource
-    
+    CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+        &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+
+    CUDA_CHECK(cudaGetLastError());
 }
 
 void Texture_D3D11::unRegisterTextureInCUDA()

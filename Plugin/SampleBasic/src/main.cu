@@ -61,7 +61,8 @@ void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
                               const float time, const int width,
                               const int height, const int depth)
 {
-    writeTexArray<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height,depth, time);
+    // writeTexArray<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height,depth, time);
+    writeTex<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height, time);
 }
 
 
