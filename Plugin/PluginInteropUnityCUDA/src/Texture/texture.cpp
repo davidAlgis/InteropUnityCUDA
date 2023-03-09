@@ -1,9 +1,8 @@
 #pragma once
 #include "texture.h"
 
-
-
-Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int textureDepth)
+Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
+                 int textureDepth)
 {
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
@@ -11,12 +10,12 @@ Texture::Texture(void* textureHandle, int textureWidth, int textureHeight, int t
     _textureDepth = textureDepth;
     // set a default size of grid and block to avoid calculating it each time
     // TODO : update this for texture depth
-    _dimBlock = { 8, 8, 1 };
+    _dimBlock = {8, 8, 1};
     _dimGrid = calculateDimGrid(_dimBlock,
                                 {(unsigned int)textureWidth,
                                  (unsigned int)textureHeight,
                                  (unsigned int)textureDepth},
-        false);
+                                false);
     _pGraphicsResource = nullptr;
 }
 
@@ -30,10 +29,11 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject(int indexInArray)
 {
     // map the resource to cuda
     CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
-    // cuda array on which the resources will be sended 
-    cudaArray* arrayPtr;
-    //https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(&arrayPtr, _pGraphicsResource, indexInArray, 0));
+    // cuda array on which the resources will be sended
+    cudaArray *arrayPtr;
+    // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
+    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
+        &arrayPtr, _pGraphicsResource, indexInArray, 0));
 
     // Wrap the cudaArray in a surface object
     cudaResourceDesc resDesc;
@@ -45,7 +45,6 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject(int indexInArray)
     CUDA_CHECK(cudaGetLastError());
     return inputSurfObj;
 }
-
 
 cudaTextureObject_t Texture::mapTextureToTextureObject(int indexInArray)
 {
@@ -77,9 +76,7 @@ cudaTextureObject_t Texture::mapTextureToTextureObject(int indexInArray)
     return texObj;
 }
 
-
-
-void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t& inputSurfObj)
+void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t &inputSurfObj)
 {
     CUDA_CHECK(cudaGraphicsUnmapResources(1, &_pGraphicsResource));
     CUDA_CHECK(cudaDestroySurfaceObject(inputSurfObj));
@@ -118,11 +115,7 @@ int Texture::getDepth() const
     return _textureDepth;
 }
 
-void* Texture::getNativeTexturePtr() const
+void *Texture::getNativeTexturePtr() const
 {
     return _textureHandle;
 }
-
-
-
-
