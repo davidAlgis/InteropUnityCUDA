@@ -26,13 +26,11 @@ namespace ActionUnity
         
         [SerializeField] private int _sizeTexture = 256;
         [SerializeField] private int _sizeBuffer = 256;
-        
 
-        
-        private RenderTexture _renderTexture;
-        private RenderTexture _renderTextureArray;
-        private RenderTexture _renderTextureForDisplay0;
-        private RenderTexture _renderTextureForDisplay1;
+        private Texture2D _texture;
+        private Texture2DArray _textureArray;
+        private Texture2D _textureForDisplay0;
+        private Texture2D _textureForDisplay1;
         private ComputeBuffer _computeBuffer;
 
         /// <summary>
@@ -40,62 +38,24 @@ namespace ActionUnity
         /// </summary>
         private void CreateTexture()
         {
-            _renderTexture = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
-            {
-                useMipMap = false,
-                autoGenerateMips = false,
-                anisoLevel = 6,
-                filterMode = FilterMode.Trilinear,
-                wrapMode = TextureWrapMode.Clamp,
-                enableRandomWrite = true
-            };
-            
-            _renderTexture.Create();
-            _rawImageOneTexture.texture = _renderTexture;
+            _texture = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
+            _texture.Apply();
+            _rawImageOneTexture.texture = _texture;
         }
         
         private void CreateTextureArray()
         {
-            _renderTextureArray = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
-            {
-                useMipMap = false,
-                autoGenerateMips = false,
-                anisoLevel = 6,
-                filterMode = FilterMode.Trilinear,
-                wrapMode = TextureWrapMode.Clamp,
-                enableRandomWrite = true,
-                volumeDepth = 3,
-                dimension =  TextureDimension.Tex2DArray
-            };
-            
-            
-            _renderTextureForDisplay0 = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
-            {
-                useMipMap = false,
-                autoGenerateMips = false,
-                anisoLevel = 6,
-                filterMode = FilterMode.Trilinear,
-                wrapMode = TextureWrapMode.Clamp,
-                enableRandomWrite = true
-            };
-            
-            _renderTextureForDisplay1 = new RenderTexture(_sizeTexture, _sizeTexture, 0
-                , RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
-            {
-                useMipMap = false,
-                autoGenerateMips = false,
-                anisoLevel = 6,
-                filterMode = FilterMode.Trilinear,
-                wrapMode = TextureWrapMode.Clamp,
-                enableRandomWrite = true
-            };
+            _textureArray = new Texture2DArray(_sizeTexture, _sizeTexture, 2, TextureFormat.RGBAFloat, false, true);
+            _textureArray.Apply();
 
-            _renderTextureArray.Create();
-            _rawImageTextureArray0.texture = _renderTextureForDisplay0;
-            _rawImageTextureArray1.texture = _renderTextureForDisplay1;
+            _textureForDisplay0 = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
+            _textureForDisplay0.Apply();
+
+            _textureForDisplay1 = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
+            _textureForDisplay1.Apply();
+            
+            _rawImageTextureArray0.texture = _textureForDisplay0;
+            _rawImageTextureArray1.texture = _textureForDisplay1;
         }
 
         /// <summary>
@@ -127,30 +87,28 @@ namespace ActionUnity
                 Debug.LogError("Set particles drawer in inspector !");
                 return;
             }
-            InitSampleTexture();
-            // InitSampleTextureArray();
-            // InitSampleVertexBuffer();
             
+            InitSampleTexture();
+            InitSampleTextureArray();
+            // InitSampleVertexBuffer();
         }
 
         private void InitSampleTexture()
         {
             CreateTexture();
-            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_renderTexture);
+            ActionUnitySampleTexture actionUnitySampleTexture = new ActionUnitySampleTexture(_texture);
             RegisterActionUnity(actionUnitySampleTexture, _ActionTextureName);
             CallFunctionStartInAction(_ActionTextureName);
-            
         }
 
         private void InitSampleTextureArray()
         {
             CreateTextureArray();
-            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_renderTextureArray);
+            ActionUnitySampleTextureArray actionUnitySampleTextureArray = new ActionUnitySampleTextureArray(_textureArray);
             RegisterActionUnity(actionUnitySampleTextureArray, _ActionTextureArrayName);
             CallFunctionStartInAction(_ActionTextureArrayName);
-            
         }
-
+         
         private void InitSampleVertexBuffer()
         {
             CreateBuffer();
@@ -159,7 +117,7 @@ namespace ActionUnity
             CallFunctionStartInAction(_ActionVertexBufferName);
             
         }
-        
+
         public void Update()
         {
             UpdateInteropHandler();
@@ -171,18 +129,17 @@ namespace ActionUnity
         protected override void UpdateActions()
         {
             base.UpdateActions();
-            // CallFunctionUpdateInAction(_ActionTextureArrayName);
             CallFunctionUpdateInAction(_ActionTextureName);
+            CallFunctionUpdateInAction(_ActionTextureArrayName);
             // CallFunctionUpdateInAction(_ActionVertexBufferName);
-            // Graphics.CopyTexture(_renderTextureArray,0,_renderTextureForDisplay0,0);
-            // Graphics.CopyTexture(_renderTextureArray,1,_renderTextureForDisplay1,0);
-            // _rawImageTextureArray0.texture = _renderTextureForDisplay0;
-            // _rawImageTextureArray1.texture = _renderTextureForDisplay1;
+
+            Graphics.CopyTexture(_textureArray, 0, _textureForDisplay0, 0);
+            Graphics.CopyTexture(_textureArray, 1, _textureForDisplay1, 0);
         }
 
         public void OnDestroy()
         {
-            // OnDestroyInteropHandler();
+            OnDestroyInteropHandler();
         }
 
         /// <summary>
@@ -192,9 +149,8 @@ namespace ActionUnity
         {
             base.OnDestroyActions();
             CallFunctionOnDestroyInAction(_ActionTextureName);
-            // CallFunctionOnDestroyInAction(_ActionTextureArrayName);
+            CallFunctionOnDestroyInAction(_ActionTextureArrayName);
             // CallFunctionOnDestroyInAction(_ActionVertexBufferName);
         }
     }
-
 }
