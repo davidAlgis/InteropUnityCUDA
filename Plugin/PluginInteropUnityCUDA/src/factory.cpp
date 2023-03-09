@@ -1,12 +1,9 @@
-#include "texture_OpenGLCoreES.h"
-#include "vertex_buffer_OpenGLCoreES.h"
-#include "texture_D3D11.h"
-#include "vertex_buffer_D3D11.h"
+#include "factory.h"
 
 namespace Factory
 {
 VertexBuffer *createBuffer(void *bufferHandle, int size,
-                           UnityGfxRenderer apiType)
+                           UnityGfxRenderer apiType, RenderAPI* renderAPI)
 {
     VertexBuffer *buffer = NULL;
 
@@ -31,26 +28,16 @@ VertexBuffer *createBuffer(void *bufferHandle, int size,
 }
 
 Texture *createTexture(void *textureHandle, int textureWidth, int textureHeight,
-                       int textureDepth, UnityGfxRenderer apiType)
+                       int textureDepth, UnityGfxRenderer apiType, RenderAPI* renderAPI)
 {
     Texture *texture = NULL;
 #if SUPPORT_D3D11
     if (apiType == kUnityGfxRendererD3D11)
     {
         texture = new Texture_D3D11(textureHandle, textureWidth,
-                                           textureHeight, textureDepth);
+                                           textureHeight, textureDepth, renderAPI);
     }
-#endif // if SUPPORT_D3D11
-       //
-       // #	if SUPPORT_D3D12
-    //	if (apiType == kUnityGfxRendererD3D12)
-    //	{
-    //		extern RenderAPI* CreateRenderAPI_D3D12();
-    //		return CreateRenderAPI_D3D12();
-    //	}
-    // #	endif // if SUPPORT_D3D12
-
-    // if SUPPORT_OPENGL_UNIFIED
+#endif 
 #if SUPPORT_OPENGL_UNIFIED
     if (apiType == kUnityGfxRendererOpenGLCore ||
         apiType == kUnityGfxRendererOpenGLES20 ||

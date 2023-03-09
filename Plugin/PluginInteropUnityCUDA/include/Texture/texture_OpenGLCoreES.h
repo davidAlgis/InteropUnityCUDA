@@ -17,7 +17,9 @@ public:
 	~Texture_OpenGLCoreES();
 	virtual void registerTextureInCUDA();
 	virtual void unRegisterTextureInCUDA();
-
+protected:
+	virtual void copyUnityTextureToAPITexture();
+	virtual void copyAPITextureToUnityTexture();
 };
 
 #endif
