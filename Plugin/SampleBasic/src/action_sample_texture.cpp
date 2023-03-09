@@ -31,9 +31,7 @@ int ActionSampleTexture::Update()
     kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
                              _surf, GetTime(), _texture->getWidth(),
                              _texture->getHeight());
-    cudaDeviceSynchronize();
-    // Log::log().debugLog("copy from API to Unity");
-    _texture->copyAPITextureToUnityTexture();
+    // cudaDeviceSynchronize();
     return 0;
 }
 
