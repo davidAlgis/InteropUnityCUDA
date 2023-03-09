@@ -1,37 +1,63 @@
-#include "framework.h"
-#include "renderAPI.h"
-#include "log.h"
-// Direct3D 11 implementation of RenderAPI.
+#include "RenderAPI_D3D11.h"
 
 #if SUPPORT_D3D11
-
-#include <assert.h>
-#include <d3d11.h>
-#include "IUnityGraphicsD3D11.h"
-
-class RenderAPI_D3D11 : public RenderAPI
-{
-    public:
-    RenderAPI_D3D11();
-    virtual ~RenderAPI_D3D11()
-    {
-    }
-
-    virtual void ProcessDeviceEvent(UnityGfxDeviceEventType type,
-                                    IUnityInterfaces *interfaces);
-
-    private:
-    ID3D11Device *m_Device;
-};
 
 RenderAPI *CreateRenderAPI_D3D11()
 {
     return new RenderAPI_D3D11();
 }
 
-RenderAPI_D3D11::RenderAPI_D3D11() : m_Device(NULL)
+RenderAPI_D3D11::RenderAPI_D3D11() : _device(NULL)
 {
 }
+
+RenderAPI_D3D11::~RenderAPI_D3D11()
+{
+}
+
+int RenderAPI_D3D11::createTexture2D(int textureWidth, int textureHeight,
+                                     int textureDepth,
+                                     ID3D11Texture2D **textureHandle)
+{
+    D3D11_TEXTURE2D_DESC texDesc;
+    ZeroMemory(&texDesc, sizeof(texDesc));
+    texDesc.Width = textureWidth;
+    texDesc.Height = textureHeight;
+    texDesc.MipLevels = 1;
+    texDesc.ArraySize = textureDepth;
+    texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    texDesc.SampleDesc.Count = 1;
+    texDesc.Usage = D3D11_USAGE_DEFAULT;
+    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    texDesc.CPUAccessFlags = 0;
+    texDesc.MiscFlags = 0;
+
+    if (_device == NULL)
+    {
+        Log::log().debugLogError(
+            "m_Device has not been initialized in RenderAPI_D3D11, please make "
+            "sure event kUnityGfxDeviceEventInitialize has been called "
+            "before.");
+        return -1;
+    }
+
+    HRESULT hr = _device->CreateTexture2D(&texDesc, nullptr, textureHandle);
+    if (FAILED(hr))
+    {
+        Log::log().debugLogError("Error " + std::to_string(hr) +
+                                 " when creating Texture in DX11.");
+        return -2;
+    }
+    return 0;
+}
+
+void RenderAPI_D3D11::copyTextures2D(ID3D11Texture2D *dest,
+                                     ID3D11Texture2D *src)
+{
+    _device->GetImmediateContext(&_context);
+    _context->CopyResource(dest, src);
+}
+
 
 void RenderAPI_D3D11::ProcessDeviceEvent(UnityGfxDeviceEventType type,
                                          IUnityInterfaces *interfaces)
@@ -39,16 +65,15 @@ void RenderAPI_D3D11::ProcessDeviceEvent(UnityGfxDeviceEventType type,
     switch (type)
     {
     case kUnityGfxDeviceEventInitialize: {
-    	Log::log().debugLog("init dx11");
         IUnityGraphicsD3D11 *d3d = interfaces->Get<IUnityGraphicsD3D11>();
-        m_Device = d3d->GetDevice();
-
-        ID3D11DeviceContext *ctx = NULL;
-        m_Device->GetImmediateContext(&ctx);
-    	Log::log().debugLog("end dx11");
+        _device = d3d->GetDevice();
         break;
     }
     case kUnityGfxDeviceEventShutdown:
+        break;
+    case kUnityGfxDeviceEventBeforeReset:
+        break;
+    case kUnityGfxDeviceEventAfterReset:
         break;
     }
 }
