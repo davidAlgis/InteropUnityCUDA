@@ -182,7 +182,23 @@ namespace ActionUnity
             _actionsNames.Add(actionName, key);
             _registeredActions.Add(key, action);
         }
-
+        
+        /// <summary>
+        /// Get action unity
+        /// </summary>
+        /// <param name="actionName">name associated to this action</param>
+        /// <returns>the action to get</returns>
+        protected ActionUnity GetActionUnity(string actionName)
+        {
+            if (_actionsNames.TryGetValue(actionName, out int key))
+            {
+                return _registeredActions[key];
+            }
+            
+            Debug.LogError("Unable to find any action with this name : " + actionName);
+            return null;
+            
+        }
         
         
         /// <summary>
