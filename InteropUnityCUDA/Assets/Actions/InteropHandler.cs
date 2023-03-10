@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace ActionUnity
 {
@@ -18,6 +19,10 @@ namespace ActionUnity
 
         [DllImport(_dllPluginInterop)]
         private static extern void StartLog();
+        
+        
+        [DllImport(_dllPluginInterop)]
+        public static extern bool IsSupported();
 
         [DllImport(_dllPluginInterop)]
         private static extern void SetTime(float time);
@@ -40,10 +45,19 @@ namespace ActionUnity
 
         protected virtual int ReserveCapacity => 16;
 
+        private void Awake()
+        {
+            if (IsSupported() == false)
+            {
+                Debug.LogError("Interoperability is not supported.");        
+            }
+        }
+        
         public void InitializeInteropHandler()
         {
             // initialize log
             StartLog();
+            
             InitializeRegisterActions(ReserveCapacity);
 
             //Here create and register your actions

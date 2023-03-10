@@ -37,7 +37,8 @@ extern "C"
 
         s_DeviceType = s_Graphics->GetRenderer();
         // create a buffer in function of graphics API
-        return Factory::createBuffer(bufferHandle, size, s_DeviceType, s_CurrentAPI);
+        return Factory::createBuffer(bufferHandle, size, s_DeviceType,
+                                     s_CurrentAPI);
     }
 
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTime(float time)
@@ -50,6 +51,39 @@ extern "C"
         return _time;
     }
 
+    UNITY_INTERFACE_EXPORT bool IsSupported()
+    {
+        int deviceCount;
+        CUDA_CHECK(cudaGetDeviceCount(&deviceCount));
+        if (deviceCount == 0)
+        {
+            Log::log().debugLogError(
+                "No CUDA device have been found. Interoperability could not "
+                "work in this case. Use a computer with CUDA device if you "
+                "want to take advantage of CUDA performance.");
+            return false;
+        }
+        
+        if(s_DeviceType == kUnityGfxRendererNull)
+        {
+
+            Log::log().debugLogError(
+                "Unknown graphics API.");
+            return false;
+        }
+
+        if (s_DeviceType != kUnityGfxRendererD3D11 &&
+            s_DeviceType != kUnityGfxRendererOpenGLCore &&
+            s_DeviceType != kUnityGfxRendererOpenGLES20 &&
+            s_DeviceType != kUnityGfxRendererOpenGLES30)
+        {
+            Log::log().debugLogError(
+                "Graphics API is not supported yet.");
+            return false;
+        }
+        return true;
+    }
+
     /// <summary>
     /// Initialize the correct API
     /// </summary>
@@ -58,20 +92,12 @@ extern "C"
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
     UnityPluginLoad(IUnityInterfaces *unityInterfaces)
     {
-        //_registerActions.reserve(16);
+
         s_UnityInterfaces = unityInterfaces;
 
         s_Graphics = s_UnityInterfaces->Get<IUnityGraphics>();
 
         s_Graphics->RegisterDeviceEventCallback(OnGraphicsDeviceEvent);
-
-#if SUPPORT_VULKAN
-        if (s_Graphics->GetRenderer() == kUnityGfxRendererNull)
-        {
-            extern void RenderAPI_Vulkan_OnPluginLoad(IUnityInterfaces *);
-            RenderAPI_Vulkan_OnPluginLoad(unityInterfaces);
-        }
-#endif
 
         OnGraphicsDeviceEvent(kUnityGfxDeviceEventInitialize);
     }

@@ -1,8 +1,6 @@
-using System;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utilities;
 
@@ -68,10 +66,12 @@ namespace ActionUnity
             _computeBuffer = new ComputeBuffer(_sizeBuffer, stride);
             _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
         }
+        
 
         private void Start()
         {
             InitializeInteropHandler();
+            
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace ActionUnity
             
             InitSampleTexture();
             InitSampleTextureArray();
-            // InitSampleVertexBuffer();
+            InitSampleVertexBuffer();
         }
 
         private void InitSampleTexture()
@@ -131,7 +131,7 @@ namespace ActionUnity
             base.UpdateActions();
             CallFunctionUpdateInAction(_ActionTextureName);
             CallFunctionUpdateInAction(_ActionTextureArrayName);
-            // CallFunctionUpdateInAction(_ActionVertexBufferName);
+            CallFunctionUpdateInAction(_ActionVertexBufferName);
 
             Graphics.CopyTexture(_textureArray, 0, _textureForDisplay0, 0);
             Graphics.CopyTexture(_textureArray, 1, _textureForDisplay1, 0);
