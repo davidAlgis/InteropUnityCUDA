@@ -3,7 +3,7 @@
 namespace Factory
 {
 VertexBuffer *createBuffer(void *bufferHandle, int size,
-                           UnityGfxRenderer apiType, RenderAPI* renderAPI)
+                           UnityGfxRenderer apiType, RenderAPI *renderAPI)
 {
     VertexBuffer *buffer = NULL;
 
@@ -27,24 +27,26 @@ VertexBuffer *createBuffer(void *bufferHandle, int size,
     return buffer;
 }
 
-Texture *createTexture(void *textureHandle, int textureWidth, int textureHeight,
-                       int textureDepth, UnityGfxRenderer apiType, RenderAPI* renderAPI)
+Texture<float4> *createTexture(void *textureHandle, int textureWidth,
+                               int textureHeight, int textureDepth,
+                               UnityGfxRenderer apiType, RenderAPI *renderAPI)
 {
-    Texture *texture = NULL;
+    Texture<float4> *texture = NULL;
 #if SUPPORT_D3D11
     if (apiType == kUnityGfxRendererD3D11)
     {
-        texture = new Texture_D3D11(textureHandle, textureWidth,
-                                           textureHeight, textureDepth, renderAPI);
+        texture =
+            new Texture_D3D11<float4>(textureHandle, textureWidth,
+                                      textureHeight, textureDepth, renderAPI);
     }
-#endif 
+#endif
 #if SUPPORT_OPENGL_UNIFIED
     if (apiType == kUnityGfxRendererOpenGLCore ||
         apiType == kUnityGfxRendererOpenGLES20 ||
         apiType == kUnityGfxRendererOpenGLES30)
     {
-        texture = new Texture_OpenGLCoreES(textureHandle, textureWidth,
-                                           textureHeight, textureDepth);
+        texture = new Texture_OpenGLCoreES<float4>(textureHandle, textureWidth,
+                                                   textureHeight, textureDepth);
     }
 #endif
 

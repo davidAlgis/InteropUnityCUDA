@@ -1,15 +1,13 @@
 #pragma once
 #include "unity_plugin.h"
 #include "factory.h"
-#include "texture.h"
-#include "vertex_buffer.h"
 #include <assert.h>
 #include <utility>
 
 extern "C"
 {
 
-    UNITY_INTERFACE_EXPORT Texture *UNITY_INTERFACE_API
+    UNITY_INTERFACE_EXPORT Texture<float4> *UNITY_INTERFACE_API
     CreateTextureInterop(void *textureHandle, int w, int h, int depth)
     {
         if (s_Graphics == NULL)

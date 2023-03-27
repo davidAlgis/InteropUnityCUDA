@@ -20,6 +20,8 @@ RenderAPI_D3D12::RenderAPI_D3D12()
 
 RenderAPI_D3D12::~RenderAPI_D3D12()
 {
+
+	
 	
 }
 

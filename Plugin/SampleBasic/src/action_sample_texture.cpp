@@ -1,6 +1,5 @@
 #pragma once
 #include "action_sample_texture.h"
-#include "texture.h"
 #include "unity_plugin.h"
 
 void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock,

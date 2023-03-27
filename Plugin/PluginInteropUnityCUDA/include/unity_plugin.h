@@ -3,12 +3,11 @@
 #include "IUnityGraphics.h"
 #include "action.h"
 #include "log.h"
+#include "texture.h"
+#include "vertex_buffer.h"
 #include "renderAPI.h"
 #include <map>
 #include <memory>
-
-class Texture;
-class VertexBuffer;
 
 extern "C"
 {
@@ -30,7 +29,7 @@ extern "C"
     /// name="height">the height of the texture</param> <param
     /// name="depth">depth of 0 or 1 are equivalent to a simple texture 2D when
     /// it greater than 1 it will be a texture 2D array </param>
-    UNITY_INTERFACE_EXPORT Texture *CreateTextureInterop(void *textureHandle,
+    UNITY_INTERFACE_EXPORT Texture<float4> *CreateTextureInterop(void *textureHandle,
                                                          int w, int h,
                                                          int depth);
 

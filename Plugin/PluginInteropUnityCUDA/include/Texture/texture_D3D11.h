@@ -3,11 +3,11 @@
 
 #if SUPPORT_D3D11
 
+#include "d3d11.h"
 #include "renderAPI_D3D11.h"
 #include <assert.h>
 #include <cuda_d3d11_interop.h>
 #include "IUnityGraphicsD3D11.h"
-#include "d3d11.h"
 
 /// <summary>
 /// This class handles interoperability for texture from Unity to CUDA, with
@@ -18,22 +18,59 @@
 /// of the texture created in Unity and then we will registered this new texture
 /// in CUDA see issue #2 on github for more details
 /// </summary>
-class Texture_D3D11 : public Texture
+template <class T> class Texture_D3D11 : public Texture<T>
 {
     public:
     Texture_D3D11(void *textureHandle, int textureWidth, int textureHeight,
-                  int textureDepth, RenderAPI *renderAPI);
-    ~Texture_D3D11();
-    virtual void registerTextureInCUDA();
-    virtual void unRegisterTextureInCUDA();
+                  int textureDepth, RenderAPI *renderAPI)
+        : Texture(textureHandle, textureWidth, textureHeight, textureDepth)
+    {
 
-    protected:
-    virtual void copyUnityTextureToAPITexture();
-    virtual void copyAPITextureToUnityTexture();
+        // we need the render api associated to dx11, because we need device to
+        // initialize texture
+        _renderAPI = (RenderAPI_D3D11 *)renderAPI;
+    }
+
+    ~Texture_D3D11()
+    {
+        // _texBufferInterop->Release();
+        CUDA_CHECK(cudaGetLastError());
+    };
+
+    /// <summary>
+    /// Has to be call after the first issue plugin event
+    /// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html
+    /// register a graphics resources defined from the texture dx11
+    /// </summary>
+    virtual void registerTextureInCUDA()
+    {
+        // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
+        ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
+
+        // register the texture to cuda : it initialize the _pGraphicsResource
+        CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+            &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+
+        CUDA_CHECK(cudaGetLastError());
+    }
+
+    virtual void unRegisterTextureInCUDA()
+    {
+
+        CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
+    }
+
+    virtual void copyUnityTextureToAPITexture()
+    {
+        _renderAPI->copyTextures2D(_texBufferInterop, _texUnityDX11);
+    }
+
+    virtual void copyAPITextureToUnityTexture()
+    {
+        _renderAPI->copyTextures2D(_texUnityDX11, _texBufferInterop);
+    }
 
     private:
-    int copyUnityTextureToBuffer();
-
     ID3D11Texture2D *_texBufferInterop{};
     ID3D11Texture2D *_texUnityDX11{};
     RenderAPI_D3D11 *_renderAPI;

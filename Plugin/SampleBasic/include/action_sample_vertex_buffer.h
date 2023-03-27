@@ -1,4 +1,5 @@
 #pragma once
+#include "sample_kernels.cuh"
 #include "action.h"
 
 class VertexBuffer;

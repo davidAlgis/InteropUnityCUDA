@@ -3,7 +3,6 @@
 #include "unity_plugin.h"
 #include "vertex_buffer.h"
 
-void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock, float4* vertexPtr, const int size, const float time);
 
 namespace SampleBasic {
 
