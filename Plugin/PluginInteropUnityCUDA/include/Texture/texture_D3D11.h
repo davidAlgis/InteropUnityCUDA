@@ -52,11 +52,12 @@ template <class T> class Texture_D3D11 : public Texture<T>
             &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
 
         CUDA_CHECK(cudaGetLastError());
+        createSurfaceWrapper_DX11(_surfaceWrapper, _pGraphicsResource);
     }
 
     virtual void unRegisterTextureInCUDA()
     {
-
+        deleteSurfaceWrapper(_surfaceWrapper);
         CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
     }
 

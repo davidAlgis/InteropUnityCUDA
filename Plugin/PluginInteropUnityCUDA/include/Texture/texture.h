@@ -1,5 +1,6 @@
 #pragma once
-// #include "surface_wrapper.h"
+#include "surface_wrapper.h"
+#include "surface_wrapper_device_allocator.cuh"
 #include "IUnityGraphics.h"
 #include "cuda_include.h"
 #include "log.h"
@@ -201,6 +202,8 @@ template <class T> class Texture
     int _textureDepth;
     // Resource that can be used to retrieve the surface object for CUDA
     cudaGraphicsResource *_pGraphicsResource;
+
+    SurfaceWrapper<T>** _surfaceWrapper;
 
     private:
     dim3 _dimBlock;

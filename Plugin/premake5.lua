@@ -82,8 +82,10 @@ project "PluginInteropUnityCUDA"
         SourceThirdPartyGLDir .. "**.c",
         SourceDir .. "**.cpp",
         IncludeDir .. "**.h", 
+        IncludeDir .. "**.cuh", 
         IncludeDir .. "**.hpp",
         IncludeSubDir .. "**.h",
+        IncludeSubDir .. "**.cuh",
         IncludeSubDir .. "**.hpp"
     }
     

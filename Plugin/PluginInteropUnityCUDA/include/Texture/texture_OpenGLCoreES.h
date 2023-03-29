@@ -41,10 +41,12 @@ template <class T> class Texture_OpenGLCoreES : public Texture<T>
         CUDA_CHECK(
             cudaGraphicsGLRegisterImage(&_pGraphicsResource, gltex, target,
                                         cudaGraphicsRegisterFlagsWriteDiscard));
+        createSurfaceWrapper_OpenGLCoreES(_surfaceWrapper, _pGraphicsResource);
     }
 
     virtual void unRegisterTextureInCUDA()
     {
+        deleteSurfaceWrapper(_surfaceWrapper);
         CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
     }
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "texture.h"
 #include "IUnityGraphics.h"
 #include "cuda_include.h"
 #include "log.h"
