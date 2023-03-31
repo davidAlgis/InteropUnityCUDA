@@ -116,13 +116,10 @@ project "PluginInteropUnityCUDA"
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
     buildcustomizations "BuildCustomizations/CUDA 12.1"
-    cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
+    -- cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     -- CUDA specific properties
-    cudaFiles 
-    {
-        SourceDir .. "**.cu"
-    }
+    cudaFiles {SourceDir .. "**.cu"}
     cudaMaxRegCount "32"
 
     -- Let's compile for all supported architectures (and also in parallel with -t0)
@@ -204,13 +201,10 @@ project "SampleBasic"
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
     buildcustomizations "BuildCustomizations/CUDA 12.1"
-    cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
+    -- cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     -- CUDA specific properties
-    cudaFiles 
-    {
-        SourceDir .. "**.cu"
-    }
+    cudaFiles {SourceDir .. "**.cu"}
     cudaMaxRegCount "32"
 
     -- Let's compile for all supported architectures (and also in parallel with -t0)
@@ -266,7 +260,7 @@ project "Utilities"
     -- This assumes you have installed Visual Studio integration for CUDA
     -- Here we have it set to 11.4
     buildcustomizations "BuildCustomizations/CUDA 12.1"
-    cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
+    -- cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
 
     cudaMaxRegCount "32"
     -- Let's compile for all supported architectures (and also in parallel with -t0)
