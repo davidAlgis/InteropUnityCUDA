@@ -22,6 +22,8 @@ local pathUtilitiesInclude = pathUtilities .. "/include/"
 local pathPluginInteropInclude = pathPluginInterop .. "/include/"
 local pathPluginInteropIncludeSubdir = pathPluginInteropInclude .. "**"
 local pathThirdPartyUnity = pathPluginInterop .. "/thirdParty/unity/include/"
+local pathThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/include/";
+local pathSourceThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/src/";
 
 loadrequire('premake5-cuda', "https://github.com/theComputeKid/premake5-cuda")
 print("We use export compile commands module to export compilation database for clang. If you don't have the module you won't be able to compile with clang, BUT you can still compile with visual studio !")
@@ -72,14 +74,13 @@ project "PluginInteropUnityCUDA"
     local SourceDir = rootProject .. "/src/";
     local IncludeSubDir = pathPluginInteropIncludeSubdir;
     local IncludeDir = pathPluginInteropInclude;
-    local ThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/include/";
-    local SourceThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/src/";
 
     dependson {"Utilities"}
     files
     {
         SourceDir .. "**.c",
-        SourceThirdPartyGLDir .. "**.c",
+        pathSourceThirdPartyGLDir .. "**.c",
+        pathThirdPartyGLDir .. "**.h",
         SourceDir .. "**.cpp",
         IncludeDir .. "**.h", 
         IncludeDir .. "**.cuh", 
@@ -93,10 +94,9 @@ project "PluginInteropUnityCUDA"
     {
         IncludeDir,
         IncludeSubDir,
-        ThirdPartyGLDir,
+        pathThirdPartyGLDir,
         pathThirdPartyUnity,
         pathUtilitiesInclude,
-        pathThirdPartyUnity
     }
 
 
@@ -160,13 +160,12 @@ project "SampleBasic"
     local SourceDir = rootProject .. "/src/";
     local IncludeSubDir = rootProject .. "/include/**";
     local IncludeDir = rootProject .. "/include/";
-    local ThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/include/";
-    local SourceThirdPartyGLDir = rootProject .. "/thirdParty/gl3w/src/";
     dependson{"PluginInteropUnityCUDA"}
     files
     {
         SourceDir .. "**.c",
-        SourceThirdPartyGLDir .. "**.c",
+        -- SourceThirdPartyGLDir .. "**.c",
+        -- ThirdPartyGLDir .. "**.h",
         SourceDir .. "**.cpp",
         IncludeDir .. "**.h", 
         IncludeDir .. "**.cuh", 
@@ -180,7 +179,7 @@ project "SampleBasic"
     {
         IncludeDir,
         IncludeSubDir,
-        ThirdPartyGLDir,
+        pathThirdPartyGLDir,
         pathUtilitiesInclude,
         pathPluginInteropInclude,
         pathPluginInteropIncludeSubdir,
