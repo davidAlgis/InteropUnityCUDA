@@ -1,7 +1,8 @@
 #pragma once
+#include "sample_kernels.cuh"
 #include "action.h"
+#include "vertex_buffer.h"
 
-class VertexBuffer;
 
 namespace SampleBasic {
 	class ActionSampleVertexBuffer: public Action {

@@ -1,8 +1,9 @@
 #pragma once
+#include "sample_kernels.cuh"
 #include "action.h"
+#include "texture.h"
 #include "cuda_include.h"
 
-class Texture;
 
 namespace SampleBasic {
 	class ActionSampleTextureArray : public Action {
