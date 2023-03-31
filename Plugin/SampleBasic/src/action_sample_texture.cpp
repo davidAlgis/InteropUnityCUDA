@@ -26,7 +26,7 @@ inline int ActionSampleTexture::Start()
 
 int ActionSampleTexture::Update()
 {
-    // _texture->copyUnityTextureToAPITexture();
+    _texture->copyUnityTextureToAPITexture();
     kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
                              _surf, GetTime(), _texture->getWidth(),
                              _texture->getHeight());

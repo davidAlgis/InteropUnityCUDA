@@ -4,10 +4,10 @@
 #if SUPPORT_D3D11
 
 #include "d3d11.h"
+#include "IUnityGraphicsD3D11.h"
 #include "renderAPI_D3D11.h"
 #include <assert.h>
 #include <cuda_d3d11_interop.h>
-#include "IUnityGraphicsD3D11.h"
 
 /// <summary>
 /// This class handles interoperability for texture from Unity to CUDA, with
@@ -44,6 +44,7 @@ template <class T> class Texture_D3D11 : public Texture<T>
     /// </summary>
     virtual void registerTextureInCUDA()
     {
+        Log::log().debugLog("register");
         // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
         ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
 
@@ -52,12 +53,13 @@ template <class T> class Texture_D3D11 : public Texture<T>
             &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
 
         CUDA_CHECK(cudaGetLastError());
-        createSurfaceWrapper_DX11(_surfaceWrapper, _pGraphicsResource);
+        kernelCallerCreateSurfaceWrapper_DX11(_surfaceWrapper,
+                                              _pGraphicsResource);
     }
 
     virtual void unRegisterTextureInCUDA()
     {
-        deleteSurfaceWrapper(_surfaceWrapper);
+        kernelCallerDeleteSurfaceWrapper(_surfaceWrapper);
         CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
     }
 

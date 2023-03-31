@@ -34,6 +34,8 @@ template <class T> class Texture
                                      (unsigned int)textureDepth},
                                     false);
         _pGraphicsResource = nullptr;
+        CUDA_CHECK(cudaMalloc(&_surfaceWrapper, sizeof(SurfaceWrapper<T>**)));
+
     }
 
     /// <summary>
