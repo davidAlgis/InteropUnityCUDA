@@ -51,6 +51,28 @@ template <class T> class Texture_OpenGLCoreES : public Texture<T>
         CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
     }
 
+    virtual void mapTextureToSurfaceObject()
+    {
+        // for (int indexInArray = 0; indexInArray < _textureDepth; indexInArray++)
+        // {
+        //      // map the resource to cuda
+        //     CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
+        //     // cuda array on which the resources will be sended
+        //     cudaArray *arrayPtr;
+        //     // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
+        //     CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
+        //         &arrayPtr, _pGraphicsResource, indexInArray, 0));
+
+        //     // Wrap the cudaArray in a surface object
+        //     cudaResourceDesc resDesc;
+        //     memset(&resDesc, 0, sizeof(resDesc));
+        //     resDesc.resType = cudaResourceTypeArray;
+        //     resDesc.res.array.array = arrayPtr;
+        //     CUDA_CHECK(cudaCreateSurfaceObject(&_surfObjectsArray[indexInArray], &resDesc));
+        //     CUDA_CHECK(cudaGetLastError());
+        // } 
+    }
+
     protected:
     virtual void copyUnityTextureToAPITexture()
     {

@@ -8,11 +8,12 @@
  * see. https://stackoverflow.com/questions/26812913/how-to-implement-device-side-cuda-virtual-functions
  * @param surfaceWrapper     the surface wrapper pointer to f
  * @param _pGraphicsResource the graphics ressources needed for surface wrapper
+ * @param textureDepth       the texture depth
  */
 __global__ void createSurfaceWrapper_DX11(
-    SurfaceWrapper<float4> **surfaceWrapper, cudaGraphicsResource *_pGraphicsResource)
+    SurfaceWrapper<float4> **surfaceWrapper, cudaGraphicsResource *_pGraphicsResource, int textureDepth)
 {
-    (*surfaceWrapper) = new Surface_D3D11<float4>(_pGraphicsResource);
+    (*surfaceWrapper) = new Surface_D3D11<float4>(_pGraphicsResource, textureDepth);
 }
 
 /**
@@ -43,9 +44,9 @@ __global__ void deleteSurfaceWrapper(SurfaceWrapper<float4> **surfaceWrapper)
 
 
 void kernelCallerCreateSurfaceWrapper_DX11(
-    SurfaceWrapper<float4> **surfaceWrapper, cudaGraphicsResource *_pGraphicsResource)
+    SurfaceWrapper<float4> **surfaceWrapper, cudaGraphicsResource *_pGraphicsResource, int textureDepth)
 {
-    createSurfaceWrapper_DX11<<<1, 1>>>(surfaceWrapper, _pGraphicsResource);
+    createSurfaceWrapper_DX11<<<1, 1>>>(surfaceWrapper, _pGraphicsResource, textureDepth);
 }
 
 void kernelCallerCreateSurfaceWrapper_OpenGLCoreES(

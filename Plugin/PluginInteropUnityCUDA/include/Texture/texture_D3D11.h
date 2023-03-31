@@ -29,12 +29,18 @@ template <class T> class Texture_D3D11 : public Texture<T>
         // we need the render api associated to dx11, because we need device to
         // initialize texture
         _renderAPI = (RenderAPI_D3D11 *)renderAPI;
+        _surfObjectsArray = new cudaSurfaceObject_t[textureDepth];
+        for(int i=0; i<textureDepth;i++)
+        {
+            _surfObjectsArray[i] = 0;
+        }
     }
 
     ~Texture_D3D11()
     {
         // _texBufferInterop->Release();
         CUDA_CHECK(cudaGetLastError());
+        delete(_surfObjectsArray);
     };
 
     /// <summary>
@@ -54,7 +60,32 @@ template <class T> class Texture_D3D11 : public Texture<T>
 
         CUDA_CHECK(cudaGetLastError());
         kernelCallerCreateSurfaceWrapper_DX11(_surfaceWrapper,
-                                              _pGraphicsResource);
+                                              _pGraphicsResource, _textureDepth);
+    }
+
+    virtual void mapTextureToSurfaceObject()
+    {
+        for (int indexInArray = 0; indexInArray < _textureDepth; indexInArray++)
+        {
+             // map the resource to cuda
+            CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
+            // cuda array on which the resources will be sended
+            cudaArray *arrayPtr;
+            // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
+            CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
+                &arrayPtr, _pGraphicsResource, indexInArray, 0));
+
+            // Wrap the cudaArray in a surface object
+            cudaResourceDesc resDesc;
+            memset(&resDesc, 0, sizeof(resDesc));
+            resDesc.resType = cudaResourceTypeArray;
+            resDesc.res.array.array = arrayPtr;
+            CUDA_CHECK(cudaCreateSurfaceObject(&_surfObjectsArray[indexInArray], &resDesc));
+            CUDA_CHECK(cudaGetLastError());
+        }
+
+        Surface_D3D11<T>* surfWrapperD3D11 = (*(Surface_D3D11<T>**)_surfaceWrapper);
+        CUDA_CHECK(cudaMemcpy(surfWrapperD3D11->surfObjectsArray, _surfObjectsArray, _textureDepth*sizeof(cudaSurfaceObject_t),cudaMemcpyHostToDevice));
     }
 
     virtual void unRegisterTextureInCUDA()
@@ -74,6 +105,7 @@ template <class T> class Texture_D3D11 : public Texture<T>
     }
 
     private:
+    cudaSurfaceObject_t *_surfObjectsArray;
     ID3D11Texture2D *_texBufferInterop{};
     ID3D11Texture2D *_texUnityDX11{};
     RenderAPI_D3D11 *_renderAPI;

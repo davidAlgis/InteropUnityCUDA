@@ -16,7 +16,7 @@ ActionSampleTextureArray::ActionSampleTextureArray(void *texturePtr, int width,
 inline int ActionSampleTextureArray::Start()
 {
     _texture->registerTextureInCUDA();
-    _surf = _texture->mapTextureToSurfaceObject(1);
+    _texture->mapTextureToSurfaceObject();
     return 0;
 }
 

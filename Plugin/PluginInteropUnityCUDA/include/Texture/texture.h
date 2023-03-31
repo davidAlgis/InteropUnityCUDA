@@ -1,9 +1,9 @@
 #pragma once
-#include "surface_wrapper.h"
-#include "surface_wrapper_device_allocator.cuh"
 #include "IUnityGraphics.h"
 #include "cuda_include.h"
 #include "log.h"
+#include "surface_wrapper.h"
+#include "surface_wrapper_device_allocator.cuh"
 
 template <class T> class Texture
 {
@@ -34,8 +34,7 @@ template <class T> class Texture
                                      (unsigned int)textureDepth},
                                     false);
         _pGraphicsResource = nullptr;
-        CUDA_CHECK(cudaMalloc(&_surfaceWrapper, sizeof(SurfaceWrapper<T>**)));
-
+        CUDA_CHECK(cudaMalloc(&_surfaceWrapper, sizeof(SurfaceWrapper<T> **)));
     }
 
     /// <summary>
@@ -84,28 +83,7 @@ template <class T> class Texture
     /// face index as defined by cudaGraphicsCubeFace for cubemap textures for
     /// the subresource to access </param> <returns>a cuda surface object on
     /// device memory and which can be edited in cuda</returns>
-    UNITY_INTERFACE_EXPORT cudaSurfaceObject_t
-    mapTextureToSurfaceObject(int indexInArray = 0)
-    {
-        // map the resource to cuda
-        CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
-        // cuda array on which the resources will be sended
-        cudaArray *arrayPtr;
-        // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-        CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
-            &arrayPtr, _pGraphicsResource, indexInArray, 0));
-
-        // Wrap the cudaArray in a surface object
-        cudaResourceDesc resDesc;
-        memset(&resDesc, 0, sizeof(resDesc));
-        resDesc.resType = cudaResourceTypeArray;
-        resDesc.res.array.array = arrayPtr;
-        cudaSurfaceObject_t inputSurfObj = 0;
-        CUDA_CHECK(cudaCreateSurfaceObject(&inputSurfObj, &resDesc));
-        CUDA_CHECK(cudaGetLastError());
-        return inputSurfObj;
-    }
-
+    UNITY_INTERFACE_EXPORT virtual void mapTextureToSurfaceObject() = 0;
 
     /// <summary>
     /// Unmap the cuda array from graphics resources and destroy surface object
@@ -159,6 +137,11 @@ template <class T> class Texture
         return _textureHandle;
     }
 
+    UNITY_INTERFACE_EXPORT SurfaceWrapper<T>** getSurfaceWrapper() const
+    {
+        return _surfaceWrapper;
+    }
+
     UNITY_INTERFACE_EXPORT cudaTextureObject_t
     mapTextureToTextureObject(int indexInArray = 0)
     {
@@ -205,7 +188,7 @@ template <class T> class Texture
     // Resource that can be used to retrieve the surface object for CUDA
     cudaGraphicsResource *_pGraphicsResource;
 
-    SurfaceWrapper<T>** _surfaceWrapper;
+    SurfaceWrapper<T> **_surfaceWrapper;
 
     private:
     dim3 _dimBlock;
