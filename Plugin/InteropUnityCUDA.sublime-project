@@ -87,6 +87,13 @@
             "working_dir": "${project_path:${folder}}",
         },
         {
+            "name": "Proj - Open Log",
+            "cmd": [
+                "..\\InteropUnityCUDA\\log.txt",
+            ],
+            "shell": true,
+        },
+        {
             "name": "PluginInterop - Unity",
             "cmd": [
                 "echo",
