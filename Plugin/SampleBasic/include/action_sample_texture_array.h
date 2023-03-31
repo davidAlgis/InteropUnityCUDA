@@ -15,7 +15,7 @@ namespace SampleBasic {
 
 	private:
 		Texture* _texture;
-		cudaSurfaceObject_t _surf;
+		cudaSurfaceObject_t* _surf;
 	};
 } // namespace SampleBasic
 

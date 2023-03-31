@@ -46,6 +46,33 @@ cudaSurfaceObject_t Texture::mapTextureToSurfaceObject(int indexInArray)
     return inputSurfObj;
 }
 
+cudaSurfaceObject_t* Texture::mapTextureArrayToSurfaceObject()
+{
+    cudaSurfaceObject_t* surf = new cudaSurfaceObject_t[_textureDepth];
+        Log::log().debugLog("map");
+        // map the resource to cuda
+        CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
+    for(int i=0; i<_textureDepth;i++)
+    {
+        // cuda array on which the resources will be sended
+        cudaArray *arrayPtr;
+        // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
+        CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
+            &arrayPtr, _pGraphicsResource, i, 0));
+
+        // Wrap the cudaArray in a surface object
+        cudaResourceDesc resDesc;
+        memset(&resDesc, 0, sizeof(resDesc));
+        resDesc.resType = cudaResourceTypeArray;
+        resDesc.res.array.array = arrayPtr;
+        surf[i] = 0;
+        CUDA_CHECK(cudaCreateSurfaceObject(&surf[i], &resDesc));
+        CUDA_CHECK(cudaGetLastError());
+    }
+
+    return surf;
+}
+
 cudaTextureObject_t Texture::mapTextureToTextureObject(int indexInArray)
 {
     // map the resource to cuda

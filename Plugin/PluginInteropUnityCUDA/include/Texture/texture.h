@@ -80,6 +80,8 @@ class Texture
     UNITY_INTERFACE_EXPORT void unMapTextureToSurfaceObject(
         cudaSurfaceObject_t &inputSurfObj);
 
+    UNITY_INTERFACE_EXPORT cudaSurfaceObject_t* mapTextureArrayToSurfaceObject();
+
     UNITY_INTERFACE_EXPORT cudaTextureObject_t mapTextureToTextureObject(
         int indexInArray = 0);
 
