@@ -15,7 +15,7 @@ public:
 	VertexBuffer_D3D11(void* bufferHandle, int size);
 	~VertexBuffer_D3D11();
 	virtual void registerBufferInCUDA();
-	virtual void unRegisterBufferInCUDA();
+	virtual void unregisterBufferInCUDA();
 
 };
 

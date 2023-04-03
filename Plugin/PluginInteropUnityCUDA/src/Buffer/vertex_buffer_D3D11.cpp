@@ -25,13 +25,13 @@ void VertexBuffer_D3D11::registerBufferInCUDA()
     // Log::log().debugLogError("Register buffer on DX11 is not yet supported");
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
-        &_pGraphicsResource, (ID3D11Resource *)bufferUnityDX11,
+        &_graphicsResource, (ID3D11Resource *)bufferUnityDX11,
         cudaGraphicsRegisterFlagsNone));
 }
 
-void VertexBuffer_D3D11::unRegisterBufferInCUDA()
+void VertexBuffer_D3D11::unregisterBufferInCUDA()
 {
-    CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
+    CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
 }
 
 #endif // #if SUPPORT_D3D11

@@ -7,7 +7,17 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;
+
+    if (textureDepth < 0)
+    {
+        Log::log().debugLogError(
+            "Texture depth :" + std::to_string(textureDepth) +
+            " cannot be negative !");
+        return;
+    }
+
     _textureDepth = textureDepth;
+
     // set a default size of grid and block to avoid calculating it each time
     // TODO : update this for texture depth
     _dimBlock = {8, 8, 1};
@@ -16,104 +26,53 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
                                  (unsigned int)textureHeight,
                                  (unsigned int)textureDepth},
                                 false);
-    _pGraphicsResource = nullptr;
+    // initialize surface object
+    _surfObjArray = new cudaSurfaceObject_t[textureDepth];
+
+    for (int i = 0; i < textureDepth; i++)
+    {
+        _surfObjArray[i] = 0;
+    }
+
+    _graphicsResource = nullptr;
 }
 
-/// <summary>
-/// Use the graphics resources registered by graphics API
-/// to map it to cuda array and then create a surface object
-/// that will be used in kernel
-/// </summary>
-/// <returns></returns>
-cudaSurfaceObject_t Texture::mapTextureToSurfaceObject(int indexInArray)
+Texture::~Texture()
+{
+    delete (_surfObjArray);
+}
+
+void Texture::mapTextureToSurfaceObject()
 {
     // map the resource to cuda
-    CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
-    // cuda array on which the resources will be sended
-    cudaArray *arrayPtr;
-    // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
-        &arrayPtr, _pGraphicsResource, indexInArray, 0));
-
-    // Wrap the cudaArray in a surface object
-    cudaResourceDesc resDesc;
-    memset(&resDesc, 0, sizeof(resDesc));
-    resDesc.resType = cudaResourceTypeArray;
-    resDesc.res.array.array = arrayPtr;
-    cudaSurfaceObject_t inputSurfObj = 0;
-    CUDA_CHECK(cudaCreateSurfaceObject(&inputSurfObj, &resDesc));
-    CUDA_CHECK(cudaGetLastError());
-    return inputSurfObj;
-}
-
-cudaSurfaceObject_t* Texture::mapTextureArrayToSurfaceObject()
-{
-    cudaSurfaceObject_t* surf = new cudaSurfaceObject_t[_textureDepth];
-        Log::log().debugLog("map");
-        // map the resource to cuda
-        CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
-    for(int i=0; i<_textureDepth;i++)
+    CUDA_CHECK(cudaGraphicsMapResources(1, &_graphicsResource));
+    for (int i = 0; i < _textureDepth; i++)
     {
         // cuda array on which the resources will be sended
         cudaArray *arrayPtr;
         // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
         CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
-            &arrayPtr, _pGraphicsResource, i, 0));
+            &arrayPtr, _graphicsResource, i, 0));
 
         // Wrap the cudaArray in a surface object
         cudaResourceDesc resDesc;
         memset(&resDesc, 0, sizeof(resDesc));
         resDesc.resType = cudaResourceTypeArray;
         resDesc.res.array.array = arrayPtr;
-        surf[i] = 0;
-        CUDA_CHECK(cudaCreateSurfaceObject(&surf[i], &resDesc));
+        _surfObjArray[i] = 0;
+        CUDA_CHECK(cudaCreateSurfaceObject(&_surfObjArray[i], &resDesc));
         CUDA_CHECK(cudaGetLastError());
     }
-
-    return surf;
 }
 
-cudaTextureObject_t Texture::mapTextureToTextureObject(int indexInArray)
+void Texture::unmapTextureToSurfaceObject()
 {
-    // map the resource to cuda
-    CUDA_CHECK(cudaGraphicsMapResources(1, &_pGraphicsResource));
-    // cuda array on which the resources will be sended
-    cudaArray *arrayPtr;
-    // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-    CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
-        &arrayPtr, _pGraphicsResource, indexInArray, 0));
-
-    // Wrap the cudaArray in a surface object
-    cudaResourceDesc resDesc;
-    memset(&resDesc, 0, sizeof(resDesc));
-    resDesc.resType = cudaResourceTypeArray;
-    resDesc.res.array.array = arrayPtr;
-
-    struct cudaTextureDesc texDesc;
-    memset(&texDesc, 0, sizeof(texDesc));
-    texDesc.addressMode[0] = cudaAddressModeWrap;
-    texDesc.addressMode[1] = cudaAddressModeWrap;
-    texDesc.filterMode = cudaFilterModeLinear;
-    texDesc.readMode = cudaReadModeElementType;
-    texDesc.normalizedCoords = 1;
-
-    cudaTextureObject_t texObj = 0;
-    CUDA_CHECK(cudaCreateTextureObject(&texObj, &resDesc, &texDesc, NULL));
-    CUDA_CHECK(cudaGetLastError());
-    return texObj;
-}
-
-void Texture::unMapTextureToSurfaceObject(cudaSurfaceObject_t &inputSurfObj)
-{
-    CUDA_CHECK(cudaGraphicsUnmapResources(1, &_pGraphicsResource));
-    CUDA_CHECK(cudaDestroySurfaceObject(inputSurfObj));
-    CUDA_CHECK(cudaGetLastError());
-}
-
-void Texture::unMapTextureToTextureObject(cudaTextureObject_t &texObj)
-{
-    CUDA_CHECK(cudaGraphicsUnmapResources(1, &_pGraphicsResource));
-    CUDA_CHECK(cudaDestroyTextureObject(texObj));
+    CUDA_CHECK(cudaGraphicsUnmapResources(1, &_graphicsResource));
+    // we destroy each surface object
+    for (int i = 0; i < _textureDepth; i++)
+    {
+        CUDA_CHECK(cudaDestroySurfaceObject(_surfObjArray[i]));
+    }
     CUDA_CHECK(cudaGetLastError());
 }
 
@@ -145,4 +104,22 @@ int Texture::getDepth() const
 void *Texture::getNativeTexturePtr() const
 {
     return _textureHandle;
+}
+
+cudaSurfaceObject_t *Texture::getSurfaceObjectArray() const
+{
+    return _surfObjArray;
+}
+
+cudaSurfaceObject_t Texture::getSurfaceObject(int indexInArray) const
+{
+    if (indexInArray < 0 || indexInArray > _textureDepth)
+    {
+        Log::log().debugLog("Could not get surface object for index " +
+                            std::to_string(indexInArray) +
+                            ", because it's out of bound.");
+        return 0;
+    }
+
+    return _surfObjArray[indexInArray];
 }

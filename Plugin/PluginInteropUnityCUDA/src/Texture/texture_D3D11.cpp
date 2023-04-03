@@ -32,15 +32,15 @@ void Texture_D3D11::registerTextureInCUDA()
 
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
-        &_pGraphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+        &_graphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
 
     CUDA_CHECK(cudaGetLastError());
 }
 
-void Texture_D3D11::unRegisterTextureInCUDA()
+void Texture_D3D11::unregisterTextureInCUDA()
 {
 
-    CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
+    CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
 }
 
 void Texture_D3D11::copyUnityTextureToAPITexture()

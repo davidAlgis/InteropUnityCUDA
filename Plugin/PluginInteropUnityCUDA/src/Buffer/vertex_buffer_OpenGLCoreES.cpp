@@ -25,12 +25,12 @@ void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 	//glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBuffer);
 	GL_CHECK();
 	//register the buffer to cuda : it initialize the _pGraphicsResource
-	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_pGraphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
+	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_graphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
 }
 
-void VertexBuffer_OpenGLCoreES::unRegisterBufferInCUDA()
+void VertexBuffer_OpenGLCoreES::unregisterBufferInCUDA()
 {
-	CUDA_CHECK(cudaGraphicsUnregisterResource(_pGraphicsResource));
+	CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
 }
 
 

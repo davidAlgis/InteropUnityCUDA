@@ -25,7 +25,7 @@ class Texture_D3D11 : public Texture
                   int textureDepth, RenderAPI *renderAPI);
     ~Texture_D3D11();
     virtual void registerTextureInCUDA();
-    virtual void unRegisterTextureInCUDA();
+    virtual void unregisterTextureInCUDA();
 
     protected:
     virtual void copyUnityTextureToAPITexture();

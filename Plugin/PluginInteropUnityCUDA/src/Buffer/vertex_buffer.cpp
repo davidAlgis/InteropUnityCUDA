@@ -10,7 +10,7 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
     _dimBlock = { 8, 1, 1 };
     _dimGrid = { (size + _dimBlock.x - 1) / _dimBlock.x,
         1, 1};
-    _pGraphicsResource = nullptr;
+    _graphicsResource = nullptr;
     
 }
 
@@ -19,7 +19,7 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 void VertexBuffer::unmapResources()
 {
     // unmap the resources
-    cudaGraphicsUnmapResources(1, &_pGraphicsResource, 0);
+    cudaGraphicsUnmapResources(1, &_graphicsResource, 0);
 }
 
 int VertexBuffer::getSize() const
