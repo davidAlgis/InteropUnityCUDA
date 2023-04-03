@@ -11,7 +11,7 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock,
                               const float t, const int width, const int height);
 
 void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
-                                   cudaSurfaceObject_t* inputSurfaceObj,
+                                   cudaSurfaceObject_t* surfObjArray,
                                    const float time, const int width,
                                    const int height, const int depth);
 

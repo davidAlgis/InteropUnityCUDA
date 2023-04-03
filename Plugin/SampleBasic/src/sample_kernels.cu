@@ -15,19 +15,19 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height,
     }
 }
 
-__global__ void writeTexArray(cudaSurfaceObject_t* surf, int width, int height,
+__global__ void writeTexArray(cudaSurfaceObject_t* surfObjArray, int width, int height,
                               int depth, float time)
 {
     const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
     const unsigned int z = blockIdx.z * blockDim.z + threadIdx.z;
 
-    if (x < width && y < height)
+    if (x < width && y < height && z < depth)
     {
 
-        float4 t = make_float4(z % 2, abs(cos(time)), 0, 1.0f);
+        float4 t = make_float4(z % 2, abs((z+1)*cos(time)), 0, 1.0f);
 
-        surf2Dwrite(t, surf[z], sizeof(float4) * x, y);
+        surf2Dwrite(t, surfObjArray[z], sizeof(float4) * x, y);
     }
 }
 
@@ -52,11 +52,15 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock,
 }
 
 void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
-                                   cudaSurfaceObject_t* inputSurfaceObj,
+                                   cudaSurfaceObject_t* surfObjArray,
                                    const float time, const int width,
                                    const int height, const int depth)
 {
-    writeTexArray<<<dimGrid, dimBlock>>>(inputSurfaceObj, width, height, depth, time);
+
+    writeTex<<<dimGrid, dimBlock>>>(surfObjArray[0], width, height, time);
+
+    writeTex<<<dimGrid, dimBlock>>>(surfObjArray[1], width, height, 2*time);
+    // writeTexArray<<<dimGrid, dimBlock>>>(surfObjArray, width, height, depth, time);
 }
 
 void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock,

@@ -22,9 +22,9 @@ inline int ActionSampleTexture::Start()
 int ActionSampleTexture::Update()
 {
     kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
-                             _texture->getSurfaceObject(), GetTime(), _texture->getWidth(),
-                             _texture->getHeight());
-    // cudaDeviceSynchronize();
+                             _texture->getSurfaceObject(), GetTime(),
+                             _texture->getWidth(), _texture->getHeight());
+    cudaDeviceSynchronize();
     return 0;
 }
 

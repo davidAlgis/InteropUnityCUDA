@@ -28,6 +28,8 @@ namespace SampleBasic {
 
 
 		_vertexBuffer->unmapResources();
+		delete(v);
+
 		return 0;
 	}
 

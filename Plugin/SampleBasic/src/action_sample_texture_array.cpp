@@ -23,8 +23,8 @@ int ActionSampleTextureArray::Update()
 {
     kernelCallerWriteTextureArray(
         _texture->getDimGrid(), _texture->getDimBlock(),
-                             _texture->getSurfaceObjectArray(), GetTime(), _texture->getWidth(),
-                             _texture->getHeight(), _texture->getDepth());
+        _texture->getSurfaceObjectArray(), GetTime(), _texture->getWidth(),
+        _texture->getHeight(), _texture->getDepth());
     cudaDeviceSynchronize();
     return 0;
 }
