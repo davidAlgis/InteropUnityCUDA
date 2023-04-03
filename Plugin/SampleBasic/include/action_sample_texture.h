@@ -17,7 +17,6 @@ class ActionSampleTexture : public Action
 
     private:
     Texture *_texture;
-    cudaSurfaceObject_t _surf;
 };
 } // namespace SampleBasic
 

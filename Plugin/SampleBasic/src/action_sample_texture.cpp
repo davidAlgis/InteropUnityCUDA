@@ -10,21 +10,19 @@ ActionSampleTexture::ActionSampleTexture(void *texturePtr, int width,
     : Action()
 {
     _texture = CreateTextureInterop(texturePtr, width, height, 1);
-    _surf = 0;
 }
 
 inline int ActionSampleTexture::Start()
 {
     _texture->registerTextureInCUDA();
-    _surf = _texture->mapTextureToSurfaceObject();
+    _texture->mapTextureToSurfaceObject();
     return 0;
 }
 
 int ActionSampleTexture::Update()
 {
-    // _texture->copyUnityTextureToAPITexture();
     kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
-                             _surf, GetTime(), _texture->getWidth(),
+                             _texture->getSurfaceObject(), GetTime(), _texture->getWidth(),
                              _texture->getHeight());
     // cudaDeviceSynchronize();
     return 0;
@@ -32,8 +30,8 @@ int ActionSampleTexture::Update()
 
 inline int ActionSampleTexture::OnDestroy()
 {
-    _texture->unMapTextureToSurfaceObject(_surf);
-    _texture->unRegisterTextureInCUDA();
+    _texture->unmapTextureToSurfaceObject();
+    _texture->unregisterTextureInCUDA();
     return 0;
 }
 

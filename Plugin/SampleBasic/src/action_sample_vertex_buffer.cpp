@@ -33,7 +33,7 @@ namespace SampleBasic {
 
 	inline int ActionSampleVertexBuffer::OnDestroy()
 	{
-		_vertexBuffer->unRegisterBufferInCUDA();
+		_vertexBuffer->unregisterBufferInCUDA();
 		return 0;
 	}
 
