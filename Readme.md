@@ -6,7 +6,7 @@ This repository shows a demonstration of interoperability between Unity Engine a
 
 ## Plugins
 
-The folder `Plugin` contains a solution that can be generated for visual studio 2019 using [Premake5](https://premake.github.io/download/) with command :
+The folder `Plugin` contains a solution that can be generated for visual studio 2019 using [Premake5](https://premake.github.io/download/) with the module [premake5-cuda](https://github.com/theComputeKid/premake5-cuda) :
 
 ```
 premake5 vs2019
@@ -28,13 +28,14 @@ An `Action` is a base class from which we can inherits to override functions. Th
 
 This library contains two basics examples of actions :
 - ActionSampleTexture : it register a Unity __texture__ into CUDA and write some color into it.
+- ActionSampleTextureArray : it register a Unity __texture array__ into CUDA and write some color into each texture slice.
 - ActionSampleVertexBuffer : it register a Unity __vertex buffer of `float4`__ into CUDA and change their values. 
 
 ## InteropUnityCUDA the Unity project
 
 The folder `InteropUnityCUDA` contains the Unity project with the script to handle actions and call them in render thread. Furthermore, there is a script to display in Unity the log informations of the different plugin that use logger of Utilities (see. above).
 
-The project has only one scene that demonstrate the two simple actions describe above. 
+The project has only one scene that demonstrate the three simple actions describe above. 
 
 # Create your own action
 
@@ -86,25 +87,24 @@ int Start() override
 {
     // this has to be done once at start
     _texture->registerTextureInCUDA();
+    // this will map the registered texture in cuda
+    _texture->mapTextureToSurfaceObject();
     return 0;
 }
 
 int Update() override
 {       
-    // this will map the registered texture in cuda
-    cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
-    // write into it
-    _texture->writeTexture(surf, GetTime());
-    // unmap it
-    _texture->unMapTextureToSurfaceObject(surf);
-
-    // call interoperability function here
     // call your kernel here
+    // you can write into a texture using `surf2Dwrite` function
+    // (see. https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=surf2dwrite#surf2dwrite)
+    // to get the cudaSurfaceObject_t you can use getter getSurfaceObjectArray()
     return 0;
 }
 
 int OnDestroy() override
 {
+    // unmap it
+    _texture->unmapTextureToSurfaceObject();
     _texture->unRegisterTextureInCUDA();
     return 0;
 }
@@ -130,20 +130,23 @@ public:
     int Start() override
     {
         _texture->registerTextureInCUDA();
+        _texture->mapTextureToSurfaceObject();
         return 0;
     }
 
     int Update() override
     {       
-        cudaSurfaceObject_t surf = _texture->mapTextureToSurfaceObject();
-        _texture->writeTexture(surf, GetTime());
-        _texture->unMapTextureToSurfaceObject(surf);
+        // this kernel can be found in SampleBasic project and sample_kernels.cu
+        kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
+                             _texture->getSurfaceObject(), GetTime(),
+                             _texture->getWidth(), _texture->getHeight());
         return 0;
     }
 
     int OnDestroy() override
     {
-        _texture->unRegisterTextureInCUDA();
+        _texture->unmapTextureToSurfaceObject(surf);
+        _texture->unregisterTextureInCUDA();
         return 0;
     }
 
@@ -233,7 +236,8 @@ protected override void CallOnDestroy()
 
 # Platform availability
 
-It's has been tested only on Unity 2021.1 and CUDA 11.7. At the moment it only work with OpenGL.
+It's has been tested only on Unity 2021.1 and CUDA 12.1. At the moment it only work with OpenGL and DirectX11.
+For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
 
 # Meta
 
