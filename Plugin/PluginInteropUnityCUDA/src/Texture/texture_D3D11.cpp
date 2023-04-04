@@ -20,11 +20,6 @@ Texture_D3D11::~Texture_D3D11()
     CUDA_CHECK(cudaGetLastError());
 };
 
-/// <summary>
-/// Has to be call after the first issue plugin event
-/// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html
-/// register a graphics resources defined from the texture dx11
-/// </summary>
 void Texture_D3D11::registerTextureInCUDA()
 {
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
