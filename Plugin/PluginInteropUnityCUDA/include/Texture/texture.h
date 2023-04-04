@@ -106,7 +106,7 @@ class Texture
     UNITY_INTERFACE_EXPORT void *getNativeTexturePtr() const;
 
     /**
-     * Get the pointer of _surfObjArray
+     * Get the pointer of d_surfObjArray
      * This array of surface object is necessary
      * to write or read into a texture
      */
@@ -137,9 +137,15 @@ class Texture
 
     private:
     // An array of surface object that will be of the size of texture depth
+    // This array is allocate on host side and will be copy to device memory
+    // when texture is map to it
+    cudaSurfaceObject_t *_surfObjArray;
+
+    // A device array of surface object that will be of the size of texture depth
+    // This array is allocate on device memory.
     // the surface object is the object that you can used to write into texture
     // from cuda api (eg. with surf2DWrite)
-    cudaSurfaceObject_t *_surfObjArray;
+    cudaSurfaceObject_t *d_surfObjArray;
 
     dim3 _dimBlock;
     dim3 _dimGrid;

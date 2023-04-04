@@ -29,6 +29,9 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
     // initialize surface object
     _surfObjArray = new cudaSurfaceObject_t[textureDepth];
 
+    CUDA_CHECK(cudaMalloc(&d_surfObjArray,
+                          _textureDepth * sizeof(cudaSurfaceObject_t)));
+
     for (int i = 0; i < textureDepth; i++)
     {
         _surfObjArray[i] = 0;
@@ -40,6 +43,7 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
 Texture::~Texture()
 {
     delete (_surfObjArray);
+    CUDA_CHECK(cudaFree(d_surfObjArray));
 }
 
 void Texture::mapTextureToSurfaceObject()
@@ -63,6 +67,9 @@ void Texture::mapTextureToSurfaceObject()
         CUDA_CHECK(cudaCreateSurfaceObject(&_surfObjArray[i], &resDesc));
         CUDA_CHECK(cudaGetLastError());
     }
+    CUDA_CHECK(cudaMemcpy(d_surfObjArray, _surfObjArray,
+                          _textureDepth * sizeof(cudaSurfaceObject_t),
+                          cudaMemcpyHostToDevice));
 }
 
 void Texture::unmapTextureToSurfaceObject()
@@ -108,7 +115,9 @@ void *Texture::getNativeTexturePtr() const
 
 cudaSurfaceObject_t *Texture::getSurfaceObjectArray() const
 {
-    return _surfObjArray;
+    // to use a complete array of surface object in a kernel,
+    // we need to use the array allocate on device memory
+    return d_surfObjArray;
 }
 
 cudaSurfaceObject_t Texture::getSurfaceObject(int indexInArray) const
@@ -121,5 +130,10 @@ cudaSurfaceObject_t Texture::getSurfaceObject(int indexInArray) const
         return 0;
     }
 
+    // to use a single surface object in a kernel
+    // we can use directly the surface object that 
+    // is on host side, because cudaSurfaceObject_t is a
+    // typename for unsigned long long which can be directly
+    // send to kernel as it's managed memory ? 
     return _surfObjArray[indexInArray];
 }
