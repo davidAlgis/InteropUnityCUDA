@@ -25,6 +25,29 @@ void Texture_D3D11::registerTextureInCUDA()
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
     ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
 
+    D3D11_TEXTURE2D_DESC texDesc;
+    texUnityDX11->GetDesc(&texDesc);
+
+    DXGI_FORMAT format = texDesc.Format;
+
+    // We check if the format is correct see
+    // https://github.com/davidAlgis/InteropUnityCUDA/issues/2
+    if (format == DXGI_FORMAT_R8G8B8A8_TYPELESS ||
+        format == DXGI_FORMAT_R32G32B32_TYPELESS ||
+        format == DXGI_FORMAT_R32G32B32A32_TYPELESS ||
+        format == DXGI_FORMAT_R16G16B16A16_TYPELESS ||
+        format == DXGI_FORMAT_R32G8X24_TYPELESS ||
+        format == DXGI_FORMAT_R32G32_TYPELESS ||
+        format == DXGI_FORMAT_R8_TYPELESS)
+    {
+        Log::log().debugLogError(
+            "Texture of type " + std::to_string(format) +
+            " cannot be registered in CUDA." +
+            " It may comes from the fact that you can\'t used RenderTexture for "
+            "DX11 but only Texture2D.");
+        return;
+    }
+
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
         &_graphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
