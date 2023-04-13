@@ -20,7 +20,7 @@ Texture_D3D11::~Texture_D3D11()
     CUDA_CHECK(cudaGetLastError());
 };
 
-void Texture_D3D11::registerTextureInCUDA()
+int Texture_D3D11::registerTextureInCUDA()
 {
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
     ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
@@ -45,30 +45,32 @@ void Texture_D3D11::registerTextureInCUDA()
             " cannot be registered in CUDA." +
             " It may comes from the fact that you can\'t used RenderTexture for "
             "DX11 but only Texture2D.");
-        return;
+        return -1;
     }
 
     // register the texture to cuda : it initialize the _pGraphicsResource
-    CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+    CUDA_CHECK_RETURN(cudaGraphicsD3D11RegisterResource(
         &_graphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
 
-    CUDA_CHECK(cudaGetLastError());
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_D3D11::unregisterTextureInCUDA()
+int Texture_D3D11::unregisterTextureInCUDA()
 {
-
-    CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
+    CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_D3D11::copyUnityTextureToAPITexture()
+int Texture_D3D11::copyUnityTextureToAPITexture()
 {
     _renderAPI->copyTextures2D(_texBufferInterop, _texUnityDX11);
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_D3D11::copyAPITextureToUnityTexture()
+int Texture_D3D11::copyAPITextureToUnityTexture()
 {
     _renderAPI->copyTextures2D(_texUnityDX11, _texBufferInterop);
+    return SUCCESS_INTEROP_CODE;
 }
 
 #endif // #if SUPPORT_D3D11

@@ -14,8 +14,8 @@ class VertexBuffer_D3D11 : public VertexBuffer
 public:
 	VertexBuffer_D3D11(void* bufferHandle, int size);
 	~VertexBuffer_D3D11();
-	virtual void registerBufferInCUDA();
-	virtual void unregisterBufferInCUDA();
+	virtual int registerBufferInCUDA();
+	virtual int unregisterBufferInCUDA();
 
 };
 

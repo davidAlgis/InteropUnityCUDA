@@ -18,20 +18,22 @@ VertexBuffer_D3D11::~VertexBuffer_D3D11()
 /// <summary>
 /// Register the buffer from OpenGL to CUDA
 /// </summary>
-void VertexBuffer_D3D11::registerBufferInCUDA()
+int VertexBuffer_D3D11::registerBufferInCUDA()
 {
 
     ID3D11Buffer *bufferUnityDX11 = (ID3D11Buffer *)_bufferHandle;
     // Log::log().debugLogError("Register buffer on DX11 is not yet supported");
     // register the texture to cuda : it initialize the _pGraphicsResource
-    CUDA_CHECK(cudaGraphicsD3D11RegisterResource(
+    CUDA_CHECK_RETURN(cudaGraphicsD3D11RegisterResource(
         &_graphicsResource, (ID3D11Resource *)bufferUnityDX11,
         cudaGraphicsRegisterFlagsNone));
+    return SUCCESS_INTEROP_CODE;
 }
 
-void VertexBuffer_D3D11::unregisterBufferInCUDA()
+int VertexBuffer_D3D11::unregisterBufferInCUDA()
 {
-    CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
+    CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
+    return SUCCESS_INTEROP_CODE;
 }
 
 #endif // #if SUPPORT_D3D11

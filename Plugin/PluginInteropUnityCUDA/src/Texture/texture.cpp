@@ -46,16 +46,17 @@ Texture::~Texture()
     CUDA_CHECK(cudaFree(d_surfObjArray));
 }
 
-void Texture::mapTextureToSurfaceObject()
+int Texture::mapTextureToSurfaceObject()
 {
     // map the resource to cuda
-    CUDA_CHECK(cudaGraphicsMapResources(1, &_graphicsResource));
+    CUDA_CHECK_RETURN(cudaGraphicsMapResources(1, &_graphicsResource));
+
     for (int i = 0; i < _textureDepth; i++)
     {
         // cuda array on which the resources will be sended
         cudaArray *arrayPtr;
         // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP_1g0dd6b5f024dfdcff5c28a08ef9958031
-        CUDA_CHECK(cudaGraphicsSubResourceGetMappedArray(
+        CUDA_CHECK_RETURN(cudaGraphicsSubResourceGetMappedArray(
             &arrayPtr, _graphicsResource, i, 0));
 
         // Wrap the cudaArray in a surface object
@@ -64,23 +65,25 @@ void Texture::mapTextureToSurfaceObject()
         resDesc.resType = cudaResourceTypeArray;
         resDesc.res.array.array = arrayPtr;
         _surfObjArray[i] = 0;
-        CUDA_CHECK(cudaCreateSurfaceObject(&_surfObjArray[i], &resDesc));
-        CUDA_CHECK(cudaGetLastError());
+        CUDA_CHECK_RETURN(cudaCreateSurfaceObject(&_surfObjArray[i], &resDesc));
+        CUDA_CHECK_RETURN(cudaGetLastError());
     }
-    CUDA_CHECK(cudaMemcpy(d_surfObjArray, _surfObjArray,
+    CUDA_CHECK_RETURN(cudaMemcpy(d_surfObjArray, _surfObjArray,
                           _textureDepth * sizeof(cudaSurfaceObject_t),
                           cudaMemcpyHostToDevice));
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture::unmapTextureToSurfaceObject()
+int Texture::unmapTextureToSurfaceObject()
 {
-    CUDA_CHECK(cudaGraphicsUnmapResources(1, &_graphicsResource));
+    CUDA_CHECK_RETURN(cudaGraphicsUnmapResources(1, &_graphicsResource));
     // we destroy each surface object
     for (int i = 0; i < _textureDepth; i++)
     {
-        CUDA_CHECK(cudaDestroySurfaceObject(_surfObjArray[i]));
+        CUDA_CHECK_RETURN(cudaDestroySurfaceObject(_surfObjArray[i]));
     }
-    CUDA_CHECK(cudaGetLastError());
+    CUDA_CHECK_RETURN(cudaGetLastError());
+    return SUCCESS_INTEROP_CODE;
 }
 
 dim3 Texture::getDimBlock() const

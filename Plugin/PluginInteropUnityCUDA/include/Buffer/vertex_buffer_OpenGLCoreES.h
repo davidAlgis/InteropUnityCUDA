@@ -13,8 +13,8 @@ class VertexBuffer_OpenGLCoreES : public VertexBuffer
 public:
 	VertexBuffer_OpenGLCoreES(void* bufferHandle, int size);
 	~VertexBuffer_OpenGLCoreES();
-	virtual void registerBufferInCUDA();
-	virtual void unregisterBufferInCUDA();
+	virtual int registerBufferInCUDA();
+	virtual int unregisterBufferInCUDA();
 
 };
 

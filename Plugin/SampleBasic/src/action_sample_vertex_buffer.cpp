@@ -12,22 +12,30 @@ namespace SampleBasic {
 
 	inline int ActionSampleVertexBuffer::Start()
 	{
-		_vertexBuffer->registerBufferInCUDA();
+		int ret = _vertexBuffer->registerBufferInCUDA();
+		GRUMBLE(ret, "There has been an error during the registration of "
+            "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
 		return 0;
 	}
 
 	int ActionSampleVertexBuffer::Update()
 	{		
-		float4* ptr = _vertexBuffer->mapResources<float4>();
+		float4* ptr = nullptr;
+		int ret = _vertexBuffer->mapResources<float4>(&ptr);
+		GRUMBLE(ret, "There has been an error during the map of "
+            "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
 
 		kernelCallerWriteBuffer(_vertexBuffer->getDimGrid(), _vertexBuffer->getDimBlock(), ptr, _vertexBuffer->getSize(), GetTime());
 		cudaDeviceSynchronize();
 
 		float4* v = (float4*)malloc(_vertexBuffer->getSize());
-		cudaMemcpy(v, ptr, _vertexBuffer->getSize(), cudaMemcpyDeviceToHost);
+		CUDA_CHECK_RETURN(cudaMemcpy(v, ptr, _vertexBuffer->getSize(), cudaMemcpyDeviceToHost));
 
 
-		_vertexBuffer->unmapResources();
+		ret = _vertexBuffer->unmapResources();
+		GRUMBLE(ret, "There has been an error during the unmap of "
+            "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
+
 		delete(v);
 
 		return 0;
@@ -35,7 +43,9 @@ namespace SampleBasic {
 
 	inline int ActionSampleVertexBuffer::OnDestroy()
 	{
-		_vertexBuffer->unregisterBufferInCUDA();
+		int ret = _vertexBuffer->unregisterBufferInCUDA();
+		GRUMBLE(ret, "There has been an error during the unregistration of "
+            "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
 		return 0;
 	}
 

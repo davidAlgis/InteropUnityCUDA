@@ -27,13 +27,13 @@ class Texture
      * Register the texture in CUDA, this has to be override because it depends
      *  on the graphics api
      */
-    UNITY_INTERFACE_EXPORT virtual void registerTextureInCUDA() = 0;
+    UNITY_INTERFACE_EXPORT virtual int registerTextureInCUDA() = 0;
 
     /**
      * Unregistered the texture in CUDA, this has to be override because it
      *  depends on the graphics api
      */
-    UNITY_INTERFACE_EXPORT virtual void unregisterTextureInCUDA() = 0;
+    UNITY_INTERFACE_EXPORT virtual int unregisterTextureInCUDA() = 0;
 
     /**
      * For some API (DX11) CUDA cannot edit the texture created by Unity
@@ -46,7 +46,7 @@ class Texture
      * texture has not been modify in Unity. Tips : not necessary for write only
      * in CUDA or read only in Unity
      */
-    UNITY_INTERFACE_EXPORT virtual void copyUnityTextureToAPITexture() = 0;
+    UNITY_INTERFACE_EXPORT virtual int copyUnityTextureToAPITexture() = 0;
 
     /**
      * For some API (DX11) CUDA cannot edit the texture created by Unity
@@ -59,20 +59,20 @@ class Texture
      * texture in CUDA, or if the texture is only write only in Unity. Tips :
      * not necessary for read only in CUDA or write only in Unity
      */
-    UNITY_INTERFACE_EXPORT virtual void copyAPITextureToUnityTexture() = 0;
+    UNITY_INTERFACE_EXPORT virtual int copyAPITextureToUnityTexture() = 0;
 
     /**
      * Map the cuda array from the graphics resources and create a surface
      * object from it. To write into the surface object use the getter of
      * _surfObjArray.
      */
-    UNITY_INTERFACE_EXPORT void mapTextureToSurfaceObject();
+    UNITY_INTERFACE_EXPORT int mapTextureToSurfaceObject();
 
     /**
      * Unmap the cuda array from graphics resources and destroy surface object
      * This function will wait for all previous GPU activity to complete
      */
-    UNITY_INTERFACE_EXPORT void unmapTextureToSurfaceObject();
+    UNITY_INTERFACE_EXPORT int unmapTextureToSurfaceObject();
 
     /**
      * Get the default dimension block (8,8,1)

@@ -4,11 +4,12 @@
 #include <string>
 
 // use this macro if you want to check cuda function
-#define CUDA_CHECK(ans) { cudaAssert((ans), __FILE__, __LINE__); }
-#define CUFFT_CHECK(ans) { cufftAssert((int)(ans), __FILE__, __LINE__); }
+#define CUDA_CHECK(ans) cudaAssert((ans), __FILE__, __LINE__)
+#define CUDA_CHECK_RETURN(ans) {int ret = cudaAssert((ans), __FILE__, __LINE__); if(ret != 0)return ret;}
+#define CUFFT_CHECK(ans) { int ret  = cufftAssert((int)(ans), __FILE__, __LINE__); return ret; }
 
 
-inline void cudaAssert(cudaError_t code, const char* file, int line)
+inline int cudaAssert(cudaError_t code, const char* file, int line)
 {
 	if (code != cudaSuccess)
 	{
@@ -16,10 +17,12 @@ inline void cudaAssert(cudaError_t code, const char* file, int line)
 		sprintf_s(buffer, "Cuda error: %i %s %s %d\n", code, cudaGetErrorString(code), file, line);
 		std::string strError(buffer);
 		Log::log().debugLogError(buffer);
+		return (int)code;
 	}
+	return 0;
 }
 
-inline void cufftAssert(int cufftResult, const char* file, int line)
+inline int cufftAssert(int cufftResult, const char* file, int line)
 {
 	
 	if (cufftResult != 0)
@@ -86,7 +89,9 @@ inline void cufftAssert(int cufftResult, const char* file, int line)
 		sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult, cufftInterpret.c_str(), file, line);
 		std::string strError(buffer);
 		Log::log().debugLogError(buffer);
+		return -1;
 	}
+	return 0;
 
 }
 

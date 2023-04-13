@@ -63,12 +63,11 @@ extern "C"
                 "want to take advantage of CUDA performance.");
             return false;
         }
-        
-        if(s_DeviceType == kUnityGfxRendererNull)
+
+        if (s_DeviceType == kUnityGfxRendererNull)
         {
 
-            Log::log().debugLogError(
-                "Unknown graphics API.");
+            Log::log().debugLogError("Unknown graphics API.");
             return false;
         }
 
@@ -77,8 +76,7 @@ extern "C"
             s_DeviceType != kUnityGfxRendererOpenGLES20 &&
             s_DeviceType != kUnityGfxRendererOpenGLES30)
         {
-            Log::log().debugLogError(
-                "Graphics API is not supported yet.");
+            Log::log().debugLogError("Graphics API is not supported yet.");
             return false;
         }
         return true;
@@ -124,10 +122,22 @@ extern "C"
         Log::log().debugLog("Initialize Log");
     }
 
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
+    SetErrorBehavior(int behavior)
+    {
+        ErrorBehavior errorBehavior = static_cast<ErrorBehavior>(behavior);
+        _errorBehavior = errorBehavior;
+    }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API GetErrorBehavior()
+    {
+        return static_cast<int>(_errorBehavior);
+    }
+
     UNITY_INTERFACE_EXPORT size_t UNITY_INTERFACE_API
     RegisterAction(Action *action)
     {
-
+        action->IsActive = true;
         _registerActions.emplace_back(action);
 
         return _registerActions.size() - 1;
@@ -139,6 +149,11 @@ extern "C"
         _registerActions.clear();
         _registerActions.reserve(reserveCapacity);
     }
+}
+
+void DisableAction(Action *actionToDisable)
+{
+    actionToDisable->IsActive = false;
 }
 
 static void OnRenderEvent(int eventID)
@@ -162,16 +177,43 @@ static void OnRenderEvent(int eventID)
     }
     else
     {
+        if (_registerActions[realEventID]->IsActive == false)
+        {
+            return;
+        }
+
+        int ret;
         switch (eventID % 3)
         {
         case 0:
-            _registerActions[realEventID]->Start();
+            ret = _registerActions[realEventID]->Start();
             break;
         case 1:
-            _registerActions[realEventID]->Update();
+            ret = _registerActions[realEventID]->Update();
             break;
         case 2:
-            _registerActions[realEventID]->OnDestroy();
+            ret = _registerActions[realEventID]->OnDestroy();
+            break;
+        }
+
+        switch (_errorBehavior)
+        {
+
+        case ErrorBehavior::DO_NOTHING:
+            break;
+        case ErrorBehavior::ASSERT:
+            assert(ret == 0);
+            break;
+        case ErrorBehavior::DISABLE_ACTION:
+            if (ret != 0)
+            {
+                DisableAction(_registerActions[realEventID]);
+                Log::log().debugLogError(
+                    "There has been an error with action " +
+                    std::to_string(realEventID) + ". It has been disabled.");
+            }
+            break;
+        default:
             break;
         }
     }

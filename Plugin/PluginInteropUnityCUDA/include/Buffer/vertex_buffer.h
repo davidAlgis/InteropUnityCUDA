@@ -19,12 +19,12 @@ class VertexBuffer
 		/**
 		 * Register the buffer in CUDA, this has to be override because it depends on the graphics api
 		 */
-		UNITY_INTERFACE_EXPORT virtual void registerBufferInCUDA() = 0;
+		UNITY_INTERFACE_EXPORT virtual int registerBufferInCUDA() = 0;
 
 		/**
 		 * Unregister the buffer in CUDA, this has to be override because it depends on the graphics api
 		 */
-		UNITY_INTERFACE_EXPORT virtual void unregisterBufferInCUDA() = 0;
+		UNITY_INTERFACE_EXPORT virtual int unregisterBufferInCUDA() = 0;
 
 
 		/**
@@ -32,25 +32,24 @@ class VertexBuffer
 		 * return an array of T* defined on device memory and which can be edited in cuda
 		 */
 		template <typename T>
-		UNITY_INTERFACE_EXPORT T* mapResources()
+		UNITY_INTERFACE_EXPORT int mapResources(T** vertexPtr)
 		{
 			// map resource
-			CUDA_CHECK(cudaGraphicsMapResources(1, &_graphicsResource, 0));
+			CUDA_CHECK_RETURN(cudaGraphicsMapResources(1, &_graphicsResource, 0));
 			// pointer toward an array of float4 on device memory : the compute buffer
-			T* vertexPtr;
 			// number of bytes that has been readed
 			size_t numBytes;
 			// map the resources on a float4 array that can be modify on device
-			CUDA_CHECK(cudaGraphicsResourceGetMappedPointer((void**)&vertexPtr, &numBytes,
+			CUDA_CHECK_RETURN(cudaGraphicsResourceGetMappedPointer((void**)vertexPtr, &numBytes,
 				_graphicsResource));
-			return vertexPtr;
+			return SUCCESS_INTEROP_CODE;
 		}
 
 		/**
 		 * Unmap resources from CUDA
 		 * This function will wait for all previous GPU activity to complete
 		 */
-		UNITY_INTERFACE_EXPORT void unmapResources();
+		UNITY_INTERFACE_EXPORT int unmapResources();
 
 		/**
 		 * Get the default dimension block (8,1,1)

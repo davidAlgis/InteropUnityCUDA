@@ -17,20 +17,20 @@ VertexBuffer_OpenGLCoreES::~VertexBuffer_OpenGLCoreES()
 /// <summary>
 /// Register the buffer from OpenGL to CUDA
 /// </summary>
-void VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
+int VertexBuffer_OpenGLCoreES::registerBufferInCUDA()
 {
 	// cast the pointer on the buffer of unity to gluint 
 	// (first to size_t to avoid a warning C4311)
 	GLuint glBuffer = (GLuint)(size_t)(_bufferHandle);
-	//glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBuffer);
-	GL_CHECK();
 	//register the buffer to cuda : it initialize the _pGraphicsResource
-	CUDA_CHECK(cudaGraphicsGLRegisterBuffer(&_graphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
+	CUDA_CHECK_RETURN(cudaGraphicsGLRegisterBuffer(&_graphicsResource, glBuffer, cudaGraphicsRegisterFlagsNone));
+	return SUCCESS_INTEROP_CODE;
 }
 
-void VertexBuffer_OpenGLCoreES::unregisterBufferInCUDA()
+int VertexBuffer_OpenGLCoreES::unregisterBufferInCUDA()
 {
-	CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
+	CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
+	return SUCCESS_INTEROP_CODE;
 }
 
 

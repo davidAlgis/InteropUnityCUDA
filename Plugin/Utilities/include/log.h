@@ -9,6 +9,9 @@
 extern "C"
 {
 
+    #define GRUMBLE(code, msg) {if(code != 0){Log::log().debugLogError(msg); return code;}} 
+    #define SUCCESS_INTEROP_CODE 0
+
     enum class logType
     {
         Info,

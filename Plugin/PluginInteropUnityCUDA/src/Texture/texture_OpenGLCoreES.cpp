@@ -16,12 +16,8 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
     CUDA_CHECK(cudaGetLastError());
 };
 
-/// <summary>
-/// Has to be call after the first issue plugin event
-/// see. https://docs.unity3d.com/ScriptReference/GL.IssuePluginEvent.html
-/// register a graphics resources defined from the texture openGL
-/// </summary>
-void Texture_OpenGLCoreES::registerTextureInCUDA()
+
+int Texture_OpenGLCoreES::registerTextureInCUDA()
 {
     // if depth is < 2 it's a texture2D, else it's a texture2DArray
     GLenum target = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
@@ -31,24 +27,26 @@ void Texture_OpenGLCoreES::registerTextureInCUDA()
     // glBindTexture(target, gltex);
     GL_CHECK();
     // register the texture to cuda : it initialize the _pGraphicsResource
-    CUDA_CHECK(
+    CUDA_CHECK_RETURN(
         cudaGraphicsGLRegisterImage(&_graphicsResource, gltex, target,
                                     cudaGraphicsRegisterFlagsWriteDiscard));
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_OpenGLCoreES::unregisterTextureInCUDA()
+int Texture_OpenGLCoreES::unregisterTextureInCUDA()
 {
-    CUDA_CHECK(cudaGraphicsUnregisterResource(_graphicsResource));
+    CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_OpenGLCoreES::copyUnityTextureToAPITexture()
+int Texture_OpenGLCoreES::copyUnityTextureToAPITexture()
 {
-    
+    return SUCCESS_INTEROP_CODE;
 }
 
-void Texture_OpenGLCoreES::copyAPITextureToUnityTexture()
+int Texture_OpenGLCoreES::copyAPITextureToUnityTexture()
 {
-    
+    return SUCCESS_INTEROP_CODE;
 }
 
 

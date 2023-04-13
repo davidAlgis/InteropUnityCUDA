@@ -16,10 +16,11 @@ VertexBuffer::VertexBuffer(void* bufferHandle, int size)
 
 
 
-void VertexBuffer::unmapResources()
+int VertexBuffer::unmapResources()
 {
     // unmap the resources
-    cudaGraphicsUnmapResources(1, &_graphicsResource, 0);
+    CUDA_CHECK_RETURN(cudaGraphicsUnmapResources(1, &_graphicsResource, 0));
+    return SUCCESS_INTEROP_CODE;
 }
 
 int VertexBuffer::getSize() const

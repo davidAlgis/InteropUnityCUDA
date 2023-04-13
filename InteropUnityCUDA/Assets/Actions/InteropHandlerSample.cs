@@ -26,6 +26,7 @@ namespace ActionUnity
         [SerializeField] private int _sizeBuffer = 256;
 
         private Texture2D _texture;
+        // private RenderTexture _texture;
         private Texture2DArray _textureArray;
         private Texture2D _textureForDisplay0;
         private Texture2D _textureForDisplay1;
@@ -38,6 +39,8 @@ namespace ActionUnity
         {
             _texture = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
             _texture.Apply();
+            // _texture = new RenderTexture(_sizeTexture, _sizeTexture, 1, RenderTextureFormat.ARGB32);
+            // _texture.Create();
             _rawImageOneTexture.texture = _texture;
         }
         

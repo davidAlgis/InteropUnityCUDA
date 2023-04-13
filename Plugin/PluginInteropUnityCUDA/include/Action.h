@@ -20,4 +20,5 @@ public:
 	virtual int Start() = 0;
 	virtual int Update() = 0;
 	virtual int OnDestroy() = 0;
+	bool IsActive = true;
 };

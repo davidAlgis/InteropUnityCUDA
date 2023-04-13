@@ -6,6 +6,15 @@ using UnityEngine.Assertions;
 
 namespace ActionUnity
 {
+    [Flags]
+    public enum ErrorBehavior
+    {
+        DO_NOTHING = 1,
+        ASSERT = 2,
+        DISABLE_ACTION = 4,
+    };
+
+    
     /// <summary>
     /// This class will handle interoperability between Unity/Graphics API/GPGPU Technology
     /// It is used to register and call particular action (other unity plugin
@@ -20,6 +29,11 @@ namespace ActionUnity
         [DllImport(_dllPluginInterop)]
         private static extern void StartLog();
         
+        [DllImport(_dllPluginInterop)]
+        protected static extern int GetErrorBehavior();
+        
+        [DllImport(_dllPluginInterop)]
+        private static extern void SetErrorBehavior(int behavior);
         
         [DllImport(_dllPluginInterop)]
         public static extern bool IsSupported();
@@ -51,6 +65,8 @@ namespace ActionUnity
             {
                 Debug.LogError("Interoperability is not supported.");        
             }
+
+            SetErrorBehavior(ErrorBehavior.DISABLE_ACTION);
         }
         
         public void InitializeInteropHandler()
@@ -99,6 +115,11 @@ namespace ActionUnity
         protected virtual void OnDestroyActions()
         {
             
+        }
+
+        protected void SetErrorBehavior(ErrorBehavior errorBehavior)
+        {
+            SetErrorBehavior((int)errorBehavior);
         }
 
         #region ACTION_CALLER
