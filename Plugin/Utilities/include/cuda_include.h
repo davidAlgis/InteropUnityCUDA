@@ -6,6 +6,7 @@
 // use this macro if you want to check cuda function
 #define CUDA_CHECK(ans) cudaAssert((ans), __FILE__, __LINE__)
 #define CUDA_CHECK_RETURN(ans) {int ret = cudaAssert((ans), __FILE__, __LINE__); if(ret != 0)return ret;}
+#define CUDA_CHECK_RETURN_VOID(ans, msg) {int ret = cudaAssert((ans), __FILE__, __LINE__); if(ret != 0){Log::log().debugLogError(msg);return;}}
 #define CUFFT_CHECK(ans) cufftAssert((int)(ans), __FILE__, __LINE__)
 #define CUFFT_CHECK_RETURN(ans) { int ret  = cufftAssert((int)(ans), __FILE__, __LINE__); return ret; }
 
