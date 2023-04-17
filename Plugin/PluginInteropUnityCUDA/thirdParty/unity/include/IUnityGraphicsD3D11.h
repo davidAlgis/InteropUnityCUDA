@@ -1,6 +1,6 @@
 #pragma once
 #include "IUnityInterface.h"
-
+#include "d3d11.h"
 
 // Should only be used on the rendering thread unless noted otherwise.
 UNITY_DECLARE_INTERFACE(IUnityGraphicsD3D11)

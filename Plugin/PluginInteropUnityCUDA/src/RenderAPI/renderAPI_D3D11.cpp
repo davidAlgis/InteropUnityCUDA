@@ -51,11 +51,33 @@ int RenderAPI_D3D11::createTexture2D(int textureWidth, int textureHeight,
     return 0;
 }
 
+int RenderAPI_D3D11::createShaderResource(
+    ID3D11Resource *resource, ID3D11ShaderResourceView **shaderResource)
+{
+    if (_device == NULL)
+    {
+        Log::log().debugLogError(
+            "m_Device has not been initialized in RenderAPI_D3D11, please make "
+            "sure event kUnityGfxDeviceEventInitialize has been called "
+            "before.");
+        return -1;
+    }
+
+    _device->CreateShaderResourceView(resource, NULL, shaderResource);
+    return 0;
+}
+
 void RenderAPI_D3D11::copyTextures2D(ID3D11Texture2D *dest,
                                      ID3D11Texture2D *src)
 {
     _device->GetImmediateContext(&_context);
     _context->CopyResource(dest, src);
+}
+
+ID3D11DeviceContext *RenderAPI_D3D11::getCurrentContext()
+{
+    _device->GetImmediateContext(&_context);
+    return _context;
 }
 
 

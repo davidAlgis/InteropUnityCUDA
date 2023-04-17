@@ -20,15 +20,14 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 int Texture_OpenGLCoreES::registerTextureInCUDA()
 {
     // if depth is < 2 it's a texture2D, else it's a texture2DArray
-    GLenum target = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
+    _texTarget = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
 
     // cast the pointer on the texture of unity to gluint
-    GLuint gltex = (GLuint)(size_t)(_textureHandle);
-    // glBindTexture(target, gltex);
+    _texUnityGL = (GLuint)(size_t)(_textureHandle);
     GL_CHECK();
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK_RETURN(
-        cudaGraphicsGLRegisterImage(&_graphicsResource, gltex, target,
+        cudaGraphicsGLRegisterImage(&_graphicsResource, _texUnityGL, _texTarget,
                                     cudaGraphicsRegisterFlagsWriteDiscard));
     return SUCCESS_INTEROP_CODE;
 }
@@ -41,14 +40,21 @@ int Texture_OpenGLCoreES::unregisterTextureInCUDA()
 
 int Texture_OpenGLCoreES::copyUnityTextureToAPITexture()
 {
-    return SUCCESS_INTEROP_CODE;
+    Log::log().debugLogError("copyUnityTextureToAPITexture - Not implemented yet");
+    return -1;
 }
 
 int Texture_OpenGLCoreES::copyAPITextureToUnityTexture()
 {
-    return SUCCESS_INTEROP_CODE;
+    Log::log().debugLogError("copyAPITextureToUnityTexture - Not implemented yet");
+    return -1;
 }
 
-
+int Texture_OpenGLCoreES::generateMips()
+{
+    glGenerateMipmap(_texUnityGL);
+    GL_CHECK();
+    return SUCCESS_INTEROP_CODE;
+}
 
 #endif // #if SUPPORT_OPENGL_UNIFIED

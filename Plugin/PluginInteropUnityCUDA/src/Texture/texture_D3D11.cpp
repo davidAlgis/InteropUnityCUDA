@@ -23,13 +23,11 @@ Texture_D3D11::~Texture_D3D11()
 int Texture_D3D11::registerTextureInCUDA()
 {
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
-    ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
+    _texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
 
     D3D11_TEXTURE2D_DESC texDesc;
-    texUnityDX11->GetDesc(&texDesc);
-
+    _texUnityDX11->GetDesc(&texDesc);
     DXGI_FORMAT format = texDesc.Format;
-
     // We check if the format is correct see
     // https://github.com/davidAlgis/InteropUnityCUDA/issues/2
     if (format == DXGI_FORMAT_R8G8B8A8_TYPELESS ||
@@ -48,18 +46,29 @@ int Texture_D3D11::registerTextureInCUDA()
         return -1;
     }
 
+    // we generate the shader resource in case the user want to use them (eg. for mips generation)
+    _renderAPI->createShaderResource(_texUnityDX11, &_shaderResources);
+
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK_RETURN(cudaGraphicsD3D11RegisterResource(
-        &_graphicsResource, texUnityDX11, cudaGraphicsRegisterFlagsNone));
+        &_graphicsResource, _texUnityDX11, cudaGraphicsRegisterFlagsNone));
 
     return SUCCESS_INTEROP_CODE;
 }
+
 
 int Texture_D3D11::unregisterTextureInCUDA()
 {
     CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
     return SUCCESS_INTEROP_CODE;
 }
+
+int Texture_D3D11::generateMips()
+{
+    _renderAPI->getCurrentContext()->GenerateMips(_shaderResources);
+    return SUCCESS_INTEROP_CODE;
+}
+
 
 int Texture_D3D11::copyUnityTextureToAPITexture()
 {

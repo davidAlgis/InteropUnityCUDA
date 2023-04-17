@@ -17,9 +17,14 @@ public:
 	~Texture_OpenGLCoreES();
 	virtual int registerTextureInCUDA();
 	virtual int unregisterTextureInCUDA();
+	virtual int generateMips();
+
 protected:
 	virtual int copyUnityTextureToAPITexture();
 	virtual int copyAPITextureToUnityTexture();
+private:
+	GLuint _texUnityGL;
+	GLenum _texTarget;
 };
 
 #endif

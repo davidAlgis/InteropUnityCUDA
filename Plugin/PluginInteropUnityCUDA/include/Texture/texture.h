@@ -75,6 +75,12 @@ class Texture
     UNITY_INTERFACE_EXPORT int unmapTextureToSurfaceObject();
 
     /**
+     * Generate the mips maps of the texture
+     */
+    UNITY_INTERFACE_EXPORT virtual int generateMips() = 0;
+
+
+    /**
      * Get the default dimension block (8,8,1)
      */
     UNITY_INTERFACE_EXPORT dim3 getDimBlock() const;
