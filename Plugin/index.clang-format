@@ -1,6 +1,0 @@
-﻿---
-BasedOnStyle: Microsoft
-AccessModifierOffset: '0'
-AlignAfterOpenBracket: Align
-ColumnLimit: 80
-...
