@@ -102,7 +102,7 @@ void Log::debugLog(const std::string text) {
 }
 
 void Log::debugLogWarning(const std::string text) {
-  _warningPrintFunction("Warning" + text, _logFile);
+  _warningPrintFunction("Warning " + text, _logFile);
   // _logFile << "Warning : " << text << std::endl;
 
   if (_logWarningVector.size() >= MAX_LOG_SIZE)
@@ -112,7 +112,7 @@ void Log::debugLogWarning(const std::string text) {
 }
 
 void Log::debugLogError(const std::string text) {
-  _errorPrintFunction("Error" + text, _logFile);
+  _errorPrintFunction("Error " + text, _logFile);
   // _logFile << "Error : " << text << std::endl;
   if (_logErrorVector.size() >= MAX_LOG_SIZE)
     _logErrorVector.pop_back();
