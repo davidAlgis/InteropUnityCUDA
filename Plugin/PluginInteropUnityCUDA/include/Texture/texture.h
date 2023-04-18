@@ -76,6 +76,8 @@ class Texture
 
     /**
      * Generate the mips maps of the texture
+     * For DX11 it doesn't works for Texture2D
+     * see issue #6 https://github.com/davidAlgis/InteropUnityCUDA/issues/6
      */
     UNITY_INTERFACE_EXPORT virtual int generateMips() = 0;
 

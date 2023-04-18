@@ -28,6 +28,7 @@ int Texture_D3D11::registerTextureInCUDA()
     D3D11_TEXTURE2D_DESC texDesc;
     _texUnityDX11->GetDesc(&texDesc);
     DXGI_FORMAT format = texDesc.Format;
+
     // We check if the format is correct see
     // https://github.com/davidAlgis/InteropUnityCUDA/issues/2
     if (format == DXGI_FORMAT_R8G8B8A8_TYPELESS ||
@@ -46,8 +47,6 @@ int Texture_D3D11::registerTextureInCUDA()
         return -1;
     }
 
-    // we generate the shader resource in case the user want to use them (eg. for mips generation)
-    _renderAPI->createShaderResource(_texUnityDX11, &_shaderResources);
 
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK_RETURN(cudaGraphicsD3D11RegisterResource(
@@ -65,6 +64,8 @@ int Texture_D3D11::unregisterTextureInCUDA()
 
 int Texture_D3D11::generateMips()
 {
+    // we generate the shader resource in case the user want to use them (eg. for mips generation)
+    GRUMBLE(_renderAPI->createShaderResource(_texUnityDX11, &_shaderResources), "Could not create shader resources. Cancel mips genereation");
     _renderAPI->getCurrentContext()->GenerateMips(_shaderResources);
     return SUCCESS_INTEROP_CODE;
 }

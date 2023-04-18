@@ -62,16 +62,45 @@ int RenderAPI_D3D11::createShaderResource(
             "before.");
         return -1;
     }
+    ID3D11Texture2D *texUnityDX11 = (ID3D11Texture2D *)resource;
+    D3D11_TEXTURE2D_DESC texDesc;
+    texUnityDX11->GetDesc(&texDesc);
+    // see #6 https://github.com/davidAlgis/InteropUnityCUDA/issues/6
+    if (((texDesc.BindFlags & D3D11_BIND_RENDER_TARGET) == false ||
+         (texDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) == false) &&
+        (texDesc.MiscFlags & D3D11_RESOURCE_MISC_GENERATE_MIPS) == false)
+    {
+        // see remarks
+        // https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-generatemips
+        Log::log().debugLogError(
+            "The texture wasn't created with the correct bind or misc flags. "
+            "Mips cannot be generated. You may have this error, because with "
+            "DX11, Texture2D mips cannot be generated");
+        return -2;
+    }
 
-    _device->CreateShaderResourceView(resource, NULL, shaderResource);
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+    srvDesc.Format = texDesc.Format;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MipLevels = -1;
+
+    HRESULT hr =
+        _device->CreateShaderResourceView(resource, &srvDesc, shaderResource);
+    if (SUCCEEDED(hr) == false)
+    {
+        Log::log().debugLogError(
+            "There has been an error " + std::to_string((int)(hr)) +
+            "when creating shader resource view associated to the resource.");
+        return -3;
+    }
+
     return 0;
 }
 
 void RenderAPI_D3D11::copyTextures2D(ID3D11Texture2D *dest,
                                      ID3D11Texture2D *src)
 {
-    _device->GetImmediateContext(&_context);
-    _context->CopyResource(dest, src);
+    getCurrentContext()->CopyResource(dest, src);
 }
 
 ID3D11DeviceContext *RenderAPI_D3D11::getCurrentContext()
@@ -79,7 +108,6 @@ ID3D11DeviceContext *RenderAPI_D3D11::getCurrentContext()
     _device->GetImmediateContext(&_context);
     return _context;
 }
-
 
 void RenderAPI_D3D11::ProcessDeviceEvent(UnityGfxDeviceEventType type,
                                          IUnityInterfaces *interfaces)
