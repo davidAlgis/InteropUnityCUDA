@@ -31,6 +31,16 @@
             "working_dir": "${project_path:${folder}}",
         },
         {
+            "name": "PluginInteropUnity - Rebuild - Launch Unity",
+            "target": "terminus_exec",
+            "focus":true,
+            "timeit":false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "shell_cmd": "MsBuild PluginInteropUnity.sln /t:rebuild && Unity -projectPath ${project_path:${folder}}\\..\\InteropUnityCUDA",
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
             "name": "PluginInteropUnity - Clean",
             "target": "terminus_exec",
             "focus":true,
