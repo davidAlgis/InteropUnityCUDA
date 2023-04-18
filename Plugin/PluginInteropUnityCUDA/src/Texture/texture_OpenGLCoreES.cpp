@@ -16,7 +16,6 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
     CUDA_CHECK(cudaGetLastError());
 };
 
-
 int Texture_OpenGLCoreES::registerTextureInCUDA()
 {
     // if depth is < 2 it's a texture2D, else it's a texture2DArray
@@ -40,19 +39,27 @@ int Texture_OpenGLCoreES::unregisterTextureInCUDA()
 
 int Texture_OpenGLCoreES::copyUnityTextureToAPITexture()
 {
-    Log::log().debugLogError("copyUnityTextureToAPITexture - Not implemented yet");
+    Log::log().debugLogError(
+        "copyUnityTextureToAPITexture - Not implemented yet");
     return -1;
 }
 
 int Texture_OpenGLCoreES::copyAPITextureToUnityTexture()
 {
-    Log::log().debugLogError("copyAPITextureToUnityTexture - Not implemented yet");
+    Log::log().debugLogError(
+        "copyAPITextureToUnityTexture - Not implemented yet");
     return -1;
 }
 
 int Texture_OpenGLCoreES::generateMips()
 {
-    glGenerateMipmap(_texUnityGL);
+    // bind the texture
+    glBindTexture(_texTarget, _texUnityGL);
+    GL_CHECK();
+    glGenerateMipmap(_texTarget);
+    GL_CHECK();
+    // unbind the texture
+    glBindTexture(_texTarget, 0);
     GL_CHECK();
     return SUCCESS_INTEROP_CODE;
 }

@@ -30,9 +30,6 @@ int ActionSampleTexture::Update()
                              _texture->getSurfaceObject(), GetTime(),
                              _texture->getWidth(), _texture->getHeight());
     cudaDeviceSynchronize();
-    // GRUMBLE(_texture->generateMips(),
-            // "There has been an error during the mip map generation."
-            // "Abord ActionSampleTexture !");
     GRUMBLE(CUDA_CHECK(cudaGetLastError()),
             "There has been an error during the update. "
             "Abort ActionSampleTexture !");
