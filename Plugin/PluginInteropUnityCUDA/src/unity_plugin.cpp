@@ -64,6 +64,8 @@ extern "C"
             return false;
         }
 
+        s_DeviceType = s_Graphics->GetRenderer();
+
         if (s_DeviceType == kUnityGfxRendererNull)
         {
 
@@ -76,7 +78,9 @@ extern "C"
             s_DeviceType != kUnityGfxRendererOpenGLES20 &&
             s_DeviceType != kUnityGfxRendererOpenGLES30)
         {
-            Log::log().debugLogError("Graphics API is not supported yet.");
+            Log::log().debugLogError("Graphics API " +
+                                     std::to_string(s_DeviceType) +
+                                     " is not supported yet.");
             return false;
         }
         return true;
