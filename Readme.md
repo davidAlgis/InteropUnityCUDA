@@ -236,7 +236,7 @@ protected override void CallOnDestroy()
 
 # Platform availability
 
-It's has been tested only on Unity 2021.1 and CUDA 12.1. At the moment it only work with OpenGL and DirectX11.
+It has been tested only on Unity 2021.1 and CUDA 12.1. At the moment it only work with OpenGL and DirectX11 graphics API.
 For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
 
 # Meta
