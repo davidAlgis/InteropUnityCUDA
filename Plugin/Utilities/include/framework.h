@@ -4,58 +4,52 @@
 // https://cmake.org/Wiki/BuildingWinDLL
 // https://gcc.gnu.org/wiki/Visibility
 
-#define WIN32_LEAN_AND_MEAN             // Exclure les en-têtes Windows rarement utilisés
-// Fichiers d'en-tête Windows
-#include <windows.h>
-
-
 // Generic helper definitions for shared library support
 #if defined _WIN32 || (defined _WIN64) || (defined __CYGWIN__)
-	#if defined __MINGW32__ || (defined __MINGW64__)
-		// GCC with MINGW
-	#define UTILITIES_DLL_IMPORT __attribute__ ((visibility ("default")))
-	#define UTILITIES_DLL_EXPORT __attribute__ ((visibility ("default")))
-	#define UTILITIES_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
-	#elif defined _MSC_VER
-		// Microsoft compiler
-	#define UTILITIES_DLL_IMPORT __declspec(dllimport)
-	#define UTILITIES_DLL_EXPORT __declspec(dllexport)
-	#define UTILITIES_DLL_LOCAL
-	#else
-		// Unknown
-	#define UTILITIES_DLL_IMPORT
-	#define UTILITIES_DLL_EXPORT
-	#define UTILITIES_DLL_LOCAL
-	#endif
-	#else
-	#if __GNUC__ >= 4 || (defined __clang__)
-		// GCC
-	#define UTILITIES_DLL_IMPORT __attribute__ ((visibility ("default")))
-	#define UTILITIES_DLL_EXPORT __attribute__ ((visibility ("default")))
-	#define UTILITIES_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
-	#else
-		// GCC does not support __attribute__ before version 4.
-	#define UTILITIES_DLL_IMPORT
-	#define UTILITIES_DLL_EXPORT
-	#define UTILITIES_DLL_LOCAL
-	#endif
+#if defined __MINGW32__ || (defined __MINGW64__)
+// GCC with MINGW
+#define UTILITIES_DLL_IMPORT __attribute__((visibility("default")))
+#define UTILITIES_DLL_EXPORT __attribute__((visibility("default")))
+#define UTILITIES_DLL_LOCAL __attribute__((visibility("hidden")))
+#elif defined _MSC_VER
+// Microsoft compiler
+#define UTILITIES_DLL_IMPORT __declspec(dllimport)
+#define UTILITIES_DLL_EXPORT __declspec(dllexport)
+#define UTILITIES_DLL_LOCAL
+#else
+// Unknown
+#define UTILITIES_DLL_IMPORT
+#define UTILITIES_DLL_EXPORT
+#define UTILITIES_DLL_LOCAL
+#endif
+#else
+#if __GNUC__ >= 4 || (defined __clang__)
+// GCC
+#define UTILITIES_DLL_IMPORT __attribute__((visibility("default")))
+#define UTILITIES_DLL_EXPORT __attribute__((visibility("default")))
+#define UTILITIES_DLL_LOCAL __attribute__((visibility("hidden")))
+#else
+// GCC does not support __attribute__ before version 4.
+#define UTILITIES_DLL_IMPORT
+#define UTILITIES_DLL_EXPORT
+#define UTILITIES_DLL_LOCAL
+#endif
 #endif
 // Now we use the generic helper definitions above to define UTILITIES_API and UTILITIES_LOCAL.
-// UTILITIES_API is used for the public API symbols. It either DLL imports or DLL exports (or does nothing for static build)
-// UTILITIES_LOCAL is used for non-api symbols.
-#ifdef UTILITIES_SHARED              // Defined if UTILITIES is compiled as a DLL
-#ifdef UTILITIES_SHARED_EXPORTS  // Defined if we are building the UTILITIES DLL (instead of using it)
+// UTILITIES_API is used for the public API symbols. It either DLL imports or DLL exports (or does
+// nothing for static build) UTILITIES_LOCAL is used for non-api symbols.
+#ifdef UTILITIES_SHARED         // Defined if UTILITIES is compiled as a DLL
+#ifdef UTILITIES_SHARED_EXPORTS // Defined if we are building the UTILITIES DLL (instead of using
+                                // it)
 #define UTILITIES_API UTILITIES_DLL_EXPORT
 #else
 #define UTILITIES_API UTILITIES_DLL_IMPORT
 #endif // UTILITIES_SHARED_EXPORTS
 #define UTILITIES_LOCAL UTILITIES_DLL_LOCAL
-#else  // UTILITIES_SHARED is not defined: this means UTILITIES is a STATIC lib.
+#else // UTILITIES_SHARED is not defined: this means UTILITIES is a STATIC lib.
 #define UTILITIES_API
 #define UTILITIES_LOCAL
 #endif // UTILITIES_SHARED
-
-
 
 // Which platform we are on?
 // UNITY_WIN - Windows (regular win32)
@@ -80,15 +74,15 @@
 #endif
 #elif defined(__ANDROID__)
 #define UNITY_ANDROID 1
-#elif defined(UNITY_METRO) || defined(UNITY_LINUX) || defined(UNITY_WEBGL) || defined (UNITY_EMBEDDED_LINUX) || defined (UNITY_EMBEDDED_LINUX_GL)
-	// these are defined externally
+#elif defined(UNITY_METRO) || defined(UNITY_LINUX) || defined(UNITY_WEBGL) ||                      \
+    defined(UNITY_EMBEDDED_LINUX) || defined(UNITY_EMBEDDED_LINUX_GL)
+// these are defined externally
 #elif defined(__EMSCRIPTEN__)
-	// this is already defined in Unity 5.6
+// this is already defined in Unity 5.6
 #define UNITY_WEBGL 1
 #else
 #error "Unknown platform!"
 #endif
-
 
 // Which graphics device APIs we possibly support?
 #if UNITY_METRO
@@ -125,9 +119,12 @@
 #define SUPPORT_METAL 1
 #endif
 
-
-
 // COM-like Release macro
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(a) if (a) { a->Release(); a = NULL; }
+#define SAFE_RELEASE(a)                                                                            \
+    if (a)                                                                                         \
+    {                                                                                              \
+        a->Release();                                                                              \
+        a = NULL;                                                                                  \
+    }
 #endif
