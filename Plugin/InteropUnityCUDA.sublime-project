@@ -1,40 +1,55 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	],
-	    "build_systems": [
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "build_systems": [
         {
             "name": "PluginInteropUnity - Build",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "shell_cmd": "MsBuild PluginInteropUnity.sln /t:build",
             "working_dir": "${project_path:${folder}}",
         },
         {
-            "name": "PluginInteropUnity - Rebuild",
+            "name": "PluginInteropUnity - Rebuild - Debug",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "cmd": [
                 "MsBuild",
                 "PluginInteropUnity.sln",
-                "/t:rebuild"
+                "/t:rebuild",
+                "/p:Configuration=Debug",
+            ],
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
+            "name": "PluginInteropUnity - Rebuild - Release",
+            "target": "terminus_exec",
+            "focus": true,
+            "timeit": false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "cmd": [
+                "MsBuild",
+                "PluginInteropUnity.sln",
+                "/t:rebuild",
+                "/p:Configuration=Release",
             ],
             "working_dir": "${project_path:${folder}}",
         },
         {
             "name": "PluginInteropUnity - Rebuild - Launch Unity",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "shell_cmd": "MsBuild PluginInteropUnity.sln /t:rebuild && Unity -projectPath ${project_path:${folder}}\\..\\InteropUnityCUDA",
@@ -43,8 +58,8 @@
         {
             "name": "PluginInteropUnity - Clean",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "cmd": [
@@ -57,8 +72,8 @@
         {
             "name": "Proj - Utilities Plugin - Build",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "cmd": [
@@ -71,8 +86,8 @@
         {
             "name": "Proj - SampleBasic - Build",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "cmd": [
@@ -85,8 +100,8 @@
         {
             "name": "Proj - PluginInteropUnityCUDA - Build",
             "target": "terminus_exec",
-            "focus":true,
-            "timeit":false,
+            "focus": true,
+            "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
             "cmd": [
@@ -122,7 +137,6 @@
                 "Unity",
                 "-projectPath",
                 "${project_path:${folder}}\\..\\InteropUnityCUDA",
-                
             ],
             "shell": true,
         },
