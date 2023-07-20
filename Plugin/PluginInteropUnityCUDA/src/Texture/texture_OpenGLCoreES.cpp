@@ -18,6 +18,13 @@ Texture_OpenGLCoreES::~Texture_OpenGLCoreES()
 
 int Texture_OpenGLCoreES::registerTextureInCUDA()
 {
+    if (_textureHandle == nullptr)
+    {
+        Log::log().debugLogError(
+            "The texture ptr is null, please create it in Unity and then send "
+            "it with GetNativePtr function.");
+        return -1;
+    }
     // if depth is < 2 it's a texture2D, else it's a texture2DArray
     _texTarget = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
 

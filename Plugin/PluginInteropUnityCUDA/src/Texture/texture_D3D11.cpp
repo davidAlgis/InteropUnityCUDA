@@ -22,6 +22,13 @@ Texture_D3D11::~Texture_D3D11()
 
 int Texture_D3D11::registerTextureInCUDA()
 {
+    if (_textureHandle == nullptr)
+    {
+        Log::log().debugLogError(
+            "The texture ptr is null, please create it in Unity and then send "
+            "it with GetNativePtr function.");
+        return -1;
+    }
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
     _texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
 
@@ -39,14 +46,13 @@ int Texture_D3D11::registerTextureInCUDA()
         format == DXGI_FORMAT_R32G32_TYPELESS ||
         format == DXGI_FORMAT_R8_TYPELESS)
     {
-        Log::log().debugLogError(
-            "Texture of type " + std::to_string(format) +
-            " cannot be registered in CUDA." +
-            " It may comes from the fact that you can\'t used RenderTexture for "
-            "DX11 but only Texture2D.");
+        Log::log().debugLogError("Texture of type " + std::to_string(format) +
+                                 " cannot be registered in CUDA." +
+                                 " It may comes from the fact that you can\'t "
+                                 "used RenderTexture for "
+                                 "DX11 but only Texture2D.");
         return -1;
     }
-
 
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK_RETURN(cudaGraphicsD3D11RegisterResource(
@@ -54,7 +60,6 @@ int Texture_D3D11::registerTextureInCUDA()
 
     return SUCCESS_INTEROP_CODE;
 }
-
 
 int Texture_D3D11::unregisterTextureInCUDA()
 {
@@ -64,12 +69,13 @@ int Texture_D3D11::unregisterTextureInCUDA()
 
 int Texture_D3D11::generateMips()
 {
-    // we generate the shader resource in case the user want to use them (eg. for mips generation)
-    GRUMBLE(_renderAPI->createShaderResource(_texUnityDX11, &_shaderResources), "Could not create shader resources. Cancel mips genereation");
+    // we generate the shader resource in case the user want to use them (eg.
+    // for mips generation)
+    GRUMBLE(_renderAPI->createShaderResource(_texUnityDX11, &_shaderResources),
+            "Could not create shader resources. Cancel mips genereation");
     _renderAPI->getCurrentContext()->GenerateMips(_shaderResources);
     return SUCCESS_INTEROP_CODE;
 }
-
 
 int Texture_D3D11::copyUnityTextureToAPITexture()
 {

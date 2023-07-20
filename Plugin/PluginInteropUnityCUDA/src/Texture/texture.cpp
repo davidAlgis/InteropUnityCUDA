@@ -4,6 +4,14 @@
 Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
                  int textureDepth)
 {
+    if (textureHandle == nullptr)
+    {
+        Log::log().debugLogError(
+            "The texture ptr is null, please create it in Unity and then send "
+            "it with GetNativePtr function.");
+        return;
+    }
+
     _textureHandle = textureHandle;
     _textureWidth = textureWidth;
     _textureHeight = textureHeight;
@@ -69,8 +77,8 @@ int Texture::mapTextureToSurfaceObject()
         CUDA_CHECK_RETURN(cudaGetLastError());
     }
     CUDA_CHECK_RETURN(cudaMemcpy(d_surfObjArray, _surfObjArray,
-                          _textureDepth * sizeof(cudaSurfaceObject_t),
-                          cudaMemcpyHostToDevice));
+                                 _textureDepth * sizeof(cudaSurfaceObject_t),
+                                 cudaMemcpyHostToDevice));
     return SUCCESS_INTEROP_CODE;
 }
 
@@ -134,9 +142,9 @@ cudaSurfaceObject_t Texture::getSurfaceObject(int indexInArray) const
     }
 
     // to use a single surface object in a kernel
-    // we can use directly the surface object that 
+    // we can use directly the surface object that
     // is on host side, because cudaSurfaceObject_t is a
     // typename for unsigned long long which can be directly
-    // send to kernel as it's managed memory ? 
+    // send to kernel as it's managed memory ?
     return _surfObjArray[indexInArray];
 }
