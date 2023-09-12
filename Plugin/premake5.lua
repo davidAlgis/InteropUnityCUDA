@@ -12,7 +12,7 @@ function loadrequire(module, linkToRepository)
 end
 
 local root = "./"
-local pathTarget = "../InteropUnityCUDA/Assets/Plugin"
+local pathTarget = "../InteropUnityCUDA/Assets/Runtime/Plugin"
 local pathSampleProject = "SampleBasic"
 local pathUtilities = root .. "Utilities"
 local pathPluginInterop = root .. "PluginInteropUnityCUDA"

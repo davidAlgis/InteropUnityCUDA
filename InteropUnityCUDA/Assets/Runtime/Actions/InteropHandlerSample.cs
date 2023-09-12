@@ -26,11 +26,16 @@ namespace ActionUnity
         [SerializeField] private int _sizeBuffer = 256;
 
         private Texture2D _texture;
-        // private RenderTexture _texture;
-        private Texture2DArray _textureArray;
         private Texture2D _textureForDisplay0;
         private Texture2D _textureForDisplay1;
+        private Texture2DArray _textureArray;
         private ComputeBuffer _computeBuffer;
+
+        public Texture2D Texture => _texture;
+
+        public Texture2DArray TextureArray => _textureArray;
+
+        public ComputeBuffer ComputeBuffer => _computeBuffer;
 
         /// <summary>
         /// Create a render texture _sizeTexture x _sizeTexture with 4 channel and and set _renderTexture with it
@@ -39,9 +44,14 @@ namespace ActionUnity
         {
             _texture = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
             _texture.Apply();
-            // _texture = new RenderTexture(_sizeTexture, _sizeTexture, 1, RenderTextureFormat.ARGB32);
-            // _texture.Create();
-            _rawImageOneTexture.texture = _texture;
+            if (_rawImageOneTexture != null)
+            {
+                _rawImageOneTexture.texture = _texture;
+            }
+            else
+            {
+                Debug.LogWarning("If you want to visualize the change please filled the _rawImageOneTexture field in InteropHandlerSample monobehavior.");
+            }
         }
         
         private void CreateTextureArray()
@@ -55,8 +65,23 @@ namespace ActionUnity
             _textureForDisplay1 = new Texture2D(_sizeTexture, _sizeTexture, TextureFormat.RGBAFloat, false, true);
             _textureForDisplay1.Apply();
             
-            _rawImageTextureArray0.texture = _textureForDisplay0;
-            _rawImageTextureArray1.texture = _textureForDisplay1;
+            if (_rawImageTextureArray0 != null)
+            {
+                _rawImageTextureArray0.texture = _textureForDisplay0;
+            }
+            else
+            {
+                Debug.LogWarning("If you want to visualize the change please filled the _rawImageTextureArray0 field in InteropHandlerSample monobehavior.");
+            }
+            
+            if (_rawImageTextureArray1 != null)
+            {
+                _rawImageTextureArray1.texture = _textureForDisplay1;
+            }
+            else
+            {
+                Debug.LogWarning("If you want to visualize the change please filled the _rawImageTextureArray1 field in InteropHandlerSample monobehavior.");
+            }
         }
 
         /// <summary>
@@ -67,14 +92,21 @@ namespace ActionUnity
             int stride = Marshal.SizeOf(typeof(float4));
             //allocate memory for compute buffer
             _computeBuffer = new ComputeBuffer(_sizeBuffer, stride);
-            _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
+            
+            if (_particlesDrawer != null)
+            {
+                _particlesDrawer.InitParticlesBuffer(_computeBuffer, _sizeBuffer, 0.1f);
+            }
+            else
+            {
+                Debug.LogWarning("If you want to visualize the change please filled the _particlesDrawer field in InteropHandlerSample monobehavior.");
+            }
         }
         
 
-        private void Start()
+        public void Start()
         {
             InitializeInteropHandler();
-            
         }
 
         /// <summary>
@@ -84,13 +116,7 @@ namespace ActionUnity
         protected override void InitializeActions()
         {
             base.InitializeActions();
-            
-            if (_particlesDrawer == null)
-            {
-                Debug.LogError("Set particles drawer in inspector !");
-                return;
-            }
-            
+
             InitSampleTexture();
             InitSampleTextureArray();
             InitSampleVertexBuffer();
@@ -123,6 +149,7 @@ namespace ActionUnity
 
         public void Update()
         {
+            Debug.Log("update");
             UpdateInteropHandler();
         }
 
@@ -131,6 +158,7 @@ namespace ActionUnity
         /// </summary>
         protected override void UpdateActions()
         {
+            Debug.Log("update actions");
             base.UpdateActions();
             CallFunctionUpdateInAction(_ActionTextureName);
             CallFunctionUpdateInAction(_ActionTextureArrayName);

@@ -8,7 +8,7 @@ using UnityEngine;
 /// This class will use Utilities.dll to read and print the logs that has been
 /// written by the other plugin. 
 /// </summary>
-class PluginLoggerReader : MonoBehaviour
+public class PluginLoggerReader : MonoBehaviour
 {
     
     #if UNITY_EDITOR || UNITY_STANDALONE
