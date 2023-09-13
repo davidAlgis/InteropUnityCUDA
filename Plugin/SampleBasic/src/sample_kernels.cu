@@ -15,8 +15,8 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height,
     }
 }
 
-__global__ void writeTexArray(cudaSurfaceObject_t* surfObjArray, int width, int height,
-                              int depth, float time)
+__global__ void writeTexArray(cudaSurfaceObject_t *surfObjArray, int width,
+                              int height, int depth, float time)
 {
     const unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -25,7 +25,7 @@ __global__ void writeTexArray(cudaSurfaceObject_t* surfObjArray, int width, int 
     if (x < width && y < height && z < depth)
     {
 
-        float4 t = make_float4(z % 2, abs((z+1)*cos(time)), 0, 1.0f);
+        float4 t = make_float4(z % 2, abs((z + 1) * cos(time)), 0, 1.0f);
 
         surf2Dwrite(t, surfObjArray[z], sizeof(float4) * x, y);
     }
@@ -38,8 +38,9 @@ __global__ void writeVertexBuffer(float4 *pos, int size, float time)
     // write output vertex
     if (x < size)
     {
-        pos[x] = make_float4(cos(2 * CUDART_PI_F * time / x),
-                             sin(2 * CUDART_PI_F * time / x), 0.0f, 1.0f);
+        pos[x] = make_float4(
+            cos(2 * CUDART_PI_F * time / (abs((float)x) + 1.0f)),
+            sin(2 * CUDART_PI_F * time / (abs((float)x) + 1.0f)), 0.0f, 1.0f);
     }
 }
 
@@ -52,11 +53,12 @@ void kernelCallerWriteTexture(const dim3 dimGrid, const dim3 dimBlock,
 }
 
 void kernelCallerWriteTextureArray(const dim3 dimGrid, const dim3 dimBlock,
-                                   cudaSurfaceObject_t* surfObjArray,
+                                   cudaSurfaceObject_t *surfObjArray,
                                    const float time, const int width,
                                    const int height, const int depth)
 {
-    writeTexArray<<<dimGrid, dimBlock>>>(surfObjArray, width, height, depth, time);
+    writeTexArray<<<dimGrid, dimBlock>>>(surfObjArray, width, height, depth,
+                                         time);
 }
 
 void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock,
