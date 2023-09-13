@@ -9,6 +9,8 @@
 
 **/.clangd*
 
+*versionRC.h
+
 ### C++ ###
 # Prerequisites
 *.d
