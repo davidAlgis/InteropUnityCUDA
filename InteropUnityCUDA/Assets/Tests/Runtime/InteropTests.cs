@@ -29,7 +29,7 @@ public class InteropTests
     public IEnumerator TestTextureInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 0.5f;
+        float simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
@@ -43,7 +43,7 @@ public class InteropTests
     public IEnumerator TestTextureArrayInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 0.5f;
+        float simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
@@ -56,7 +56,7 @@ public class InteropTests
     public IEnumerator TestBufferInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 0.5f;
+        float simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
