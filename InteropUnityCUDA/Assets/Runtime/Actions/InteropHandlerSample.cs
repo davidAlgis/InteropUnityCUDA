@@ -149,7 +149,6 @@ namespace ActionUnity
 
         public void Update()
         {
-            Debug.Log("update");
             UpdateInteropHandler();
         }
 
@@ -158,7 +157,6 @@ namespace ActionUnity
         /// </summary>
         protected override void UpdateActions()
         {
-            Debug.Log("update actions");
             base.UpdateActions();
             CallFunctionUpdateInAction(_ActionTextureName);
             CallFunctionUpdateInAction(_ActionTextureArrayName);
