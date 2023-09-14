@@ -122,12 +122,12 @@ foreach ($api in $supportedGraphicsAPI) {
     $testsPassed = $testsPassed -and $result[1]
 }
 
+
 if ($testsPassed -eq $True) {
     Write-Host "All unit tests have passed !" -ForegroundColor Green
+    Exit 0
 }
 else {
     Write-Host "Some Unit tests with $apiName have failed !" -ForegroundColor Red
-          
+    Exit -1     
 }
-
-Exit $testsPassed
