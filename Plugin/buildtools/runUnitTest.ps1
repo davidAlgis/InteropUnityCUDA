@@ -1,3 +1,16 @@
+<#
+.SYNOPSIS
+This script run unit test of Unity with all supported API
+
+.EXAMPLE
+.\runUnitTest.ps1 will run all unit test and return 0 if they passed else -1
+
+.NOTES
+File Name      : runUnitTest.ps1
+Author         : David Algis
+Prerequisite   : PowerShell v3 and MsBuild
+Copyright 2023 - Studio Nyx
+#>
 
 . $PSScriptRoot\dependencies.ps1
 
