@@ -35,6 +35,34 @@ function loadrequire(module, linkToRepository)
     end
 end
 
+function addCUDAToProject(sourceDir, objDir)
+    buildcustomizations "BuildCustomizations/CUDA 12.2"
+    -- CUDA specific properties
+
+    cudaIntDir(objDir)
+    cudaFiles
+    {
+        sourceDir .. "/**.cu"
+    }
+
+    cudaFastMath "On"
+    cudaRelocatableCode "On"
+    cudaMaxRegCount "32"
+
+    -- Let's compile for all supported architectures (and also in parallel with -t0)
+    cudaCompilerOptions { "-gencode=arch=compute_52,code=sm_52", "-gencode=arch=compute_75,code=sm_75",
+        "-gencode=arch=compute_80,code=sm_80",
+        "-gencode=arch=compute_86,code=sm_86", "-t0", "-Wreorder", "-Werror=reorder", "-err-no", "-Xcompiler=/wd4505" }
+
+    filter "configurations:debug"
+    cudaLinkerOptions { "-g", "-Xcompiler=/wd4100" }
+    filter {}
+
+    filter "configurations:release"
+    cudaFastMath "On"
+    filter {}
+end
+
 local root = "./"
 local pathTarget = "../InteropUnityCUDA/Assets/Runtime/Plugin"
 local pathSampleProject = "SampleBasic"
@@ -98,7 +126,8 @@ local rootProject = pathPluginInterop
 location(rootProject)
 language "C++"
 targetdir(pathTarget, "SampleBasic")
-objdir(rootProject .. "/temp/")
+local tempDir = rootProject .. "/temp/"
+objdir(tempDir)
 kind "SharedLib"
 
 local SourceDir = rootProject .. "/src/";
@@ -142,31 +171,9 @@ links { "GL", nameUtilitiesLib }
 filter {}
 
 
--- Add necessary build customization using standard Premake5
--- This assumes you have installed Visual Studio integration for CUDA
--- Here we have it set to 11.4
-buildcustomizations "BuildCustomizations/CUDA 12.2"
--- cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
-
--- CUDA specific properties
-cudaFiles { SourceDir .. "**.cu" }
-cudaMaxRegCount "32"
-
--- Let's compile for all supported architectures (and also in parallel with -t0)
-cudaCompilerOptions { "-arch=sm_52", "-gencode=arch=compute_52,code=sm_52", "-gencode=arch=compute_60,code=sm_60",
-    "-gencode=arch=compute_61,code=sm_61", "-gencode=arch=compute_70,code=sm_70",
-    "-gencode=arch=compute_75,code=sm_75", "-gencode=arch=compute_80,code=sm_80",
-    "-gencode=arch=compute_86,code=sm_86", "-gencode=arch=compute_86,code=compute_86", "-t0" }
-
--- On Windows, the link to cudart is done by the CUDA extension, but on Linux, this must be done manually
-if os.target() == "linux" then
-    linkoptions { "-L/usr/local/cuda/lib64 -lcudart" }
-end
-
-filter "configurations:release"
-cudaFastMath "On" -- enable fast math for release
-filter ""
-
+sourceDirAbsolute = path.getabsolute(SourceDir)
+objDirAbsolute = path.getabsolute(tempDir)
+addCUDAToProject(sourceDirAbsolute, objDirAbsolute)
 
 
 
@@ -179,7 +186,8 @@ local rootProject = root .. locationProject
 location(rootProject)
 language "C++"
 targetdir(pathTarget)
-objdir(rootProject .. "/temp/")
+local tempDir = rootProject .. "/temp/"
+objdir(tempDir)
 kind "SharedLib"
 
 local SourceDir = rootProject .. "/src/";
@@ -262,7 +270,8 @@ location(rootProject)
 kind "SharedLib"
 language "C++"
 targetdir(pathTarget)
-objdir(rootProject .. "/temp/" .. locationProject)
+local tempDir = rootProject .. "/temp/"
+objdir(tempDir)
 
 local SourceDir = rootProject .. "/src/";
 local IncludeDir = pathUtilitiesInclude;
@@ -287,24 +296,6 @@ flags {}
 defines { "UTILITIES_SHARED", "UTILITIES_SHARED_EXPORTS" }
 symbols "On"
 
--- Add necessary build customization using standard Premake5
--- This assumes you have installed Visual Studio integration for CUDA
--- Here we have it set to 11.4
-buildcustomizations "BuildCustomizations/CUDA 12.2"
--- cudaPath "/usr/local/cuda" -- Only affects linux, because the windows builds get CUDA from the VS extension
-
-cudaMaxRegCount "32"
--- Let's compile for all supported architectures (and also in parallel with -t0)
-cudaCompilerOptions { "-arch=sm_52", "-gencode=arch=compute_52,code=sm_52", "-gencode=arch=compute_60,code=sm_60",
-    "-gencode=arch=compute_61,code=sm_61", "-gencode=arch=compute_70,code=sm_70",
-    "-gencode=arch=compute_75,code=sm_75", "-gencode=arch=compute_80,code=sm_80",
-    "-gencode=arch=compute_86,code=sm_86", "-gencode=arch=compute_86,code=compute_86", "-t0" }
-
--- On Windows, the link to cudart is done by the CUDA extension, but on Linux, this must be done manually
-if os.target() == "linux" then
-    linkoptions { "-L/usr/local/cuda/lib64 -lcudart" }
-end
-
-filter "configurations:release"
-cudaFastMath "On" -- enable fast math for release
-filter ""
+sourceDirAbsolute = path.getabsolute(SourceDir)
+objDirAbsolute = path.getabsolute(tempDir)
+addCUDAToProject(sourceDirAbsolute, objDirAbsolute)
