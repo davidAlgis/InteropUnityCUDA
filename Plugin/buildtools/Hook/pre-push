@@ -1,0 +1,12 @@
+#!/bin/sh
+# Check that unit test have passed
+
+ps_script="Plugin\\buildtools\\runUnitTest.ps1"
+
+if [ -f "$ps_script" ]; then
+    exec powershell.exe -ExecutionPolicy RemoteSigned -File "$ps_script"
+    exit
+else
+    echo "No powershell script has been found at $ps_script we won't check comment and allow to push."
+    exit 0
+fi
