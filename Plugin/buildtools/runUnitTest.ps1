@@ -14,14 +14,14 @@ Copyright 2023 - Studio Nyx
 
 . $PSScriptRoot\dependencies.ps1
 
-function WaitUnity([System.Diagnostics.ProcessStartInfo] $processInfo, $targetName, $unityProjectPath) {
+function WaitUnity([System.Diagnostics.ProcessStartInfo] $processInfo, $targetName, $unityProjectPath, $apiName) {
     $appdata = "$env:LOCALAPPDATA"
     $logPath = "$appdata\Unity\Editor\Editor.log"
     $processLogsPath = "$unityProjectPath\TestResults"
 
     $processInfo.FileName = "$Env:UNITY_2021_3_17\Unity.exe"
-    $processInfo.RedirectStandardError = "$processLogsPath\Error.log"
-    $processInfo.RedirectStandardOutput = "$processLogsPath\Output.log"
+    $processInfo.RedirectStandardError = "$processLogsPath$apiName\Error.log"
+    $processInfo.RedirectStandardOutput = "$processLogsPath$apiName\Output.log"
     $processInfo.UseShellExecute = $false
 
     $process = New-Object System.Diagnostics.Process
@@ -54,7 +54,7 @@ function WaitUnity([System.Diagnostics.ProcessStartInfo] $processInfo, $targetNa
 
     if ($process.HasExited) {
         # Keep a local copy of Unity logs for each targets
-        $unityLogsCopy = "$processLogsPath\$targetName.log"
+        $unityLogsCopy = "$processLogsPath\$targetName$apiName.log"
         Copy-Item $logPath $unityLogsCopy
 
         # Unity does not send valid keycode at the end of process operation
@@ -103,13 +103,12 @@ function RunUnitTestWithAPI($apiName) {
 
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.Arguments = $cmdArgs
-    WaitUnity $pinfo "UnitTest_InteropUnityCUDA" $Env:INTEROP_UNITY_CUDA_UNITY_PROJECT_ROOT
+    WaitUnity $pinfo "UnitTest_InteropUnityCUDA" $Env:INTEROP_UNITY_CUDA_UNITY_PROJECT_ROOT $apiName
 
     [xml]$c = (Get-Content $xmlPath)
     # Display test results
     $details = $c.'test-run'.'test-suite'.'test-suite'.'test-suite'.'test-case' | Select-Object name, duration, result
     $details | Format-Table | Out-String | ForEach-Object { Write-Host $_ }
-    Write-Host "Passed " $c.'test-run'.'passed' "/"  $c.'test-run'.'total' 
     $resultTest = $c.'test-run'.'passed' -eq $c.'test-run'.'total'
     if ($resultTest -eq $True) {
         Write-Host "Unit tests with $apiName have passed !" -ForegroundColor Green
