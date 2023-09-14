@@ -66,6 +66,16 @@
             "working_dir": "${project_path:${folder}}",
         },
         {
+            "name": "Packaged Unity",
+            "target": "terminus_exec",
+            "focus": true,
+            "timeit": false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\packageUnity.ps1 \"..\\com.studio-nyx.interop-unity-cuda.\"",
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
             "name": "Proj - Open Log",
             "cmd": [
                 "..\\InteropUnityCUDA\\log.txt",
