@@ -40,26 +40,14 @@
 Checks: >
   -*,
   bugprone-*,
+  -bugprone-easily-swappable-parameters*,
   google-*,
   misc-*,
   modernize-*,
   performance-*,
   portability-*,
   readability-*,
-  -google-readability-braces-around-statements,
-  -google-readability-namespace-comments,
-  -google-runtime-references,
-  -misc-non-private-member-variables-in-classes,
-  -modernize-return-braced-init-list,
-  -modernize-use-trailing-return-type,
-  -modernize-avoid-c-arrays,
-  -performance-move-const-arg,
-  -readability-braces-around-statements,
-  -readability-magic-numbers,
-  -readability-named-parameter,
-  -readability-redundant-declaration,
-  -readability-function-cognitive-complexity,
-  -bugprone-narrowing-conversions
+  
 # Turn all the warnings from the checks above into errors.
 # WarningsAsErrors: "*"
 
