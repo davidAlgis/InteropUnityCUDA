@@ -38,7 +38,7 @@ param(
 
 . $PSScriptRoot\dependencies.ps1
 
-$version = $Env:HYBRIDIZATION_VERSION
+$version = $Env:INTEROP_UNITY_CUDA_VERSION
 # For non dll project, write NO in description
 [string[][]]$possibleProjectValues = @(
     @("PluginInteropUnityCUDA", "Contains a library with the core of interoperability between Unity and CUDA."),
