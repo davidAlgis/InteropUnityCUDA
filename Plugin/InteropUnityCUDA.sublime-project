@@ -1,12 +1,12 @@
 {
     "folders": [
         {
-            "path": "."
+            "path": ".",
         }
     ],
     "build_systems": [
         {
-            "name": "Run Unit-Test",
+            "name": "PluginInteropUnity - Run Unit-Test",
             "target": "terminus_exec",
             "focus": true,
             "timeit": false,
