@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+This script generate a folder that can be used as a unity package.
+
+.PARAMETER targetFolder
+Location of the folder where the Unity package will be generated, it automatically add the version to it.
+eg. com.studio-nyx.interop-unity-cuda. will become ..\\com.studio-nyx.interop-unity-cuda.1.0.1
+
+.EXAMPLE
+.\packageUnity.ps1 "..\\..\\com.studio-nyx.interop-unity-cuda."
+will result in a folder .com.studio-nyx.interop-unity-cuda.1.0.1
+
+.NOTES
+File Name      : packageUnity.ps1
+Author         : David Algis
+Prerequisite   : PowerShell v3
+Copyright 2023 - Studio Nyx
+#>
 param(
     [string]$targetFolder
 )

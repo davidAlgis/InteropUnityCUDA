@@ -8,7 +8,7 @@ This script run unit test of Unity with all supported API
 .NOTES
 File Name      : runUnitTest.ps1
 Author         : David Algis
-Prerequisite   : PowerShell v3 and MsBuild
+Prerequisite   : PowerShell v3
 Copyright 2023 - Studio Nyx
 #>
 
