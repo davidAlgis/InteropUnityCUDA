@@ -141,6 +141,19 @@
             "shell": true,
         },
         {
+            "name": "PluginInterop - Premake5 - Clean",
+            "cmd": [
+                "echo",
+                "run clean $pwd",
+                "&&",
+                "premake5",
+                "--file=${project_path:${folder}}\\premake5.lua",
+                "clean"
+            ],
+            "shell": true,
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
             "name": "PluginInterop - Premake5 Vs",
             "cmd": [
                 "premake5",

@@ -1,3 +1,27 @@
+local projectsDir = {
+    "PluginInteropUnityCUDA/",
+    "SampleBasic/",
+    "Utilities/",
+}
+
+-- Define the "clean" action
+newaction {
+    trigger     = "clean",
+    description = "Clean the project",
+    execute     = function()
+
+        cwd = os.getcwd()
+        local pathCleanPs1 = ".//buildtools//clean.ps1"
+        print("Run " .. pathCleanPs1 .. " from " .. cwd)
+        -- Create a list of all projects to pass as arguments
+        local projectDirList = table.concat(projectsDir, ",")
+
+        -- Call the PowerShell script with required arguments
+        os.execute('powershell -NoProfile -ExecutionPolicy Bypass -File ' ..
+            pathCleanPs1 .. ' -projectDirs "' .. projectDirList .. '" -solutionDir "' .. cwd .. '"')
+    end
+}
+
 function loadrequire(module, linkToRepository)
     local function requiref(module)
         require(module)
