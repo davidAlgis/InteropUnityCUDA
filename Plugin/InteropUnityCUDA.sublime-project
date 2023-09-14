@@ -6,13 +6,23 @@
     ],
     "build_systems": [
         {
+            "name": "Run Unit-Test",
+            "target": "terminus_exec",
+            "focus": true,
+            "timeit": false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\runUnitTest.ps1",
+            "working_dir": "${project_path:${folder}}",
+        },
+        {
             "name": "PluginInteropUnity - Build",
             "target": "terminus_exec",
             "focus": true,
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "MsBuild PluginInteropUnity.sln /t:build",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"build\"",
             "working_dir": "${project_path:${folder}}",
         },
         {
@@ -22,12 +32,7 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "PluginInteropUnity.sln",
-                "/t:rebuild",
-                "/p:Configuration=Debug",
-            ],
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" -configuration \"debug\"",
             "working_dir": "${project_path:${folder}}",
         },
         {
@@ -37,12 +42,7 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "PluginInteropUnity.sln",
-                "/t:rebuild",
-                "/p:Configuration=Release",
-            ],
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" -configuration \"release\"",
             "working_dir": "${project_path:${folder}}",
         },
         {
@@ -52,7 +52,7 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "MsBuild PluginInteropUnity.sln /t:rebuild && Unity -projectPath ${project_path:${folder}}\\..\\InteropUnityCUDA",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" && Unity -projectPath ${project_path:${folder}}\\..\\InteropUnityCUDA",
             "working_dir": "${project_path:${folder}}",
         },
         {
@@ -62,53 +62,7 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "PluginInteropUnity.sln",
-                "/t:clean"
-            ],
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "Proj - Utilities Plugin - Build",
-            "target": "terminus_exec",
-            "focus": true,
-            "timeit": false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "-target:Utilities",
-                "/t:build"
-            ],
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "Proj - SampleBasic - Build",
-            "target": "terminus_exec",
-            "focus": true,
-            "timeit": false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "-target:SampleBasic",
-                "/t:build"
-            ],
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "Proj - PluginInteropUnityCUDA - Build",
-            "target": "terminus_exec",
-            "focus": true,
-            "timeit": false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "cmd": [
-                "MsBuild",
-                "-target:PluginInteropUnityCUDA",
-                "/t:build"
-            ],
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"clean\"",
             "working_dir": "${project_path:${folder}}",
         },
         {

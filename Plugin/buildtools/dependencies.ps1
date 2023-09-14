@@ -1,0 +1,13 @@
+function AbsolutePath($path) {
+    # Strips out any relative path modifiers like '..' and '.'
+    $abs_path = [System.IO.Path]::GetFullPath($path)
+
+    return $abs_path
+}
+
+$Env:INTEROP_UNITY_CUDA_VERSION = "1.0.1"
+$Env:INTEROP_UNITY_CUDA_PLUGIN_ROOT = AbsolutePath ([System.IO.Path]::GetDirectoryName( $MyInvocation.MyCommand.Definition) + "\..")
+$Env:INTEROP_UNITY_CUDA_UNITY_PROJECT_ROOT = AbsolutePath ([System.IO.Path]::GetDirectoryName( $MyInvocation.MyCommand.Definition) + "\..\..\InteropUnityCUDA")
+# Write-Host "$Env:INTEROP_UNITY_CUDA_UNITY_PROJECT_ROOT"
+# $Env:INTEROP_UNITY_CUDA_PLUGIN_TARGET = "\Assets\Runtime\Plugin"
+$Env:UNITY_2021_3_17 = "C:\Program Files\Unity\Hub\Editor\2021.3.17f1\Editor"
