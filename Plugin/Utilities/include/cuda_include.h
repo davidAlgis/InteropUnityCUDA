@@ -1,6 +1,7 @@
 #pragma once
 #include "cuda_runtime.h"
 #include "log.h"
+#include <stdexcept>
 
 // use this macro if you want to check cuda function
 
@@ -32,8 +33,7 @@
  * @brief      Check if a cuda function has succeed. If it doesn't log the cuda
  * error and a msg and return;
  *
- * @param      ans   Check if a cuda function has succeed. If it doesn't log the
- * cuda error  and return the error code
+ * @param      ans   The return code of the cuda function
  * @param      msg   A string to log
  *
  */
@@ -47,6 +47,17 @@
         }                                                                                          \
     }
 
+/**
+ * @brief      Check if a cuda function has succeed. If it doesn't log the
+ * cuda error and throw a runtime error
+ *
+ * @param      ans   A function that return a cudaError_t
+ */
+#define CUDA_CHECK_THROW(ans)                                                                      \
+    {                                                                                              \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
+        if (ret != 0) throw std::runtime_error(cudaGetErrorString(ans));                           \
+    }
 /**
  * @brief      Check if a cufft function has succeed. If it doesn't log the
  * cufft error
