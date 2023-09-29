@@ -48,6 +48,19 @@
     }
 
 /**
+ * @brief      Check if a cuda function has succeed. If it doesn't log the cuda
+ * error and a msg and return false.
+ *
+ * @param      ans   The return code of the cuda function
+ *
+ */
+#define CUDA_CHECK_RETURN_BOOL(ans)                                                                \
+    {                                                                                              \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
+        if (ret != 0) { return false; }                                                            \
+    }
+
+/**
  * @brief      Check if a cuda function has succeed. If it doesn't log the
  * cuda error and throw a runtime error
  *
