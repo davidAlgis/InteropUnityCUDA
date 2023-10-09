@@ -60,8 +60,8 @@ extern "C"
      *
      * @return     The vertex buffer that has been created
      */
-    UNITY_INTERFACE_EXPORT Buffer *CreateVertexBufferInterop(void *bufferHandle,
-                                                             int size);
+    UNITY_INTERFACE_EXPORT Buffer *CreateBufferInterop(void *bufferHandle,
+                                                       int size);
 
     /**
      * @brief      Set time for interoperability plugin

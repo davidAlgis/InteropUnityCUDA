@@ -26,7 +26,7 @@ extern "C"
     }
 
     UNITY_INTERFACE_EXPORT Buffer *UNITY_INTERFACE_API
-    CreateVertexBufferInterop(void *bufferHandle, int size)
+    CreateBufferInterop(void *bufferHandle, int size)
     {
         if (sGraphics == nullptr)
         {

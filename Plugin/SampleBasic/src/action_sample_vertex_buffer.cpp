@@ -7,7 +7,7 @@ namespace SampleBasic
 
 ActionSampleVertexBuffer::ActionSampleVertexBuffer(void *bufferPtr, int size)
 {
-    _vertexBuffer = CreateVertexBufferInterop(bufferPtr, size);
+    _vertexBuffer = CreateBufferInterop(bufferPtr, size);
 }
 
 inline int ActionSampleVertexBuffer::Start()
