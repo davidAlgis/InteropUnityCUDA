@@ -30,9 +30,9 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
     // TODO : update this for texture depth
     _dimBlock = {8, 8, 1};
     _dimGrid = calculateDimGrid(_dimBlock,
-                                {(unsigned int)textureWidth,
-                                 (unsigned int)textureHeight,
-                                 (unsigned int)textureDepth},
+                                {static_cast<unsigned int>(textureWidth),
+                                 static_cast<unsigned int>(textureHeight),
+                                 static_cast<unsigned int>(textureDepth)},
                                 false);
     // initialize surface object
     _surfObjArray = new cudaSurfaceObject_t[textureDepth];

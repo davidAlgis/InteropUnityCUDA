@@ -1,5 +1,4 @@
 #pragma once
-
 #include "IUnityGraphics.h"
 #include "action.h"
 #include "log.h"
@@ -142,29 +141,30 @@ extern "C"
 }
 
 static float _time;
-// if it's different of 0 abort the plugin
 
 // current API used by Unity
-static RenderAPI *s_CurrentAPI = NULL;
-static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
-static IUnityInterfaces *s_UnityInterfaces = NULL;
-static IUnityGraphics *s_Graphics = NULL;
+static RenderAPI *sCurrentApi = nullptr;
+static UnityGfxRenderer sDeviceType = kUnityGfxRendererNull;
+static IUnityInterfaces *sUnityInterfaces = nullptr;
+static IUnityGraphics *sGraphics = nullptr;
 
-static ErrorBehavior _errorBehavior = ErrorBehavior::DISABLE_ACTION;
+static ErrorBehavior errorBehavior = ErrorBehavior::DISABLE_ACTION;
 // the register of action
-static std::vector<Action *> _registerActions;
+static std::vector<Action *> registerActions;
 
-// defined the key action to use
-static int _keyAction = 0;
-
-/// <summary>
-/// Callback that is called on GL.IssuePluginEvent
-/// </summary>
-/// <param name="eventID">define which action will be called</param>
-/// <returns></returns>
+/**
+ * @brief      Callback that is called on GL.IssuePluginEvent
+ *
+ * @param[in]  eventID  Define which action will be called
+ */
 static void UNITY_INTERFACE_API OnRenderEvent(int eventID);
 
 static void UNITY_INTERFACE_API
 OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType);
 
+/**
+ * @brief      Disables the action.
+ *
+ * @param      actionToDisable  The action to disable
+ */
 void DisableAction(Action *actionToDisable);

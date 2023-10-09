@@ -32,7 +32,7 @@ int RenderAPI_D3D11::createTexture2D(int textureWidth, int textureHeight,
     texDesc.CPUAccessFlags = 0;
     texDesc.MiscFlags = 0;
 
-    if (_device == NULL)
+    if (_device == nullptr)
     {
         Log::log().debugLogError(
             "m_Device has not been initialized in RenderAPI_D3D11, please make "
@@ -54,7 +54,7 @@ int RenderAPI_D3D11::createTexture2D(int textureWidth, int textureHeight,
 int RenderAPI_D3D11::createShaderResource(
     ID3D11Resource *resource, ID3D11ShaderResourceView **shaderResource)
 {
-    if (_device == NULL)
+    if (_device == nullptr)
     {
         Log::log().debugLogError(
             "m_Device has not been initialized in RenderAPI_D3D11, please make "
@@ -66,9 +66,9 @@ int RenderAPI_D3D11::createShaderResource(
     D3D11_TEXTURE2D_DESC texDesc;
     texUnityDX11->GetDesc(&texDesc);
     // see #6 https://github.com/davidAlgis/InteropUnityCUDA/issues/6
-    if (((texDesc.BindFlags & D3D11_BIND_RENDER_TARGET) == false ||
-         (texDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) == false) &&
-        (texDesc.MiscFlags & D3D11_RESOURCE_MISC_GENERATE_MIPS) == false)
+    if (((texDesc.BindFlags & D3D11_BIND_RENDER_TARGET) == 0u ||
+         (texDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) == 0u) &&
+        (texDesc.MiscFlags & D3D11_RESOURCE_MISC_GENERATE_MIPS) == 0u)
     {
         // see remarks
         // https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-generatemips
@@ -86,10 +86,10 @@ int RenderAPI_D3D11::createShaderResource(
 
     HRESULT hr =
         _device->CreateShaderResourceView(resource, &srvDesc, shaderResource);
-    if (SUCCEEDED(hr) == false)
+    if (SUCCEEDED(hr) == 0)
     {
         Log::log().debugLogError(
-            "There has been an error " + std::to_string((int)(hr)) +
+            "There has been an error " + std::to_string(static_cast<int>(hr)) +
             "when creating shader resource view associated to the resource.");
         return -3;
     }
@@ -115,7 +115,7 @@ void RenderAPI_D3D11::ProcessDeviceEvent(UnityGfxDeviceEventType type,
     switch (type)
     {
     case kUnityGfxDeviceEventInitialize: {
-        IUnityGraphicsD3D11 *d3d = interfaces->Get<IUnityGraphicsD3D11>();
+        auto *d3d = interfaces->Get<IUnityGraphicsD3D11>();
         _device = d3d->GetDevice();
         break;
     }
