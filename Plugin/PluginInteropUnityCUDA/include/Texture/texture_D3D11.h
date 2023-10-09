@@ -6,17 +6,17 @@
 #include "IUnityGraphicsD3D11.h"
 #include "d3d11.h"
 #include "renderAPI_D3D11.h"
-#include <assert.h>
+#include <cassert>
 #include <cuda_d3d11_interop.h>
 
 /**
+ * @class      Texture_D3D11
+ *
  * @brief      This class handles interoperability for texture from Unity to
- * CUDA, with dx11 graphics API. With dx11 interoperability work differently,
- * texture created in Unity, cannot be directly registered in CUDA, therefore we
- * need to create another texture
- * (_texBufferInterop) that will be used as a buffer. We will copy the content
- * of the texture created in Unity and then we will registered this new texture
- * in CUDA see issue #2 on github for more details
+ *             CUDA, with DX11 graphics API.
+ *
+ *
+ * @see        @ref Texture
  */
 class Texture_D3D11 : public Texture
 {
@@ -25,15 +25,53 @@ class Texture_D3D11 : public Texture
                   int textureDepth, RenderAPI *renderAPI);
     ~Texture_D3D11();
 
-    virtual int registerTextureInCUDA();
-    virtual int unregisterTextureInCUDA();
-    virtual int generateMips();
+    /**
+     * @brief      Register the texture pointer given given in \ref
+     * Texture_D3D11 from DirectX to CUDA
+     *
+     * @return     0 if it works, otherwise something else.
+     *
+     *
+     * @warning    Make sure that the pointer \ref Buffer::_textureHandle is
+     * of type \p ID3D11Texture2D, otherwise it can result in a exception.
+     */
+    int registerTextureInCUDA() override;
+
+    /**
+     * @brief      Unregister the texture from DirectX to CUDA
+     *
+     * @return     0 if it works, otherwise something else.
+     */
+    int unregisterTextureInCUDA() override;
+    /**
+     * @brief      Generate mips for texture.
+     *
+     * @return     0 if it works, otherwise something else.
+     */
+    int generateMips() override;
 
     protected:
-    virtual int copyUnityTextureToAPITexture();
-    virtual int copyAPITextureToUnityTexture();
+    /**
+     * @brief      Implementation of \ref Texture::copyUnityTextureToAPITexture
+     * for DX11.
+     *
+     * @return     0 if it works, otherwise something else.
+     */
+    int copyUnityTextureToAPITexture() override;
+    /**
+     * @brief      Implementation of \ref Texture::copyAPITextureToUnityTexture
+     * for DX11.
+     *
+     * @return     0 if it works, otherwise something else.
+     */
+    int copyAPITextureToUnityTexture() override;
 
     private:
+    /**
+     * @brief      Copy the texture Unity to a buffer.
+     *
+     * @return     0 if it works, otherwise something else.
+     */
     int copyUnityTextureToBuffer();
 
     ID3D11Texture2D *_texBufferInterop{};
