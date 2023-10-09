@@ -77,9 +77,10 @@ local pathThirdPartyUnity = pathPluginInterop .. "/thirdParty/unity/include/"
 local pathThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/include/";
 local pathSourceThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/src/";
 
-loadrequire('premake5-cuda', "https://github.com/theComputeKid/premake5-cuda")
+loadrequire('premake-cuda\\premake5-cuda', "https://github.com/theComputeKid/premake5-cuda")
 print("We use export compile commands module to export compilation database for clang. If you don't have the module you won't be able to compile with clang, BUT you can still compile with visual studio !")
-loadrequire('export-compile-commands', "https://github.com/null-black/premake-export-compile-commands")
+loadrequire('export-compile-commands\\export-compile-commands',
+    "https://github.com/null-black/premake-export-compile-commands")
 ---------------------------------
 -- [ WORKSPACE CONFIGURATION   --
 ---------------------------------
