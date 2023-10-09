@@ -29,7 +29,7 @@ public class InteropTests
     public IEnumerator TestTextureInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 1.0f;
+        var simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
@@ -43,7 +43,7 @@ public class InteropTests
     public IEnumerator TestTextureArrayInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 1.0f;
+        var simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
@@ -53,22 +53,34 @@ public class InteropTests
     }
 
     [UnityTest]
-    public IEnumerator TestBufferInteropHandler()
+    public IEnumerator TestVertexBufferInteropHandler()
     {
         // Wait for a few seconds to allow the simulation to run
-        float simulationTime = 1.0f;
+        var simulationTime = 1.0f;
         yield return new WaitForSeconds(simulationTime);
 
         // Now that the simulation has run, run your tests
         // Yield one more frame to ensure everything is updated
         yield return null;
-        ComputeBufferContainsExpectedValues();
-        ;
+        ComputeBufferVertexContainsExpectedValues();
+    }
+
+    [UnityTest]
+    public IEnumerator TestStructBufferInteropHandler()
+    {
+        // Wait for a few seconds to allow the simulation to run
+        var simulationTime = 1.0f;
+        yield return new WaitForSeconds(simulationTime);
+
+        // Now that the simulation has run, run your tests
+        // Yield one more frame to ensure everything is updated
+        yield return null;
+        ComputeBufferStructContainsExpectedValues();
     }
 
     public void TextureContainsExpectedValues()
     {
-        Texture2D originalTexture = _interopHandlerSample.Texture;
+        var originalTexture = _interopHandlerSample.Texture;
 
         // Create a temporary RenderTexture with the same dimensions as the original texture
         RenderTexture tempRenderTexture = new(originalTexture.width, originalTexture.height, 0);
@@ -83,11 +95,11 @@ public class InteropTests
         copiedTexture.Apply();
 
         // Loop through each pixel and check the value
-        Color[] pixels = copiedTexture.GetPixels();
-        foreach (Color pixel in pixels)
+        var pixels = copiedTexture.GetPixels();
+        foreach (var pixel in pixels)
         {
             // Implement your pixel value verification logic here
-            float expectedValue = math.abs(math.cos(Time.time));
+            var expectedValue = math.abs(math.cos(Time.time));
             Assert.IsTrue(math.abs(expectedValue - pixel.g) < 1e-2f);
         }
 
@@ -99,14 +111,14 @@ public class InteropTests
 
     public void TextureArrayContainsExpectedValues()
     {
-        Texture2DArray textureArray = _interopHandlerSample.TextureArray;
+        var textureArray = _interopHandlerSample.TextureArray;
         Debug.LogWarning("TODO implement this function");
         // TODO to implement
     }
 
-    public void ComputeBufferContainsExpectedValues()
+    public void ComputeBufferVertexContainsExpectedValues()
     {
-        ComputeBuffer computeBuffer = _interopHandlerSample.ComputeBuffer;
+        var computeBuffer = _interopHandlerSample.ComputeVertexBuffer;
 
         // Implement your verification logic for the 'ComputeBuffer' here
         Assert.IsNotNull(computeBuffer);
@@ -116,7 +128,7 @@ public class InteropTests
         computeBuffer.GetData(bufferData);
 
         // Loop through the buffer data and verify values at each index
-        for (int x = 0; x < bufferData.Length; x++)
+        for (var x = 0; x < bufferData.Length; x++)
         {
             float4 expectedValue = new(
                 math.cos(2 * math.PI * Time.time / (math.abs(x) + 1.0f)),
@@ -126,6 +138,29 @@ public class InteropTests
             );
 
             Assert.IsTrue(math.length(expectedValue - bufferData[x]) < 1e-2f);
+        }
+    }
+
+
+    public void ComputeBufferStructContainsExpectedValues()
+    {
+        var computeBuffer = _interopHandlerSample.ComputeStructBuffer;
+
+        // Implement your verification logic for the 'ComputeBuffer' here
+        Assert.IsNotNull(computeBuffer);
+
+        // Set the buffer data to an array to access the values
+        var bufferData = new InteropHandlerSample.SampleStructInterop[computeBuffer.count];
+        computeBuffer.GetData(bufferData);
+
+        // Loop through the buffer data and verify values at each index
+        for (var x = 0; x < bufferData.Length; x++)
+        {
+            var expectedValueX = math.cos(Time.time) / (math.abs(x) + 1.0f);
+            var expectedValueN = x * (int)Time.time;
+
+            Assert.IsTrue(math.abs(expectedValueX - bufferData[x].x) < 1e-2f);
+            Assert.IsTrue(expectedValueN - bufferData[x].n == 0);
         }
     }
 }
