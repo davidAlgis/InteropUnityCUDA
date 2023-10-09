@@ -3,18 +3,18 @@
 
 #if SUPPORT_D3D11
 
-VertexBuffer_D3D11::VertexBuffer_D3D11(void *bufferHandle, int size)
+Buffer_D3D11::Buffer_D3D11(void *bufferHandle, int size)
     : Buffer(bufferHandle, size)
 {
 }
 
-VertexBuffer_D3D11::~VertexBuffer_D3D11()
+Buffer_D3D11::~Buffer_D3D11()
 {
     // final check to be sure there was no mistake
     CUDA_CHECK(cudaGetLastError());
 };
 
-int VertexBuffer_D3D11::registerBufferInCUDA()
+int Buffer_D3D11::registerBufferInCUDA()
 {
 
     auto *bufferUnityDX11 = static_cast<ID3D11Buffer *>(_bufferHandle);
@@ -26,7 +26,7 @@ int VertexBuffer_D3D11::registerBufferInCUDA()
     return SUCCESS_INTEROP_CODE;
 }
 
-int VertexBuffer_D3D11::unregisterBufferInCUDA()
+int Buffer_D3D11::unregisterBufferInCUDA()
 {
     CUDA_CHECK_RETURN(cudaGraphicsUnregisterResource(_graphicsResource));
     return SUCCESS_INTEROP_CODE;

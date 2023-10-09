@@ -10,7 +10,7 @@ Buffer *createBuffer(void *bufferHandle, int size, UnityGfxRenderer apiType,
 #if SUPPORT_D3D11
     if (apiType == kUnityGfxRendererD3D11)
     {
-        buffer = new VertexBuffer_D3D11(bufferHandle, size);
+        buffer = new Buffer_D3D11(bufferHandle, size);
     }
 #endif // if SUPPORT_D3D11
     // if SUPPORT_OPENGL_UNIFIED
@@ -19,7 +19,7 @@ Buffer *createBuffer(void *bufferHandle, int size, UnityGfxRenderer apiType,
         apiType == kUnityGfxRendererOpenGLES20 ||
         apiType == kUnityGfxRendererOpenGLES30)
     {
-        buffer = new VertexBuffer_OpenGLCoreES(bufferHandle, size);
+        buffer = new Buffer_OpenGLCoreES(bufferHandle, size);
     }
 #endif
 

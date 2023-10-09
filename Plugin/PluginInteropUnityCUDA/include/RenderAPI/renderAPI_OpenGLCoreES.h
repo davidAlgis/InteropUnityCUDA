@@ -1,31 +1,48 @@
 #pragma once
+#include "framework.h"
 #include "openGL_include.h"
 #include "renderAPI.h"
-#include "framework.h"
-
-// OpenGL Core profile (desktop) or OpenGL ES (mobile) implementation of RenderAPI.
-// Supports several flavors: Core, ES2, ES3
-
 
 #if SUPPORT_OPENGL_UNIFIED
 
+/**
+ * @class      RenderAPI_OpenGLCoreES
+ *
+ * @brief     This class describes the implementation of \ref RenderAPI for
+ * OpenGL Core ES API.
+ * Supports several flavors: Core, ES2, ES3
+ */
 class RenderAPI_OpenGLCoreES : public RenderAPI
 {
-public:
-	RenderAPI_OpenGLCoreES(UnityGfxRenderer apiType);
-	virtual ~RenderAPI_OpenGLCoreES();
+    public:
+    /**
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  apiType  The API type
+     */
+    explicit RenderAPI_OpenGLCoreES(UnityGfxRenderer apiType);
+    ~RenderAPI_OpenGLCoreES() override;
 
+    void ProcessDeviceEvent(UnityGfxDeviceEventType type,
+                            IUnityInterfaces *interfaces) override;
 
-	virtual void ProcessDeviceEvent(UnityGfxDeviceEventType type, IUnityInterfaces* interfaces);
-private:
-	void CreateResources();
+    private:
+    /**
+     * @brief      Creates resources.
+     */
+    void CreateResources();
 
-private:
-	UnityGfxRenderer m_APIType;
+    UnityGfxRenderer _apiType;
 };
 
-
-RenderAPI* CreateRenderAPI_OpenGLCoreES(UnityGfxRenderer apiType);
-
+/**
+ * @brief      Create a graphics API implementation instance for the OpenGL Core
+ * ES.
+ *
+ * @param[in]  apiType  The api type
+ *
+ * @return     A pointer toward the RenderAPI object.
+ */
+RenderAPI *CreateRenderAPI_OpenGLCoreES(UnityGfxRenderer apiType);
 
 #endif // #if SUPPORT_OPENGL_UNIFIED

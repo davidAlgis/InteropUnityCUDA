@@ -14,7 +14,8 @@ Buffer::Buffer(void *bufferHandle, int size)
 int Buffer::unmapResources()
 {
     // unmap the resources
-    CUDA_CHECK_RETURN(cudaGraphicsUnmapResources(1, &_graphicsResource, 0));
+    CUDA_CHECK_RETURN(
+        cudaGraphicsUnmapResources(1, &_graphicsResource, nullptr));
     return SUCCESS_INTEROP_CODE;
 }
 
