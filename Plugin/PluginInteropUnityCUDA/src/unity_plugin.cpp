@@ -1,8 +1,8 @@
 #pragma once
 #include "unity_plugin.h"
+#include "buffer.h"
 #include "factory.h"
 #include "texture.h"
-#include "vertex_buffer.h"
 #include <assert.h>
 #include <utility>
 
@@ -25,7 +25,7 @@ extern "C"
                                       s_CurrentAPI);
     }
 
-    UNITY_INTERFACE_EXPORT VertexBuffer *UNITY_INTERFACE_API
+    UNITY_INTERFACE_EXPORT Buffer *UNITY_INTERFACE_API
     CreateVertexBufferInterop(void *bufferHandle, int size)
     {
         if (s_Graphics == NULL)

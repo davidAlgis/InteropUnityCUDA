@@ -1,6 +1,6 @@
 #pragma once
 // Direct3D 11 implementation of Vertex Buffer API
-#include "vertex_buffer.h"
+#include "buffer.h"
 
 #if SUPPORT_D3D11
 
@@ -8,7 +8,7 @@
 #include <cuda_d3d11_interop.h>
 #include <d3d11.h>
 
-class VertexBuffer_D3D11 : public VertexBuffer
+class VertexBuffer_D3D11 : public Buffer
 {
     public:
     VertexBuffer_D3D11(void *bufferHandle, int size);

@@ -1,10 +1,10 @@
 #pragma once
-#include "vertex_buffer_D3D11.h"
+#include "buffer_D3D11.h"
 
 #if SUPPORT_D3D11
 
 VertexBuffer_D3D11::VertexBuffer_D3D11(void *bufferHandle, int size)
-    : VertexBuffer(bufferHandle, size)
+    : Buffer(bufferHandle, size)
 {
 }
 

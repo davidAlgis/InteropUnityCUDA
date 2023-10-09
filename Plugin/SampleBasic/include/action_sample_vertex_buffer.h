@@ -1,25 +1,28 @@
 #pragma once
-#include "sample_kernels.cuh"
 #include "action.h"
-#include "vertex_buffer.h"
+#include "buffer.h"
+#include "sample_kernels.cuh"
 
+namespace SampleBasic
+{
+class ActionSampleVertexBuffer : public Action
+{
+    public:
+    ActionSampleVertexBuffer(void *bufferPtr, int size);
 
-namespace SampleBasic {
-	class ActionSampleVertexBuffer: public Action {
-	public:
-		ActionSampleVertexBuffer(void* bufferPtr, int size);
+    inline int Start() override;
+    inline int Update() override;
+    inline int OnDestroy() override;
 
-		inline int Start() override;
-		inline int Update() override;
-		inline int OnDestroy() override;
-
-	private:
-		VertexBuffer* _vertexBuffer;
-	};
+    private:
+    Buffer *_vertexBuffer;
+};
 } // namespace SampleBasic
 
-extern "C" {
+extern "C"
+{
 
-	UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleVertexBuffer* UNITY_INTERFACE_API 
-		createActionSampleVertexBufferBasic(void* bufferPtr, int size);
+    UNITY_INTERFACE_EXPORT SampleBasic::ActionSampleVertexBuffer
+        *UNITY_INTERFACE_API
+        createActionSampleVertexBufferBasic(void *bufferPtr, int size);
 }

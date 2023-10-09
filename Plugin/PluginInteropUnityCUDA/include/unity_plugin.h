@@ -8,7 +8,7 @@
 #include <memory>
 
 class Texture;
-class VertexBuffer;
+class Buffer;
 
 enum class ErrorBehavior
 {
@@ -61,8 +61,8 @@ extern "C"
      *
      * @return     The vertex buffer that has been created
      */
-    UNITY_INTERFACE_EXPORT VertexBuffer *CreateVertexBufferInterop(
-        void *bufferHandle, int size);
+    UNITY_INTERFACE_EXPORT Buffer *CreateVertexBufferInterop(void *bufferHandle,
+                                                             int size);
 
     /**
      * @brief      Set time for interoperability plugin
@@ -139,8 +139,6 @@ extern "C"
      */
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
     InitializeRegisterActions(int reserveCapacity);
-
-    
 }
 
 static float _time;
@@ -169,4 +167,4 @@ static void UNITY_INTERFACE_API OnRenderEvent(int eventID);
 static void UNITY_INTERFACE_API
 OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType);
 
-void DisableAction(Action* actionToDisable);
+void DisableAction(Action *actionToDisable);

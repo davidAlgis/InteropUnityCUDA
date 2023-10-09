@@ -4,7 +4,7 @@
 #include "log.h"
 #include "texture.h"
 
-class VertexBuffer
+class Buffer
 {
     public:
     /**
@@ -14,7 +14,7 @@ class VertexBuffer
      * https://docs.unity3d.com/ScriptReference/ComputeBuffer.GetNativeBufferPtr.html)
      * @param  size         the size of the computeBuffer
      */
-    UNITY_INTERFACE_EXPORT VertexBuffer(void *bufferHandle, int size);
+    UNITY_INTERFACE_EXPORT Buffer(void *bufferHandle, int size);
 
     /**
      * Register the buffer in CUDA, this has to be override because it depends
