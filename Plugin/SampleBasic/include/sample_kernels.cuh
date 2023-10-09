@@ -5,6 +5,12 @@
 #include <device_launch_parameters.h>
 #include <vector_functions.h>
 
+struct SampleStructInterop
+{
+    float x;
+    int n;
+};
+
 /**
  * @brief      Write in the second channel of ARGB texture : \f$|\cos(t)\f$
  *
@@ -68,20 +74,45 @@ void kernelCallerWriteTextureArray(dim3 dimGrid, dim3 dimBlock,
  *
  * @param[in]  dimGrid          The dimension of the grid.
  * You can retrieve a grid dimension associated to your texture in
- * \ref VertexBuffer::getDimGrid.
+ * \ref Buffer::getDimGrid.
  * @param[in]  dimBlock         The dimension of the block.
  * You can retrieve a block dimension associated to your texture in
- * \ref VertexBuffer::getDimBlock.
+ * \ref Buffer::getDimBlock.
  * @param      vertexPtr  The vertex pointer.
  * @param[in]  size       The size of the vertex buffer. You can retrieve this
- * data with: \ref VertexBuffer::getSize.
+ * data with: \ref Buffer::getSize.
  * @param[in]  time       The time of execution.
  *
  *
- * @see VertexBuffer
+ * @see Buffer
  *
  * @example action_sample_vertex_buffer.cpp
  * This file show an example of use of this function.
  */
 void kernelCallerWriteBuffer(dim3 dimGrid, dim3 dimBlock, float4 *vertexPtr,
                              int size, float time);
+
+/**
+ * @brief      Write in a struct buffer the following daa :
+ * \f[(cos(t), t)\f]
+ *
+ * @param[in]  dimGrid          The dimension of the grid.
+ * You can retrieve a grid dimension associated to your texture in
+ * \ref Buffer::getDimGrid.
+ * @param[in]  dimBlock         The dimension of the block.
+ * You can retrieve a block dimension associated to your texture in
+ * \ref Buffer::getDimBlock.
+ * @param      structPtr  The struct pointer.
+ * @param[in]  size       The size of the struct buffer. You can retrieve this
+ * data with: \ref Buffer::getSize.
+ * @param[in]  time       The time of execution.
+ *
+ *
+ * @see Buffer
+ *
+ * @example action_sample_struct_buffer.cpp
+ * This file show an example of use of this function.
+ */
+void kernelCallerWriteBufferStruct(dim3 dimGrid, dim3 dimBlock,
+                                   SampleStructInterop *structPtr, int size,
+                                   float time);

@@ -30,15 +30,9 @@ int ActionSampleVertexBuffer::Update()
                             _vertexBuffer->getSize(), GetTime());
     cudaDeviceSynchronize();
 
-    auto *v = static_cast<float4 *>(malloc(_vertexBuffer->getSize()));
-    CUDA_CHECK_RETURN(
-        cudaMemcpy(v, ptr, _vertexBuffer->getSize(), cudaMemcpyDeviceToHost));
-
     ret = _vertexBuffer->unmapResources();
     GRUMBLE(ret, "There has been an error during the unmap of "
                  "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
-
-    delete (v);
 
     return 0;
 }

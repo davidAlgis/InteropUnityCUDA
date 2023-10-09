@@ -39,8 +39,21 @@ __global__ void writeVertexBuffer(float4 *pos, int size, float time)
     if (x < size)
     {
         pos[x] = make_float4(
-            cos(2 * CUDART_PI_F * time / (abs((float)x) + 1.0f)),
-            sin(2 * CUDART_PI_F * time / (abs((float)x) + 1.0f)), 0.0f, 1.0f);
+            cos(2 * CUDART_PI_F * time / (abs(static_cast<float>(x)) + 1.0f)),
+            sin(2 * CUDART_PI_F * time / (abs(static_cast<float>(x)) + 1.0f)),
+            0.0f, 1.0f);
+    }
+}
+
+__global__ void writeStructBuffer(SampleStructInterop *s, int size, float time)
+{
+    unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // write output vertex
+    if (x < size)
+    {
+        s[x].x = cos(time) / (abs(static_cast<float>(x)) + 1.0f);
+        s[x].n = static_cast<int>(x) * static_cast<int>(time);
     }
 }
 
@@ -66,4 +79,11 @@ void kernelCallerWriteBuffer(const dim3 dimGrid, const dim3 dimBlock,
                              const float time)
 {
     writeVertexBuffer<<<dimGrid, dimBlock>>>(vertexPtr, size, time);
+}
+
+void kernelCallerWriteBufferStruct(dim3 dimGrid, dim3 dimBlock,
+                                   SampleStructInterop *structPtr, int size,
+                                   float time)
+{
+    writeStructBuffer<<<dimGrid, dimBlock>>>(structPtr, size, time);
 }
