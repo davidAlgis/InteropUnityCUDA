@@ -29,7 +29,7 @@ int Texture_OpenGLCoreES::registerTextureInCUDA()
     _texTarget = _textureDepth < 2 ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY;
 
     // cast the pointer on the texture of unity to gluint
-    _texUnityGL = (GLuint)(size_t)(_textureHandle);
+    _texUnityGL = static_cast<GLuint>((size_t)(_textureHandle));
     GL_CHECK();
     // register the texture to cuda : it initialize the _pGraphicsResource
     CUDA_CHECK_RETURN(

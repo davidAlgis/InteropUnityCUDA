@@ -30,7 +30,7 @@ int Texture_D3D11::registerTextureInCUDA()
         return -1;
     }
     // texture2D and texture2D array are ID3D11Texture2D in Unity for DX11
-    _texUnityDX11 = (ID3D11Texture2D *)_textureHandle;
+    _texUnityDX11 = static_cast<ID3D11Texture2D *>(_textureHandle);
 
     D3D11_TEXTURE2D_DESC texDesc;
     _texUnityDX11->GetDesc(&texDesc);
