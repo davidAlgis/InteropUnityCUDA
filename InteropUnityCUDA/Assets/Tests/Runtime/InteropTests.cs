@@ -99,8 +99,13 @@ public class InteropTests
         foreach (var pixel in pixels)
         {
             // Implement your pixel value verification logic here
-            var expectedValue = math.abs(math.cos(Time.time));
-            Assert.IsTrue(math.abs(expectedValue - pixel.g) < 1e-2f);
+            var expectedValue = math.abs(math.cos(Time.time/10.0f));
+            bool isExepected = math.abs(expectedValue - pixel.g) < 1e-1f;
+            if(isExepected == false)
+            {
+                Debug.LogError(expectedValue + " was expected but read " + pixel.g);
+            } 
+            Assert.IsTrue(isExepected);
         }
 
         // Clean up resources

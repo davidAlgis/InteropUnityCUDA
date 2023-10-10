@@ -9,7 +9,7 @@ __global__ void writeTex(cudaSurfaceObject_t surf, int width, int height,
     if (x < width && y < height)
     {
 
-        float4 t = make_float4(0, abs(cos(time)), 0, 1.0f);
+        float4 t = make_float4(0, abs(cos(time / 10.0f)), 0, 1.0f);
 
         surf2Dwrite(t, surf, sizeof(float4) * x, y);
     }
