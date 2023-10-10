@@ -39,7 +39,7 @@ The project has only one scene that demonstrate the three simple actions describ
 
 # Create your own action
 
-[See the dedicated documentation here.](.\\Plugin\\Documentation\\CreateAction.md)
+[See the dedicated documentation here.](Plugin/Documentation/CreateAction.md)
 
 
 # Platform availability
