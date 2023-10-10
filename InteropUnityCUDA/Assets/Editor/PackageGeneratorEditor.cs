@@ -1,7 +1,10 @@
+using System;
 using System.Diagnostics;
+using System.IO;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Interop.Packager
@@ -9,11 +12,25 @@ namespace Interop.Packager
     public class PackageGeneratorEditor : EditorWindow
     {
         private const string _packageScriptLocation = "../Plugin/buildtools/packageUnity.ps1";
+        private static string _packageSrc = "../com.studio-nyx.interop-unity-cuda.";
         private static PackRequest _currentRequest;
 
         [MenuItem("Interop/Packager", false, 160)]
         public static void Package()
         {
+            var versionEnvVar = "%INTEROP_UNITY_CUDA_VERSION%";
+            var version = Environment.ExpandEnvironmentVariables(versionEnvVar);
+            if (version == versionEnvVar)
+            {
+                var defaultVersion = "1.0.1";
+                Debug.LogWarning(
+                    "There has been an error while fetching the version of the package. Please make sure you have " +
+                    "launch the project with the powershell script launchUnity.ps1. By default, we will set the version to " +
+                    defaultVersion);
+                version = defaultVersion;
+            }
+
+
             var retCode = GeneratePackage();
             if (retCode != 0)
             {
@@ -21,12 +38,27 @@ namespace Interop.Packager
                 return;
             }
 
-            _currentRequest = Client.Pack("../com.studio-nyx.interop-unity-cuda.1.0.1", "../Artifacts");
+            _packageSrc += version;
+
+            if (Directory.Exists(_packageSrc) == false)
+            {
+                Debug.LogError("Cannot find source folder at location " + _packageSrc + " abort !");
+                return;
+            }
+
+            // generate the tarball
+            _currentRequest = Client.Pack(_packageSrc, "../Artifacts");
             EditorApplication.update += HandlePackOperation;
         }
 
+        /// <summary>
+        ///     Call the script <see cref="_packageScriptLocation" /> to generate the package
+        /// </summary>
+        /// <returns>return code of script.</returns>
         private static int GeneratePackage()
         {
+            var pathArg = Path.Combine(Application.dataPath, "../" + _packageSrc);
+            Debug.Log("Package at " + pathArg);
             // Create a new process start info
             var psi = new ProcessStartInfo
             {
@@ -47,18 +79,23 @@ namespace Interop.Packager
             process.Start();
 
             // Pass the script to the PowerShell process
-            process.StandardInput.WriteLine($"& '{_packageScriptLocation}'");
-
+            process.StandardInput.WriteLine($"& '{_packageScriptLocation}' {pathArg}");
             // Close the input stream to signal that no more input will be provided
             process.StandardInput.Close();
-
             // Read the output (if needed)
             var output = process.StandardOutput.ReadToEnd();
-            var errors = process.StandardError.ReadToEnd();
+            // var errors = process.StandardError.ReadToEnd();
 
             // Wait for the process to exit
             process.WaitForExit();
-            return process.ExitCode;
+
+            // Log output and errors
+            Debug.Log("Output script : \n" + output);
+
+            var retCode = process.ExitCode;
+            // Close the process
+            process.Close();
+            return retCode;
         }
 
         private static void HandlePackOperation()
