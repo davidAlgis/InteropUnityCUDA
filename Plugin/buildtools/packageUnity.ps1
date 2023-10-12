@@ -26,8 +26,12 @@ $version = $Env:INTEROP_UNITY_CUDA_VERSION
 $targetFolder = "$targetFolder$version"
 
 # Check if the target folder exists
-if (-not (Test-Path -Path $targetFolder -PathType Container)) {
-    Write-Host "Target folder does not exist. Creating folder: $targetFolder"
+if ((Test-Path -Path $targetFolder -PathType Container)) {
+    # Remove the old target folder and create a new one
+    Remove-Item $targetFolder -Recurse
+    New-Item -Path $targetFolder -ItemType Directory -Force
+}
+else {
     New-Item -Path $targetFolder -ItemType Directory -Force
 }
 
