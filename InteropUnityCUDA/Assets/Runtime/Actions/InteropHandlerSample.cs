@@ -53,6 +53,8 @@ namespace ActionUnity
         public void OnDestroy()
         {
             OnDestroyInteropHandler();
+            ComputeVertexBuffer.Dispose();
+            ComputeStructBuffer.Dispose();
         }
 
         /// <summary>
