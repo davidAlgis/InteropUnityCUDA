@@ -23,10 +23,11 @@
  * @param      ans   A function that return a cudaError_t
  *
  */
-#define CUDA_CHECK_RETURN(ans)                                                                     \
-    {                                                                                              \
-        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
-        if (ret != 0) return ret;                                                                  \
+#define CUDA_CHECK_RETURN(ans)                                                 \
+    {                                                                          \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                       \
+        if (ret != 0)                                                          \
+            return ret;                                                        \
     }
 
 /**
@@ -37,14 +38,14 @@
  * @param      msg   A string to log
  *
  */
-#define CUDA_CHECK_RETURN_VOID(ans, msg)                                                           \
-    {                                                                                              \
-        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
-        if (ret != 0)                                                                              \
-        {                                                                                          \
-            Log::log().debugLogError(msg);                                                         \
-            return;                                                                                \
-        }                                                                                          \
+#define CUDA_CHECK_RETURN_VOID(ans, msg)                                       \
+    {                                                                          \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                       \
+        if (ret != 0)                                                          \
+        {                                                                      \
+            Log::log().debugLogError(msg);                                     \
+            return;                                                            \
+        }                                                                      \
     }
 
 /**
@@ -54,10 +55,13 @@
  * @param      ans   The return code of the cuda function
  *
  */
-#define CUDA_CHECK_RETURN_BOOL(ans)                                                                \
-    {                                                                                              \
-        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
-        if (ret != 0) { return false; }                                                            \
+#define CUDA_CHECK_RETURN_BOOL(ans)                                            \
+    {                                                                          \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                       \
+        if (ret != 0)                                                          \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
     }
 
 /**
@@ -66,10 +70,11 @@
  *
  * @param      ans   A function that return a cudaError_t
  */
-#define CUDA_CHECK_THROW(ans)                                                                      \
-    {                                                                                              \
-        int ret = cudaAssert((ans), __FILE__, __LINE__);                                           \
-        if (ret != 0) throw std::runtime_error(cudaGetErrorString(ans));                           \
+#define CUDA_CHECK_THROW(ans)                                                  \
+    {                                                                          \
+        int ret = cudaAssert((ans), __FILE__, __LINE__);                       \
+        if (ret != 0)                                                          \
+            throw std::runtime_error(cudaGetErrorString(ans));                 \
     }
 /**
  * @brief      Check if a cufft function has succeed. If it doesn't log the
@@ -89,15 +94,16 @@
  * @param      ans   A function of cufft library that return an int
  *
  */
-#define CUFFT_CHECK_RETURN(ans)                                                                    \
-    {                                                                                              \
-        int ret = cufftAssert((int)(ans), __FILE__, __LINE__);                                     \
-        if (ret != 0) return ret;                                                                  \
+#define CUFFT_CHECK_RETURN(ans)                                                \
+    {                                                                          \
+        int ret = cufftAssert((int)(ans), __FILE__, __LINE__);                 \
+        if (ret != 0)                                                          \
+            return ret;                                                        \
     }
 
 /**
- * @brief      Log an error associated to cuda library if there has been an error
- * during a cuda function
+ * @brief      Log an error associated to cuda library if there has been an
+ * error during a cuda function
  *
  * @param[in]  code  A return code of a function of cuda library
  * @param[in]  file  The file associated to the function call
@@ -105,12 +111,13 @@
  *
  * @return     the return code
  */
-inline int cudaAssert(cudaError_t code, const char* file, int line)
+inline int cudaAssert(cudaError_t code, const char *file, int line)
 {
     if (code != cudaSuccess)
     {
         char buffer[2048];
-        sprintf_s(buffer, "Cuda error: %i %s %s %d\n", code, cudaGetErrorString(code), file, line);
+        sprintf_s(buffer, "Cuda error: %i %s %s %d\n", code,
+                  cudaGetErrorString(code), file, line);
         std::string strError(buffer);
         Log::log().debugLogError(buffer);
     }
@@ -118,8 +125,8 @@ inline int cudaAssert(cudaError_t code, const char* file, int line)
 }
 
 /**
- * @brief      Log an error associated to cufft library if there has been an error
- * during a cufft function
+ * @brief      Log an error associated to cufft library if there has been an
+ * error during a cufft function
  *
  * @param[in]  cufftResult  A return code of a function of cufft library
  * @param[in]  file         The file associated to the function call
@@ -127,7 +134,7 @@ inline int cudaAssert(cudaError_t code, const char* file, int line)
  *
  * @return     the return code
  */
-inline int cufftAssert(int cufftResult, const char* file, int line)
+inline int cufftAssert(int cufftResult, const char *file, int line)
 {
 
     if (cufftResult != 0)
@@ -135,32 +142,67 @@ inline int cufftAssert(int cufftResult, const char* file, int line)
         std::string cufftInterpret;
         switch (cufftResult)
         {
-        case (0): cufftInterpret = "The cuFFT operation was successful"; break;
-        case (1): cufftInterpret = "cuFFT was passed an invalid plan handle"; break;
-        case (2): cufftInterpret = "cuFFT failed to allocate GPU or CPU memory"; break;
-        case (3): cufftInterpret = "No longer used"; break;
-        case (4): cufftInterpret = "User specified an invalid pointer or parameter"; break;
-        case (5): cufftInterpret = "Driver or internal cuFFT library error"; break;
-        case (6): cufftInterpret = "Failed to execute an FFT on the GPU"; break;
-        case (7): cufftInterpret = "The cuFFT library failed to initialize"; break;
-        case (8): cufftInterpret = "User specified an invalid transform size"; break;
-        case (9): cufftInterpret = "No longer used"; break;
-        case (10): cufftInterpret = "Missing parameters in call"; break;
+        case (0):
+            cufftInterpret = "The cuFFT operation was successful";
+            break;
+        case (1):
+            cufftInterpret = "cuFFT was passed an invalid plan handle";
+            break;
+        case (2):
+            cufftInterpret = "cuFFT failed to allocate GPU or CPU memory";
+            break;
+        case (3):
+            cufftInterpret = "No longer used";
+            break;
+        case (4):
+            cufftInterpret = "User specified an invalid pointer or parameter";
+            break;
+        case (5):
+            cufftInterpret = "Driver or internal cuFFT library error";
+            break;
+        case (6):
+            cufftInterpret = "Failed to execute an FFT on the GPU";
+            break;
+        case (7):
+            cufftInterpret = "The cuFFT library failed to initialize";
+            break;
+        case (8):
+            cufftInterpret = "User specified an invalid transform size";
+            break;
+        case (9):
+            cufftInterpret = "No longer used";
+            break;
+        case (10):
+            cufftInterpret = "Missing parameters in call";
+            break;
         case (11):
-            cufftInterpret = "Execution of a plan was on different GPU than plan creation";
+            cufftInterpret =
+                "Execution of a plan was on different GPU than plan creation";
             break;
-        case (12): cufftInterpret = "Internal plan database error"; break;
-        case (13): cufftInterpret = "No workspace has been provided prior to plan execution"; break;
+        case (12):
+            cufftInterpret = "Internal plan database error";
+            break;
+        case (13):
+            cufftInterpret =
+                "No workspace has been provided prior to plan execution";
+            break;
         case (14):
-            cufftInterpret = "Function does not implement functionality for parameters given.";
+            cufftInterpret = "Function does not implement functionality for "
+                             "parameters given.";
             break;
-        case (15): cufftInterpret = "Used in previous versions."; break;
-        case (16): cufftInterpret = "Operation is not supported for parameters given."; break;
-        default: cufftInterpret = "Unknown error."; break;
+        case (15):
+            cufftInterpret = "Used in previous versions.";
+            break;
+        case (16):
+            cufftInterpret = "Operation is not supported for parameters given.";
+            break;
+        default:
+            cufftInterpret = "Unknown error.";
+            break;
         }
         char buffer[2048];
-        sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult, cufftInterpret.c_str(), file,
-                  line);
+        sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult,
+                  cufftInterpret.c_str(), file, line);
         std::string strError(buffer);
         Log::log().debugLogError(buffer);
     }
@@ -184,7 +226,8 @@ inline int cufftAssert(int cufftResult, const char* file, int line)
  *
  * @return     The dim of grid to use in dispatch
  */
-inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation, bool getUp = true,
+inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation,
+                             bool getUp = true,
                              bool mustDoAllCalculation = false)
 {
     int addFactor = getUp ? 1 : 0;
@@ -194,18 +237,22 @@ inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation, bool getUp = tr
 
     if (mustDoAllCalculation)
     {
-        if (numCalculation.x % dimBlock.x != 0 || numCalculation.y % dimBlock.y != 0 ||
+        if (numCalculation.x % dimBlock.x != 0 ||
+            numCalculation.y % dimBlock.y != 0 ||
             numCalculation.z % dimBlock.z != 0)
         {
             Log::log().debugLogError(
-                "Number of threads per block (" + std::to_string(dimBlock.x) + ", " +
-                std::to_string(dimBlock.y) + ", " + std::to_string(dimBlock.z) +
-                ")"
-                " is not a multiple of (" +
-                std::to_string(numCalculation.x) + ", " + std::to_string(numCalculation.y) + ", " +
-                std::to_string(numCalculation.z) +
-                ")"
-                ", therefore the compute shader will not compute on all data.");
+                ("Number of threads per block (" + std::to_string(dimBlock.x) +
+                 ", " + std::to_string(dimBlock.y) + ", " +
+                 std::to_string(dimBlock.z) +
+                 ")"
+                 " is not a multiple of (" +
+                 std::to_string(numCalculation.x) + ", " +
+                 std::to_string(numCalculation.y) + ", " +
+                 std::to_string(numCalculation.z) +
+                 ")"
+                 ", therefore the compute shader will not compute on all data.")
+                    .c_str());
         }
     }
 
@@ -226,9 +273,11 @@ inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation, bool getUp = tr
 
     if (dimGridX < 1 || dimGridY < 1 || dimGridZ < 1)
     {
-        Log::log().debugLogError("Threads group size " + std::to_string(dimGridX) +
-                                 std::to_string(dimGridY) + std::to_string(dimGridZ) +
-                                 " must be above zero.");
+        Log::log().debugLogError(
+            ("Threads group size " + std::to_string(dimGridX) +
+             std::to_string(dimGridY) + std::to_string(dimGridZ) +
+             " must be above zero.")
+                .c_str());
     }
 
     return dim3{dimGridX, dimGridY, dimGridZ};

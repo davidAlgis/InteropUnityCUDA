@@ -35,12 +35,13 @@
 #define UTILITIES_DLL_LOCAL
 #endif
 #endif
-// Now we use the generic helper definitions above to define UTILITIES_API and UTILITIES_LOCAL.
-// UTILITIES_API is used for the public API symbols. It either DLL imports or DLL exports (or does
-// nothing for static build) UTILITIES_LOCAL is used for non-api symbols.
+// Now we use the generic helper definitions above to define UTILITIES_API and
+// UTILITIES_LOCAL. UTILITIES_API is used for the public API symbols. It either
+// DLL imports or DLL exports (or does nothing for static build) UTILITIES_LOCAL
+// is used for non-api symbols.
 #ifdef UTILITIES_SHARED         // Defined if UTILITIES is compiled as a DLL
-#ifdef UTILITIES_SHARED_EXPORTS // Defined if we are building the UTILITIES DLL (instead of using
-                                // it)
+#ifdef UTILITIES_SHARED_EXPORTS // Defined if we are building the UTILITIES DLL
+                                // (instead of using it)
 #define UTILITIES_API UTILITIES_DLL_EXPORT
 #else
 #define UTILITIES_API UTILITIES_DLL_IMPORT
@@ -74,7 +75,7 @@
 #endif
 #elif defined(__ANDROID__)
 #define UNITY_ANDROID 1
-#elif defined(UNITY_METRO) || defined(UNITY_LINUX) || defined(UNITY_WEBGL) ||                      \
+#elif defined(UNITY_METRO) || defined(UNITY_LINUX) || defined(UNITY_WEBGL) ||  \
     defined(UNITY_EMBEDDED_LINUX) || defined(UNITY_EMBEDDED_LINUX_GL)
 // these are defined externally
 #elif defined(__EMSCRIPTEN__)
@@ -91,8 +92,10 @@
 #define SUPPORT_D3D12 1
 #endif
 #elif UNITY_WIN
-#define SUPPORT_D3D11 1 // comment this out if you don't have D3D11 header/library files
-#define SUPPORT_D3D12 1 // comment this out if you don't have D3D12 header/library files
+#define SUPPORT_D3D11                                                          \
+    1 // comment this out if you don't have D3D11 header/library files
+#define SUPPORT_D3D12                                                          \
+    1 // comment this out if you don't have D3D12 header/library files
 #define SUPPORT_OPENGL_UNIFIED 1
 #define SUPPORT_OPENGL_CORE 1
 #define SUPPORT_VULKAN 0 // Requires Vulkan SDK to be installed
@@ -121,10 +124,10 @@
 
 // COM-like Release macro
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(a)                                                                            \
-    if (a)                                                                                         \
-    {                                                                                              \
-        a->Release();                                                                              \
-        a = NULL;                                                                                  \
+#define SAFE_RELEASE(a)                                                        \
+    if (a)                                                                     \
+    {                                                                          \
+        a->Release();                                                          \
+        a = NULL;                                                              \
     }
 #endif

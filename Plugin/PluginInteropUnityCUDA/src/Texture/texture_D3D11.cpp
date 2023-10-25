@@ -46,11 +46,12 @@ int Texture_D3D11::registerTextureInCUDA()
         format == DXGI_FORMAT_R32G32_TYPELESS ||
         format == DXGI_FORMAT_R8_TYPELESS)
     {
-        Log::log().debugLogError("Texture of type " + std::to_string(format) +
-                                 " cannot be registered in CUDA." +
-                                 " It may comes from the fact that you can\'t "
-                                 "used RenderTexture for "
-                                 "DX11 but only Texture2D.");
+        Log::log().debugLogError(("Texture of type " + std::to_string(format) +
+                                  " cannot be registered in CUDA." +
+                                  " It may comes from the fact that you can\'t "
+                                  "used RenderTexture for "
+                                  "DX11 but only Texture2D.")
+                                     .c_str());
         return -1;
     }
 

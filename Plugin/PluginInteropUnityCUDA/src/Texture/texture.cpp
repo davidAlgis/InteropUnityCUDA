@@ -19,8 +19,9 @@ Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,
     if (textureDepth < 0)
     {
         Log::log().debugLogError(
-            "Texture depth :" + std::to_string(textureDepth) +
-            " cannot be negative !");
+            ("Texture depth :" + std::to_string(textureDepth) +
+             " cannot be negative !")
+                .c_str());
         return;
     }
 
@@ -135,9 +136,10 @@ cudaSurfaceObject_t Texture::getSurfaceObject(int indexInArray) const
 {
     if (indexInArray < 0 || indexInArray > _textureDepth)
     {
-        Log::log().debugLog("Could not get surface object for index " +
-                            std::to_string(indexInArray) +
-                            ", because it's out of bound.");
+        Log::log().debugLog(("Could not get surface object for index " +
+                             std::to_string(indexInArray) +
+                             ", because it's out of bound.")
+                                .c_str());
         return 0;
     }
 

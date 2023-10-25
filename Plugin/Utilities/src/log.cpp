@@ -50,18 +50,16 @@ extern "C"
         _logWarningVector.reserve(MAX_LOG_SIZE);
         _logErrorVector.reserve(MAX_LOG_SIZE);
         _logBufferSum.reserve(128);
-        _infoPrintFunction = [](const std::string &msg, std::fstream &logFile) {
+        _infoPrintFunction = [](const char *msg, std::fstream &logFile) {
             logFile << msg << std::endl;
             std::cout << msg << std::endl;
         };
-        _warningPrintFunction = [](const std::string &msg,
-                                   std::fstream &logFile) {
+        _warningPrintFunction = [](const char *msg, std::fstream &logFile) {
             logFile << msg << std::endl;
             std::cout << msg << std::endl;
         };
 
-        _errorPrintFunction = [](const std::string &msg,
-                                 std::fstream &logFile) {
+        _errorPrintFunction = [](const char *msg, std::fstream &logFile) {
             logFile << msg << std::endl;
             std::cout << msg << std::endl;
         };
@@ -90,27 +88,27 @@ extern "C"
     }
 
     void Log::setInfoPrintFunction(
-        std::function<void(std::string, std::fstream &)> printFunc)
+        std::function<void(const char *, std::fstream &)> printFunc)
     {
         _infoPrintFunction = std::move(printFunc);
     }
 
     void Log::setWarningPrintFunction(
-        std::function<void(std::string, std::fstream &)> printFunc)
+        std::function<void(const char *, std::fstream &)> printFunc)
     {
         _warningPrintFunction = std::move(printFunc);
     }
 
     void Log::setErrorPrintFunction(
-        std::function<void(std::string, std::fstream &)> printFunc)
+        std::function<void(const char *, std::fstream &)> printFunc)
     {
         _errorPrintFunction = std::move(printFunc);
     }
 
-    void Log::debugLog(std::string text)
+    void Log::debugLog(const char *text)
     {
-        std::string msg = "Info " + text;
-        _infoPrintFunction(text, _logFile);
+        std::string msg = "Info " + std::string(text);
+        _infoPrintFunction(msg.c_str(), _logFile);
 
         if (_logInfoVector.size() >= MAX_LOG_SIZE)
         {
@@ -120,10 +118,10 @@ extern "C"
         _logInfoVector.push_back(text);
     }
 
-    void Log::debugLogWarning(std::string text)
+    void Log::debugLogWarning(const char *text)
     {
-        std::string msg = "Warning " + text;
-        _warningPrintFunction(msg, _logFile);
+        std::string msg = "Warning " + std::string(text);
+        _warningPrintFunction(msg.c_str(), _logFile);
 
         if (_logWarningVector.size() >= MAX_LOG_SIZE)
         {
@@ -133,10 +131,10 @@ extern "C"
         _logWarningVector.push_back(text);
     }
 
-    void Log::debugLogError(std::string text)
+    void Log::debugLogError(const char *text)
     {
-        std::string msg = "Error " + text;
-        _errorPrintFunction(msg, _logFile);
+        std::string msg = "Error " + std::string(text);
+        _errorPrintFunction(msg.c_str(), _logFile);
         if (_logErrorVector.size() >= MAX_LOG_SIZE)
         {
             _logErrorVector.pop_back();

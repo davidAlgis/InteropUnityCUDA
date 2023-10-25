@@ -48,9 +48,9 @@ extern "C"
         std::vector<std::string> _logWarningVector;
         std::vector<std::string> _logErrorVector;
         std::string _logBufferSum;
-        std::function<void(std::string, std::fstream &)> _infoPrintFunction;
-        std::function<void(std::string, std::fstream &)> _warningPrintFunction;
-        std::function<void(std::string, std::fstream &)> _errorPrintFunction;
+        std::function<void(const char *, std::fstream &)> _infoPrintFunction;
+        std::function<void(const char *, std::fstream &)> _warningPrintFunction;
+        std::function<void(const char *, std::fstream &)> _errorPrintFunction;
 
         public:
         // SINGLETON
@@ -71,7 +71,7 @@ extern "C"
          * @param[in]  printFunc  The print function
          */
         UTILITIES_API void setInfoPrintFunction(
-            std::function<void(std::string, std::fstream &)> printFunc);
+            std::function<void(const char *, std::fstream &)> printFunc);
 
         /**
          * @brief      This function is called when debulLogWarning is called,
@@ -81,7 +81,7 @@ extern "C"
          * @param[in]  printFunc  The print function
          */
         UTILITIES_API void setWarningPrintFunction(
-            std::function<void(std::string, std::fstream &)> printFunc);
+            std::function<void(const char *, std::fstream &)> printFunc);
 
         /**
          * @brief      This function is called when debulLogError is called, it
@@ -90,7 +90,7 @@ extern "C"
          * @param[in]  printFunc  The print function
          */
         UTILITIES_API void setErrorPrintFunction(
-            std::function<void(std::string, std::fstream &)> printFunc);
+            std::function<void(const char *, std::fstream &)> printFunc);
 
         /**
          * @brief       It will merge all log and separate them by '\n'.
@@ -108,7 +108,7 @@ extern "C"
          *
          * @param[in]  text  The text to write.
          */
-        UTILITIES_API void debugLog(std::string text);
+        UTILITIES_API void debugLog(const char *text);
 
         /**
          * @brief      Call this function to write an warning in log
@@ -116,7 +116,7 @@ extern "C"
          *
          * @param[in]  text  warning to write in log
          */
-        UTILITIES_API void debugLogWarning(std::string text);
+        UTILITIES_API void debugLogWarning(const char *text);
 
         /**
          * @brief      Call this function to write an error in log
@@ -124,7 +124,7 @@ extern "C"
          *
          * @param[in]  text  error to write in log
          */
-        UTILITIES_API void debugLogError(std::string text);
+        UTILITIES_API void debugLogError(const char *text);
 
         /**
          * @brief      Extract the last log of the log vector

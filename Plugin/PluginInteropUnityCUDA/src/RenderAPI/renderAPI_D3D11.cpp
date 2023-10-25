@@ -44,8 +44,9 @@ int RenderAPI_D3D11::createTexture2D(int textureWidth, int textureHeight,
     HRESULT hr = _device->CreateTexture2D(&texDesc, nullptr, textureHandle);
     if (FAILED(hr))
     {
-        Log::log().debugLogError("Error " + std::to_string(hr) +
-                                 " when creating Texture in DX11.");
+        Log::log().debugLogError(
+            ("Error " + std::to_string(hr) + " when creating Texture in DX11.")
+                .c_str());
         return -2;
     }
     return 0;
@@ -89,8 +90,9 @@ int RenderAPI_D3D11::createShaderResource(
     if (SUCCEEDED(hr) == 0)
     {
         Log::log().debugLogError(
-            "There has been an error " + std::to_string(static_cast<int>(hr)) +
-            "when creating shader resource view associated to the resource.");
+            ("There has been an error " + std::to_string(static_cast<int>(hr)) +
+             "when creating shader resource view associated to the resource.")
+                .c_str());
         return -3;
     }
 

@@ -50,6 +50,6 @@ inline VOID glAssert(const char *file, const int line)
         std::string errorStr(buffer);
         std::string s = "OpenGL error " + errorStr + " at : " + fileStr +
                         " - " + std::to_string(line);
-        Log::log().debugLogError(s);
+        Log::log().debugLogError(s.c_str());
     }
 }

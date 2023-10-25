@@ -78,9 +78,10 @@ extern "C"
             sDeviceType != kUnityGfxRendererOpenGLES20 &&
             sDeviceType != kUnityGfxRendererOpenGLES30)
         {
-            Log::log().debugLogError("Graphics API " +
-                                     std::to_string(sDeviceType) +
-                                     " is not supported yet.");
+            Log::log().debugLogError(("Graphics API " +
+                                      std::to_string(sDeviceType) +
+                                      " is not supported yet.")
+                                         .c_str());
             return false;
         }
         return true;
@@ -167,8 +168,9 @@ static void OnRenderEvent(int eventID)
     if (realEventID >= registerActions.size())
     {
         Log::log().debugLogError(
-            "Unknown event : " + std::to_string(realEventID) +
-            " has been called");
+            ("Unknown event : " + std::to_string(realEventID) +
+             " has been called")
+                .c_str());
         return;
     }
     else
@@ -205,8 +207,9 @@ static void OnRenderEvent(int eventID)
             {
                 DisableAction(registerActions[realEventID]);
                 Log::log().debugLogError(
-                    "There has been an error with action " +
-                    std::to_string(realEventID) + ". It has been disabled.");
+                    ("There has been an error with action " +
+                     std::to_string(realEventID) + ". It has been disabled.")
+                        .c_str());
             }
             break;
         default:
