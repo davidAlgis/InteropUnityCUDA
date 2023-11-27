@@ -10,13 +10,15 @@ extern "C"
 {
 
 #define GRUMBLE(code, msg)                                                     \
+    do                                                                         \
     {                                                                          \
-        if ((code) != 0)                                                       \
+        const auto _code = (code);                                             \
+        if (_code != 0)                                                        \
         {                                                                      \
             Log::log().debugLogError(msg);                                     \
-            return code;                                                       \
+            return _code;                                                      \
         }                                                                      \
-    }
+    } while (0)
 #define SUCCESS_INTEROP_CODE 0
 
     enum class logType
