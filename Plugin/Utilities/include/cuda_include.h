@@ -282,3 +282,35 @@ inline dim3 calculateDimGrid(dim3 dimBlock, dim3 numCalculation,
 
     return dim3{dimGridX, dimGridY, dimGridZ};
 }
+
+/**
+ * @brief      Check if dim grid and dim block are of a correct size
+ *
+ * @param[in]  dimGrid   The dimension of the grid to check
+ * @param[in]  dimBlock  The dimension of the block to check
+ * @param[in]  device    The device number to check on
+ *
+ * @return     true if grid and block size are of the correct size, else false
+ */
+UTILITIES_DLL_EXPORT inline bool checkCUDAConfiguration(const uint32_t dimGrid,
+                                                        const uint32_t dimBlock,
+                                                        int device = 0)
+{
+    cudaDeviceProp deviceProp;
+    cudaGetDeviceProperties(&deviceProp, device);
+
+    int maxThreadsPerBlock = deviceProp.maxThreadsPerBlock;
+
+    if (dimGrid > static_cast<uint32_t>(deviceProp.maxGridSize[0]) ||
+        dimBlock > static_cast<uint32_t>(maxThreadsPerBlock))
+    {
+        Log::log().debugLogError(
+            ("Invalid grid or block size configuration. Maximum grid size: " +
+             std::to_string(deviceProp.maxGridSize[0]) +
+             "Maximum threads per block: " + std::to_string(maxThreadsPerBlock))
+                .c_str());
+        return false;
+    }
+
+    return true;
+}
