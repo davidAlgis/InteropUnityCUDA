@@ -41,12 +41,12 @@ extern "C"
                                      sCurrentApi);
     }
 
-    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTime(float time)
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTimeInterop(float time)
     {
         _time = time;
     }
 
-    UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTime()
+    UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTimeInterop()
     {
         return _time;
     }

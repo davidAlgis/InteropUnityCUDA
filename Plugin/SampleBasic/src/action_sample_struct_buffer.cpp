@@ -27,7 +27,7 @@ int ActionSampleStructBuffer::Update()
 
     kernelCallerWriteBufferStruct(_structBuffer->getDimGrid(),
                                   _structBuffer->getDimBlock(), ptr,
-                                  _structBuffer->getSize(), GetTime());
+                                  _structBuffer->getSize(), GetTimeInterop());
     cudaDeviceSynchronize();
 
     ret = _structBuffer->unmapResources();

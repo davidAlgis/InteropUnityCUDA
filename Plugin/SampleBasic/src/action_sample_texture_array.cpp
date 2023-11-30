@@ -16,11 +16,11 @@ inline int ActionSampleTextureArray::Start()
 {
     int ret = _texture->registerTextureInCUDA();
     GRUMBLE(ret, "There has been an error during the registration of "
-            "the texture in CUDA. Abort ActionSampleTextureArray !");
+                 "the texture in CUDA. Abort ActionSampleTextureArray !");
     ret = _texture->mapTextureToSurfaceObject();
     GRUMBLE(ret, "There has been an error during the map of "
-                                 "the texture to surface object in CUDA. Abort "
-                                 "ActionSampleTextureArray !");
+                 "the texture to surface object in CUDA. Abort "
+                 "ActionSampleTextureArray !");
     return 0;
 }
 
@@ -28,12 +28,12 @@ int ActionSampleTextureArray::Update()
 {
     kernelCallerWriteTextureArray(
         _texture->getDimGrid(), _texture->getDimBlock(),
-        _texture->getSurfaceObjectArray(), GetTime(), _texture->getWidth(),
-        _texture->getHeight(), _texture->getDepth());
+        _texture->getSurfaceObjectArray(), GetTimeInterop(),
+        _texture->getWidth(), _texture->getHeight(), _texture->getDepth());
     cudaDeviceSynchronize();
     int ret = CUDA_CHECK(cudaGetLastError());
     GRUMBLE(ret, "There has been an error during the update. "
-                                 "Abort ActionSampleTextureArray !");
+                 "Abort ActionSampleTextureArray !");
     return 0;
 }
 
@@ -41,11 +41,11 @@ inline int ActionSampleTextureArray::OnDestroy()
 {
     int ret = _texture->unmapTextureToSurfaceObject();
     GRUMBLE(ret, "There has been an error during the unmap of "
-                                 "the texture to surface object in CUDA. Abort "
-                                 "ActionSampleTextureArray !");
+                 "the texture to surface object in CUDA. Abort "
+                 "ActionSampleTextureArray !");
     ret = _texture->unregisterTextureInCUDA();
     GRUMBLE(ret, "There has been an error during the unregistration of "
-            "the texture in CUDA. Abort ActionSampleTextureArray !");
+                 "the texture in CUDA. Abort ActionSampleTextureArray !");
     return 0;
 }
 

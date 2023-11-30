@@ -68,14 +68,14 @@ extern "C"
      *
      * @param[in]  time  new value for time
      */
-    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTime(float time);
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetTimeInterop(float time);
 
     /**
      * @brief      Get time for interoperability plugin
      *
      * @return     the current time set with SetTime
      */
-    UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTime();
+    UNITY_INTERFACE_EXPORT float UNITY_INTERFACE_API GetTimeInterop();
 
     /**
      * @brief      Return the callback which will be called from render thread

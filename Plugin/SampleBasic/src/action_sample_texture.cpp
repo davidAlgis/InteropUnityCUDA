@@ -27,7 +27,7 @@ inline int ActionSampleTexture::Start()
 int ActionSampleTexture::Update()
 {
     kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
-                             _texture->getSurfaceObject(), GetTime(),
+                             _texture->getSurfaceObject(), GetTimeInterop(),
                              _texture->getWidth(), _texture->getHeight());
     cudaDeviceSynchronize();
     GRUMBLE(CUDA_CHECK(cudaGetLastError()),

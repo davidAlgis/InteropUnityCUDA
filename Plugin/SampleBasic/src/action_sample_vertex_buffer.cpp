@@ -27,7 +27,7 @@ int ActionSampleVertexBuffer::Update()
 
     kernelCallerWriteBuffer(_vertexBuffer->getDimGrid(),
                             _vertexBuffer->getDimBlock(), ptr,
-                            _vertexBuffer->getSize(), GetTime());
+                            _vertexBuffer->getSize(), GetTimeInterop());
     cudaDeviceSynchronize();
 
     ret = _vertexBuffer->unmapResources();
