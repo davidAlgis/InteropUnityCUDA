@@ -188,7 +188,7 @@ if ($buildSolution) {
         "$configuration"
     )
     Write-Host "Execute command : MsBuild $msbuildArguments"
-    & MsBuild $msbuildArguments
+    & $Env:MSBUILD\MsBuild.exe $msbuildArguments
         
     Set-Location -Path $currentDir
     exit
@@ -217,6 +217,6 @@ $msbuildArguments = @(
     "$configuration"
 )
 Write-Host "Execute command : MsBuild $msbuildArguments"
-& MsBuild $msbuildArguments
+& $Env:MSBUILD\MsBuild.exe $msbuildArguments
 
 Set-Location -Path $currentDir
