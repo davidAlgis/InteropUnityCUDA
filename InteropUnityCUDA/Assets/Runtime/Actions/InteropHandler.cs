@@ -22,8 +22,12 @@ namespace ActionUnity
     /// </summary>
     public abstract class InteropHandler : MonoBehaviour
     {
+        
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private const string _dllPluginInterop = "d_PluginInteropUnityCUDA";
+#else
         private const string _dllPluginInterop = "PluginInteropUnityCUDA";
-
+#endif
         // dictionary with the string id (more convenient for user) and the corresponding integer id which 
         // is used in PluginInterop
         private readonly Dictionary<string, int> _actionsNames = new();

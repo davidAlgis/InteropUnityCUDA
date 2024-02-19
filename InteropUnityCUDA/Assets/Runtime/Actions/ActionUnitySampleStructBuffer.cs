@@ -6,8 +6,12 @@ namespace ActionUnity
 {
     public class ActionUnitySampleStructBuffer : ActionUnity
     {
-        private const string _dllSampleBasic = "SampleBasic";
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private const string _dllSampleBasic = "d_SampleBasic";
+#else
+        private const string _dllSampleBasic = "SampleBasic;
+#endif
         public ActionUnitySampleStructBuffer(ComputeBuffer computeBuffer, int size)
         {
             _actionPtr = createActionSampleStructBufferBasic(computeBuffer.GetNativeBufferPtr(), size);

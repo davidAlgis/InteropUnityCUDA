@@ -6,7 +6,12 @@ namespace ActionUnity
 {
 	public class ActionUnitySampleTexture : ActionUnity
 	{
-		const string _dllSampleBasic = "SampleBasic";
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private const string _dllSampleBasic = "d_SampleBasic";
+#else
+        private const string _dllSampleBasic = "SampleBasic;
+#endif
 
 		[DllImport(_dllSampleBasic)]
 		private static extern IntPtr createActionSampleTextureBasic(IntPtr texturePtr, int width, int height);
