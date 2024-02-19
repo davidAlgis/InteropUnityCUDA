@@ -52,7 +52,7 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" && Unity -projectPath ${project_path:${folder}}\\..\\InteropUnityCUDA",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" && powershell.exe  -File ${project_path:${folder}}\\buildtools\\launchUnity.ps1",
             "working_dir": "${project_path:${folder}}",
         },
         {
