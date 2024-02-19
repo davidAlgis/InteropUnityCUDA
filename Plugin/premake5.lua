@@ -9,7 +9,6 @@ newaction {
     trigger     = "clean",
     description = "Clean the project",
     execute     = function()
-
         cwd = os.getcwd()
         local pathCleanPs1 = ".//buildtools//clean.ps1"
         print("Run " .. pathCleanPs1 .. " from " .. cwd)
@@ -30,8 +29,8 @@ function loadrequire(module, linkToRepository)
     res = pcall(requiref, module)
     if not (res) then
         print("Could not find module :"
-            , module, " it's available at this link : "
-            , linkToRepository)
+        , module, " it's available at this link : "
+        , linkToRepository)
     end
 end
 
@@ -64,12 +63,15 @@ function addCUDAToProject(sourceDir, objDir)
 end
 
 local root = "./"
-local pathTarget = "../InteropUnityCUDA/Assets/Runtime/Plugin"
+local pathTargetDebug = "bin/Debug/"
+local pathTargetRelease = "bin/Release/"
 local pathSampleProject = "SampleBasic"
 local pathUtilities = root .. "Utilities"
 local pathPluginInterop = root .. "PluginInteropUnityCUDA"
 local nameUtilitiesLib = "Utilities.lib"
+local nameUtilitiesLibDebug = "d_Utilities.lib"
 local namePluginInteropLib = "PluginInteropUnityCUDA.lib"
+local namePluginInteropLibDebug = "d_PluginInteropUnityCUDA.lib"
 local pathUtilitiesInclude = pathUtilities .. "/include/"
 local pathPluginInteropInclude = pathPluginInterop .. "/include/"
 local pathPluginInteropIncludeSubdir = pathPluginInteropInclude .. "**"
@@ -78,7 +80,8 @@ local pathThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/include/";
 local pathSourceThirdPartyGLDir = pathPluginInterop .. "/thirdParty/gl3w/src/";
 
 loadrequire('premake-cuda\\premake5-cuda', "https://github.com/theComputeKid/premake5-cuda")
-print("We use export compile commands module to export compilation database for clang. If you don't have the module you won't be able to compile with clang, BUT you can still compile with visual studio !")
+print(
+    "We use export compile commands module to export compilation database for clang. If you don't have the module you won't be able to compile with clang, BUT you can still compile with visual studio !")
 loadrequire('export-compile-commands\\export-compile-commands',
     "https://github.com/null-black/premake-export-compile-commands")
 ---------------------------------
@@ -89,7 +92,7 @@ loadrequire('export-compile-commands\\export-compile-commands',
 workspace "PluginInteropUnity"
 
 configurations { "Debug", "Release" } -- Optimization/General config mode in VS
-platforms { "x64" } -- Dropdown platforms section in VS
+platforms { "x64" }                   -- Dropdown platforms section in VS
 -------------------------------
 -- [ COMPILER/LINKER CONFIG] --
 -------------------------------
@@ -126,7 +129,14 @@ project "PluginInteropUnityCUDA"
 local rootProject = pathPluginInterop
 location(rootProject)
 language "C++"
-targetdir(pathTarget, "SampleBasic")
+
+filter "configurations:Debug"
+targetdir(pathTargetDebug, "SampleBasic")
+targetname("d_PluginInteropUnityCUDA")
+filter "configurations:Release"
+targetdir(pathTargetRelease, "SampleBasic")
+filter {}
+
 local tempDir = rootProject .. "/temp/"
 objdir(tempDir)
 kind "SharedLib"
@@ -157,19 +167,25 @@ includedirs
     pathUtilitiesInclude,
 }
 
+filter "configurations:Debug"
 
 libdirs
 {
-    pathTarget
+    pathTargetDebug
 }
+links { nameUtilitiesLibDebug, "OpenGL32" }
 
-filter { "system:windows" }
+filter "configurations:Release"
+
+libdirs
+{
+    pathTargetRelease
+}
 links { nameUtilitiesLib, "OpenGL32" }
 
-filter { "system:not windows" }
-links { "GL", nameUtilitiesLib }
-
 filter {}
+
+
 
 
 sourceDirAbsolute = path.getabsolute(SourceDir)
@@ -186,7 +202,14 @@ local locationProject = pathSampleProject
 local rootProject = root .. locationProject
 location(rootProject)
 language "C++"
-targetdir(pathTarget)
+
+filter "configurations:Debug"
+targetdir(pathTargetDebug)
+targetname("d_SampleBasic")
+filter "configurations:Release"
+targetdir(pathTargetRelease)
+filter {}
+
 local tempDir = rootProject .. "/temp/"
 objdir(tempDir)
 kind "SharedLib"
@@ -221,19 +244,24 @@ includedirs
 }
 
 
+filter "configurations:Debug"
+
 libdirs
 {
-    pathTarget
+    pathTargetDebug
 }
+links { nameUtilitiesLibDebug, "OpenGL32", namePluginInteropLibDebug }
 
---here we need the dll INTEROP too
-filter { "system:windows" }
+filter "configurations:Release"
+
+libdirs
+{
+    pathTargetRelease
+}
 links { nameUtilitiesLib, "OpenGL32", namePluginInteropLib }
 
-filter { "system:not windows" }
-links { "GL", nameUtilitiesLib }
-
 filter {}
+
 
 
 -- Add necessary build customization using standard Premake5
@@ -270,7 +298,13 @@ local rootProject = pathUtilities
 location(rootProject)
 kind "SharedLib"
 language "C++"
-targetdir(pathTarget)
+
+filter "configurations:Debug"
+targetdir(pathTargetDebug)
+targetname("d_Utilities")
+filter "configurations:Release"
+targetdir(pathTargetRelease)
+filter {}
 local tempDir = rootProject .. "/temp/"
 objdir(tempDir)
 
