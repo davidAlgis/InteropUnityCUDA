@@ -72,3 +72,4 @@ Get-ChildItem -Path $solutionDir -Filter *.sln | Remove-Item -ErrorAction Silent
 Remove-Item -ErrorAction SilentlyContinue "$solutionDir\compile_commands.json"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$solutionDir\.cache"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$solutionDir\.vs"
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$solutionDir\bin"
