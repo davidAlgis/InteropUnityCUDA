@@ -1,6 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++
-
+bin/
 # Remove compilation commands.json that are linked to path, they have to be regenerated with premake
 **/compile_commands.json*
 
