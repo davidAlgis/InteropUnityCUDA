@@ -32,7 +32,8 @@ Copyright 2023 - Studio Nyx
 param(
     [string]$project,
     [string]$action,
-    [string]$configuration
+    [string]$configuration,
+    [string]$msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin"
 )
 
 
@@ -188,7 +189,7 @@ if ($buildSolution) {
         "$configuration"
     )
     Write-Host "Execute command : MsBuild $msbuildArguments"
-    & $Env:MSBUILD\MsBuild.exe $msbuildArguments
+    & $msbuildPath\MsBuild.exe $msbuildArguments
         
     Set-Location -Path $currentDir
     exit
@@ -217,6 +218,6 @@ $msbuildArguments = @(
     "$configuration"
 )
 Write-Host "Execute command : MsBuild $msbuildArguments"
-& $Env:MSBUILD\MsBuild.exe $msbuildArguments
+& $msbuildPath\MsBuild.exe $msbuildArguments
 
 Set-Location -Path $currentDir

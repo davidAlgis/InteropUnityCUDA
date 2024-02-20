@@ -4,6 +4,21 @@ local projectsDir = {
     "Utilities/",
 }
 
+
+newoption {
+    trigger = "cudaPath",
+    value = "path",
+    description = "Path for CUDA",
+    default = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2"
+}
+
+newoption {
+    trigger = "cudaVersion",
+    value = "string",
+    description = "Version for CUDA",
+    default = "12.2"
+}
+
 -- Define the "clean" action
 newaction {
     trigger     = "clean",
@@ -35,8 +50,9 @@ function loadrequire(module, linkToRepository)
 end
 
 function addCUDAToProject(sourceDir, objDir)
-    buildcustomizations "BuildCustomizations/CUDA 12.2"
+    buildcustomizations("BuildCustomizations/CUDA " .. _OPTIONS["cudaVersion"])
     -- CUDA specific properties
+    cudaPath(_OPTIONS["cudaPath"])
 
     cudaIntDir(objDir)
     cudaFiles
