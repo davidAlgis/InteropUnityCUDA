@@ -27,6 +27,8 @@ target_compile_definitions(PluginInteropUnityCUDA PRIVATE PLUGINGLINTEROPCUDA_SH
 # Set properties for Debug/Release configurations
 set_target_properties(PluginInteropUnityCUDA PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_NAME}/../../"
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_NAME}/../../"
+    ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_NAME}/../../"
     DEBUG_OUTPUT_NAME "d_${PROJECT_NAME}"
     RELEASE_OUTPUT_NAME "${PROJECT_NAME}"
     MINSIZEREL_OUTPUT_NAME "${PROJECT_NAME}"
