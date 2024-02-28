@@ -19,8 +19,6 @@ target_include_directories(Utilities PUBLIC
 
 target_compile_definitions(Utilities PRIVATE UTILITIES_SHARED UTILITIES_SHARED_EXPORTS)
 
-link_directories("${PROJECT_NAME}/../../")
-
 # Set properties for Debug/Release configurations
 set_target_properties(Utilities PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_NAME}/../../"

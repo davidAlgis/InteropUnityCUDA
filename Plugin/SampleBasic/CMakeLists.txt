@@ -22,7 +22,6 @@ target_link_libraries(SampleBasic optimized
     cudart
 )
 
-link_directories("${PROJECT_NAME}/../../")
 # Set properties for Debug/Release configurations
 set_target_properties(SampleBasic PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_NAME}/../../"
