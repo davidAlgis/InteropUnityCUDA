@@ -88,29 +88,21 @@
             "shell": true,
         },
         {
-            "name": "PluginInterop - Premake5 - Clean",
+            "name": "PluginInterop - Clean",
             "cmd": [
                 "echo",
-                "run clean $pwd",
+                "Removing bin directory...",
                 "&&",
-                "premake5",
-                "--file=${project_path:${folder}}\\premake5.lua",
-                "clean"
+                "rm",
+                "-rf",
+                "${project_path:${folder}}/bin"
             ],
             "shell": true,
             "working_dir": "${project_path:${folder}}",
         },
         {
-            "name": "PluginInterop - Premake5 Vs",
-            "cmd": [
-                "premake5",
-                "--file=${project_path:${folder}}\\premake5.lua",
-                "vs2019",
-                "&&",
-                "premake5",
-                "--file=${project_path:${folder}}\\premake5.lua",
-                "export-compile-commands"
-            ],
+            "name": "PluginInterop - CMake",
+            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\configureProjects.ps1",
             "shell": true,
         },
     ]

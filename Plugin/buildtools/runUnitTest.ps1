@@ -13,6 +13,7 @@ Copyright 2023 - Studio Nyx
 #>
 
 . $PSScriptRoot\dependencies.ps1
+. $PSScriptRoot\copyBuildToUnity.ps1
 
 function WaitUnity([System.Diagnostics.ProcessStartInfo] $processInfo, $targetName, $unityProjectPath, $apiName) {
     $appdata = "$env:LOCALAPPDATA"
