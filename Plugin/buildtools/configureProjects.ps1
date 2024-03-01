@@ -5,7 +5,9 @@ Author         : David Algis
 Prerequisite   : PowerShell v3 and MsBuild
 Copyright 2023 - Studio Nyx
 #>
-
+param (
+    [string]$cudaPath = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3"
+)
 
 Write-Host "Configure Plugin Interop Unity CUDA..."-ForegroundColor DarkMagenta
 
@@ -27,7 +29,7 @@ if (-not (Test-Path -Path $binFolder -PathType Container)) {
 Set-Location -Path $binFolder
 
 # Execute the cmake command
-$cmakeCommand = "cmake .. -DCMAKE_GENERATOR_TOOLSET=`"cuda=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3`" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON"
+$cmakeCommand = "cmake .. -DCMAKE_GENERATOR_TOOLSET=`"cuda=$cudaPath`" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON"
 Invoke-Expression -Command $cmakeCommand
 
 Set-Location -Path $currentDir
