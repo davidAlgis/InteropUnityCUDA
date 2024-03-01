@@ -99,7 +99,7 @@ else {
 
 
 
-Set-Location -Path "$PSScriptRoot\..\bin\"
+Set-Location -Path "$PSScriptRoot\..\build\"
 
 
 

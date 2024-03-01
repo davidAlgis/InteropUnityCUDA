@@ -1,10 +1,10 @@
 $projectPath = "$PSScriptRoot\..\..\InteropUnityCUDA"
-$pathBinDebug = "$PSScriptRoot\..\bin\Debug"
-$pathBinRelease = "$PSScriptRoot\..\bin\Release"
+$pathBuildDebug = "$PSScriptRoot\..\Build\Debug"
+$pathBuildRelease = "$PSScriptRoot\..\Build\Release"
 $pathPluginDebug = "$projectPath\Assets\Runtime\Plugin\Debug"
 $pathPluginRelease = "$projectPath\Assets\Runtime\Plugin\Release"
 Write-Host "Copy binary into the Unity project..."
-robocopy  $pathBinDebug $pathPluginDebug /s
-robocopy  $pathBinRelease $pathPluginRelease /s
+robocopy  $pathBuildDebug $pathPluginDebug /s
+robocopy  $pathBuildRelease $pathPluginRelease /s
 
 

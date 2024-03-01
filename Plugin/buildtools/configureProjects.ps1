@@ -17,16 +17,16 @@ $currentDir = Get-Location
 # Get the parent directory of the script's location
 $parentDir = Split-Path -Path $PSScriptRoot -Parent
 
-# Define the path for the bin folder
-$binFolder = Join-Path -Path $parentDir -ChildPath "bin"
+# Define the path for the build folder
+$buildFolder = Join-Path -Path $parentDir -ChildPath "build"
 
-# Check if the bin folder exists, if not, create it
-if (-not (Test-Path -Path $binFolder -PathType Container)) {
-    New-Item -Path $binFolder -ItemType Directory | Out-Null
+# Check if the build folder exists, if not, create it
+if (-not (Test-Path -Path $buildFolder -PathType Container)) {
+    New-Item -Path $buildFolder -ItemType Directory | Out-Null
 }
 
 # Navigate to the parent directory
-Set-Location -Path $binFolder
+Set-Location -Path $buildFolder
 
 # Execute the cmake command
 $cmakeCommand = "cmake .. -DCMAKE_GENERATOR_TOOLSET=`"cuda=$cudaPath`" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON"
