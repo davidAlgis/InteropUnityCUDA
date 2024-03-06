@@ -37,7 +37,7 @@
     {                                                                          \
         glAssert(__FILE__, __LINE__);                                          \
     }
-inline VOID glAssert(const char *file, const int line)
+inline void glAssert(const char *file, const int line)
 {
     // check for error
     GLenum gl_error = glGetError();
