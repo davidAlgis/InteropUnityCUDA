@@ -1,4 +1,3 @@
-#pragma once
 #include "action_sample_texture_array.h"
 #include "unity_plugin.h"
 

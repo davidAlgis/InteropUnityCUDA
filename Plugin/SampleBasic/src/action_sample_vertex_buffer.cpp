@@ -1,4 +1,3 @@
-#pragma once
 #include "action_sample_vertex_buffer.h"
 #include "unity_plugin.h"
 

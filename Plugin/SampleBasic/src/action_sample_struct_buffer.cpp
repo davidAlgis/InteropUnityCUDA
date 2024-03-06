@@ -1,4 +1,3 @@
-#pragma once
 #include "action_sample_struct_buffer.h"
 #include "unity_plugin.h"
 
