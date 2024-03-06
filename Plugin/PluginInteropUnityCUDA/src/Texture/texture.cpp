@@ -1,4 +1,3 @@
-#pragma once
 #include "texture.h"
 
 Texture::Texture(void *textureHandle, int textureWidth, int textureHeight,

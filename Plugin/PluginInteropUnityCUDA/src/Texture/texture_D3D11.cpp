@@ -1,4 +1,3 @@
-#pragma once
 #include "texture_D3D11.h"
 
 #if SUPPORT_D3D11

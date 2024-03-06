@@ -1,4 +1,3 @@
-#pragma once
 #include "texture_OpenGLCoreES.h"
 
 #if SUPPORT_OPENGL_UNIFIED

@@ -1,4 +1,3 @@
-#pragma once
 #include "buffer.h"
 
 Buffer::Buffer(void *bufferHandle, int size)

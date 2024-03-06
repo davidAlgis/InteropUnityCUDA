@@ -1,4 +1,3 @@
-#pragma once
 #include "unity_plugin.h"
 #include "buffer.h"
 #include "factory.h"
