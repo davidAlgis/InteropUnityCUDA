@@ -34,8 +34,13 @@ extern "C"
         time_t now = time(NULL);
         tm now_tm = {};
         char str[26] = {};
+#ifdef WIN32
         localtime_s(&now_tm, &now);
         asctime_s(str, 26, &now_tm);
+#else
+        localtime_r(&now, &now_tm);
+        asctime_r(&now_tm, str);
+#endif
 
         _logFile << "Log file - Project : " << projectName
                  << " - Begin at : " << str << std::endl;
@@ -79,8 +84,13 @@ extern "C"
         time_t now = time(nullptr);
         tm now_tm = {};
         char str[26] = {};
+#ifdef WIN32
         localtime_s(&now_tm, &now);
         asctime_s(str, 26, &now_tm);
+#else
+        localtime_r(&now, &now_tm);
+        asctime_r(&now_tm, str);
+#endif
 
         _logFile << "End Log file - Project : " << projectName
                  << " - End at : " << str << std::endl;
