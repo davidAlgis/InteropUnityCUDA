@@ -23,7 +23,7 @@ target_include_directories(PluginInteropUnityCUDA PUBLIC
 )
 target_link_libraries(PluginInteropUnityCUDA PUBLIC 
     Utilities 
-    OpenGL32 
+    ${OPENGL_LIBRARIES} 
     cudart 
     cuda)
 

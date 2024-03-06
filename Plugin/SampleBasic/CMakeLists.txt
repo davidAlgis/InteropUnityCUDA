@@ -18,7 +18,7 @@ target_include_directories(SampleBasic PUBLIC
 # Linking with release libraries
 target_link_libraries(SampleBasic optimized 
     Utilities
-    OpenGL32
+    ${OPENGL_LIBRARIES} 
     PluginInteropUnityCUDA
     cudart
     cuda
