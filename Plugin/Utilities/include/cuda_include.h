@@ -116,8 +116,8 @@ inline int cudaAssert(cudaError_t code, const char *file, int line)
     if (code != cudaSuccess)
     {
         char buffer[2048];
-        sprintf_s(buffer, "Cuda error: %i %s %s %d\n", code,
-                  cudaGetErrorString(code), file, line);
+        snprintf(buffer, sizeof(buffer), "Cuda error: %i %s %s %d\n", code,
+                 cudaGetErrorString(code), file, line);
         std::string strError(buffer);
         Log::log().debugLogError(buffer);
     }
@@ -201,8 +201,8 @@ inline int cufftAssert(int cufftResult, const char *file, int line)
             break;
         }
         char buffer[2048];
-        sprintf_s(buffer, "Cufft error: %i %s %s %d\n", cufftResult,
-                  cufftInterpret.c_str(), file, line);
+        snprintf(buffer, sizeof(buffer), "Cufft error: %i %s %s %d\n",
+                 cufftResult, cufftInterpret.c_str(), file, line);
         std::string strError(buffer);
         Log::log().debugLogError(buffer);
     }
