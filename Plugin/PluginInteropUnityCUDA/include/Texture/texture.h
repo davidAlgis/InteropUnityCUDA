@@ -2,6 +2,7 @@
 #include "IUnityGraphics.h"
 #include "cuda_include.h"
 #include "log.h"
+#include <string.h>
 
 /**
  * @class      Texture
