@@ -9,7 +9,9 @@ RenderAPI *CreateRenderAPI_OpenGLCoreES(UnityGfxRenderer apiType)
 
 void RenderAPI_OpenGLCoreES::CreateResources()
 {
+#ifdef WIN32
     gl3wInit();
+#endif
     GL_CHECK();
 }
 
