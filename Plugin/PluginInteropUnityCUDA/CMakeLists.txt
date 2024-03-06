@@ -19,8 +19,15 @@ target_include_directories(PluginInteropUnityCUDA PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Texture
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/gl3w/include
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/unity/include
+    ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
 )
-target_link_libraries(PluginInteropUnityCUDA PUBLIC Utilities OpenGL32 cudart)
+target_link_libraries(PluginInteropUnityCUDA PUBLIC 
+    Utilities 
+    OpenGL32 
+    cudart 
+    cuda)
+
+
 
 target_compile_definitions(PluginInteropUnityCUDA PRIVATE PLUGINGLINTEROPCUDA_SHARED_EXPORTS)
 

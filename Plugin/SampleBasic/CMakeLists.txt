@@ -12,6 +12,7 @@ add_library(SampleBasic SHARED ${SOURCES} ${HEADER})
 
 target_include_directories(SampleBasic PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
 )
 
 # Linking with release libraries
@@ -20,7 +21,14 @@ target_link_libraries(SampleBasic optimized
     OpenGL32
     PluginInteropUnityCUDA
     cudart
+    cuda
 )
+
+
+if(UNIX AND NOT APPLE)
+    add_definitions(-DUNITY_LINUX)
+endif()
+
 
 # Set properties for Debug/Release configurations
 set_target_properties(SampleBasic PROPERTIES
