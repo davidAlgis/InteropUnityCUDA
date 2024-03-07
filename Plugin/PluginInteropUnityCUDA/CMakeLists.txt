@@ -3,7 +3,7 @@ project(PluginInteropUnityCUDA)
 
 # Find CUDA package
 find_package(CUDAToolkit REQUIRED)
-
+find_package(OpenGL REQUIRED)
 
 # Define the dynamic library target
 file(GLOB_RECURSE  SOURCES "src/*.cpp")
