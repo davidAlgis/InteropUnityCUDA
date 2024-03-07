@@ -16,7 +16,7 @@ target_include_directories(SampleBasic PUBLIC
     ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
 )
 
-target_link_directories(Utilities PUBLIC 
+target_link_directories(SampleBasic PUBLIC 
     ${CUDAToolkit_LIBRARY_DIR})
 
 # Linking with release libraries

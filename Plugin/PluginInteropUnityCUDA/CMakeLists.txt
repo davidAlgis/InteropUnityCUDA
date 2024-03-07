@@ -21,7 +21,7 @@ target_include_directories(PluginInteropUnityCUDA PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/unity/include
     ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
 )
-target_link_directories(Utilities PUBLIC 
+target_link_directories(PluginInteropUnityCUDA PUBLIC 
     ${CUDAToolkit_LIBRARY_DIR})
 
 target_link_libraries(PluginInteropUnityCUDA PUBLIC 
