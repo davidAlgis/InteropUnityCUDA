@@ -10,15 +10,14 @@ The `Plugin` folder contains the c++ library used for interoperability. They can
 ```
 cd .\Plugin 
 mkdir build
-cd build
-cmake ..
+cmake -B build
 ```
 
-Then use your favorite compiler to compile it. On Windows you can use these commands :
+Then to compile it :
 
 ```
-MsBuild .\PluginInteropUnity.sln /t:rebuild /m /p:Configuration=release 
-MsBuild .\PluginInteropUnity.sln /t:rebuild /m /p:Configuration=debug 
+cmake --build build --config Release
+cmake --build build --config Debug
 ```
 
 Moreover, to use the library in you unity project, you need to copy the content of the folder `Debug` and `Release` to your unity project. 
@@ -55,7 +54,7 @@ The project has only one scene that demonstrate the three simple actions describ
 
 # Platform availability
 
-It has been tested only on Unity 2021.1 and CUDA 12.2. At the moment it only work with OpenGL and DirectX11 graphics API.
+It has been tested only on Unity 2021.1 and CUDA 12.2. At the moment it only work with OpenGL and DirectX11 graphics API. The plugin has been made for windows, but it can be compile with Linux too. 
 For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
 
 # Meta
