@@ -10,18 +10,21 @@ file(GLOB SOURCES "src/*.cpp" "src/*.cu")
 file(GLOB HEADER "include/*.h")
 add_library(SampleBasic SHARED ${SOURCES} ${HEADER})
 
+
 target_include_directories(SampleBasic PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
 )
+
+target_link_directories(Utilities PUBLIC 
+    ${CUDAToolkit_LIBRARY_DIR})
 
 # Linking with release libraries
 target_link_libraries(SampleBasic optimized 
     Utilities
     ${OPENGL_LIBRARIES} 
     PluginInteropUnityCUDA
-    cudart
-    cuda
+    CUDA::cudart
 )
 
 

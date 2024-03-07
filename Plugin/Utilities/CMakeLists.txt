@@ -10,7 +10,12 @@ file(GLOB SOURCES "src/*.cpp")
 file(GLOB HEADER "include/**.h")
 add_library(Utilities SHARED ${SOURCES})
 
-target_link_libraries(Utilities PUBLIC cudart cuda)
+target_link_directories(Utilities PUBLIC 
+    ${CUDAToolkit_LIBRARY_DIR})
+
+
+target_link_libraries(Utilities PUBLIC 
+    CUDA::cudart)
 
 target_include_directories(Utilities PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
