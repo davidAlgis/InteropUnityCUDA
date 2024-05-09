@@ -3,7 +3,11 @@
 #include "log.h"
 #include <stdexcept>
 
-// use this macro if you want to check cuda function
+#if defined(__CUDACC__)
+#define DEVICE __device__
+#else
+#define DEVICE
+#endif
 
 /**
  * @brief      Check if a cuda function has succeed and log the cuda error if
