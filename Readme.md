@@ -47,6 +47,10 @@ The folder `InteropUnityCUDA` contains the Unity project with the script to hand
 
 The project has only one scene that demonstrate the three simple actions describe above. 
 
+# Generate and add InteropUnityCUDA package to your project
+
+[See the dedicated documentation here.](Plugin/Documentation/GenerateUnityPackage.md)
+
 # Create your own action
 
 [See the dedicated documentation here.](Plugin/Documentation/CreateAction.md)
