@@ -1,5 +1,5 @@
 {
-    "name": "Tests",
+    "name": "TestsInteropUnityCUDA",
     "rootNamespace": "",
     "references": [
         "GUID:1d0ba921edbe6e34bb5133f4b03222e4",
