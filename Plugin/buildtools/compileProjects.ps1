@@ -30,9 +30,9 @@ Prerequisite   : PowerShell v3 and MsBuild
 Copyright 2023 - Studio Nyx
 #>
 param(
-    [string]$project,
-    [string]$action,
-    [string]$configuration,
+    [string]$project = "all",
+    [string]$action = "build",
+    [string]$configuration = "release",
     [string]$msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin"
 )
 
@@ -62,12 +62,14 @@ $isValidProject = $false
 if ($action -eq "build" -or $action -eq "rebuild") {
     if ($configuration -ne "debug" -and $configuration -ne "release" -and $configuration -ne "") {
         Write-Warning "The configuration argument '$configuration' is not a valid configuration for the action : $action. Exiting the program."
+        Pause
         Exit
     }
 }
 else {
     if ($action -ne "clean") {
         Write-Warning "The action argument '$action' is not a valid action. Exiting the program."
+        Pause
         Exit
     }
 }
@@ -92,6 +94,7 @@ else {
 
     if (-not $isValidProject) {
         Write-Warning "The project name '$project' is not a valid project. Exiting the program."
+        Pause
         Exit
     }
 
@@ -118,7 +121,7 @@ if ($buildSolution) {
     & $msbuildPath\MsBuild.exe $msbuildArguments
         
     Set-Location -Path $currentDir
-    exit
+    Exit
 }
    
 
