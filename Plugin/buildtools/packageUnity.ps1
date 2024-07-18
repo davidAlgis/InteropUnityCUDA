@@ -17,7 +17,7 @@ Prerequisite   : PowerShell v3
 Copyright 2023 - Studio Nyx
 #>
 param(
-    [string]$targetFolder
+    [string]$targetFolder = "com.studio-nyx.interop-unity-cuda."
 )
 
 # Include version from dependencies.ps1
@@ -36,19 +36,22 @@ else {
 }
 
 
-# Define the content of package.json
+# Define the content of package.json see https://docs.unity3d.com/Manual/upm-manifestPrj.html
 $jsonContent = @{
-    "name"        = "com.studio-nyx.interop-unity-cuda"
-    "version"     = $version
-    "displayName" = "Interop Unity CUDA"
-    "unity"       = "2021.1"
-    "description" = "Demonstrate interoperability between Unity Engine and CUDA."
-    "license"     = "MIT"
-    "keywords"    = @("GPU", "CUDA", "OpenGL", "DX11", "Native-Plugin", "interoperability")
-    "author"      = @{
+    "name"         = "com.studio-nyx.interop-unity-cuda"
+    "version"      = $version
+    "displayName"  = "Interop Unity CUDA"
+    "unity"        = "2021.1"
+    "description"  = "Demonstrate interoperability between Unity Engine and CUDA."
+    "license"      = "MIT"
+    "keywords"     = @("GPU", "CUDA", "OpenGL", "DX11", "Native-Plugin", "interoperability")
+    "author"       = @{
         "name"  = "David Algis"
         "email" = "david.algis@tutamail.com"
         "url"   = "https://github.com/davidAlgis"
+    }
+    "dependencies" = @{
+        "com.unity.mathematics" = "1.2.6"
     }
 } | ConvertTo-Json -Depth 4
 
