@@ -20,7 +20,7 @@ function WaitUnity([System.Diagnostics.ProcessStartInfo] $processInfo, $targetNa
     $logPath = "$appdata\Unity\Editor\Editor.log"
     $processLogsPath = "$unityProjectPath\TestResults"
 
-    $processInfo.FileName = "$Env:UNITY_2021_3_17\Unity.exe"
+    $processInfo.FileName = "$Env:UNITY\Unity.exe"
     $processInfo.RedirectStandardError = "$processLogsPath$apiName\Error.log"
     $processInfo.RedirectStandardOutput = "$processLogsPath$apiName\Output.log"
     $processInfo.UseShellExecute = $false
