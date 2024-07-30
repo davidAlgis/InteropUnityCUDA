@@ -23,28 +23,28 @@ In this new folder create a json file named `package.json` and write this conten
 
 ```json
 {
-    "keywords":  [
-                     "GPU",
-                     "CUDA",
-                     "OpenGL",
-                     "DX11",
-                     "Native-Plugin",
-                     "interoperability"
-                 ],
-    "license":  "MIT",
-    "displayName":  "Interop Unity CUDA",
-    "name":  "com.studio-nyx.interop-unity-cuda",
-    "description":  "Demonstrate interoperability between Unity Engine and CUDA.",
-    "version":  "<version_number>",
-    "author":  {
-                   "email":  "david.algis@tutamail.com",
-                   "url":  "https://github.com/davidAlgis",
-                   "name":  "David Algis"
-               },
-    "dependencies" :{
-        "com.unity.mathematics" : "1.2.6"
+    "keywords": [
+        "GPU",
+        "CUDA",
+        "OpenGL",
+        "DX11",
+        "Native-Plugin",
+        "interoperability"
+    ],
+    "license": "MIT",
+    "displayName": "Interop Unity CUDA",
+    "name": "com.studio-nyx.interop-unity-cuda",
+    "description": "Demonstrate interoperability between Unity Engine and CUDA.",
+    "version": "<version-number>",
+    "author": {
+        "email": "david.algis@tutamail.com",
+        "url": "https://github.com/davidAlgis",
+        "name": "David Algis"
     },
-    "unity":  "2021.1",
+    "dependencies": {
+        "com.unity.mathematics": "1.2.6"
+    },
+    "unity": "2021.1"
 }
 ```
 
