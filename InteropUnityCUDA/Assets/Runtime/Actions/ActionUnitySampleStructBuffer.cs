@@ -10,7 +10,7 @@ namespace ActionUnity
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         private const string _dllSampleBasic = "d_SampleBasic";
 #else
-        private const string _dllSampleBasic = "SampleBasic;
+        private const string _dllSampleBasic = "SampleBasic";
 #endif
         public ActionUnitySampleStructBuffer(ComputeBuffer computeBuffer, int size)
         {
