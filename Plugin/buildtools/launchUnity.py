@@ -11,7 +11,7 @@ def launch_unity_project(project_path, unity_bin):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Launch a Unity project.')
-    parser.add_argument("-u", "--unityBin", type=str, default="C://Program Files//Unity//Hub//Editor//2021.3.23f1//Editor//Unity.exe",
+    parser.add_argument("-u", "--unityBin", type=str, default="C://Program Files//Unity//Hub//Editor//2022.3.8f1//Editor//Unity.exe",
                         help='Path to the Unity executable.')
     args = parser.parse_args()
 
