@@ -52,13 +52,7 @@ Finally, copy all the content of the asset folder (`[ParentOfInteropUnityCUDA]\I
 
 ## Automatic generation
 
-This will only works on windows system (use manually generation describe above if you're not on windows).
-
-Execute the following script in this order:
-1. `.\configureProjects.ps1`
-2. `.\compileProjects.ps1 -configuration "release"`
-3. `.\compileProjects.ps1 -configuration "debug"`
-4. `.\packageUnity.ps1`
+Execute the following script `.\packageUnity.py`.
 
 ## Add the package to a Unity Project
 
