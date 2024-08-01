@@ -59,7 +59,11 @@ The project has only one scene that demonstrate the three simple actions describ
 # Platform availability
 
 It has been tested only on Unity 2021.1 and CUDA 12.2. At the moment it only work with OpenGL and DirectX11 graphics API. The plugin has been made for windows, but it can be compile with Linux too. 
-For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
+
+## Limitation
+
+- For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
+- Buffer cannot be written by Unity __and__ CUDA without remapping/unmapping the buffer after each write in CUDA (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/12).
 
 # Meta
 
