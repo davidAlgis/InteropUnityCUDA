@@ -35,3 +35,9 @@ set_target_properties(Utilities PROPERTIES
     MINSIZEREL_OUTPUT_NAME "${PROJECT_NAME}"
     RELWITHDEBINFO_OUTPUT_NAME "${PROJECT_NAME}"
 )
+
+add_custom_command(TARGET Utilities POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:Utilities>
+    ${UNITY_INTEROP_PLUGIN_PATH}/$<CONFIG>/$<TARGET_FILE_NAME:Utilities>
+)
