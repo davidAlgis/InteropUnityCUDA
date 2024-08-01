@@ -22,57 +22,77 @@
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"build\"",
+            "linux": {
+                "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/compileProjects.py\""
+            },
+            "windows": {
+                "shell_cmd": "python \"${project_path:${folder}}/buildtools/compileProjects.py\""
+            },
             "working_dir": "${project_path:${folder}}",
         },
         {
-            "name": "PluginInteropUnity - Rebuild - Debug",
+            "name": "PluginInteropUnity - CMake",
             "target": "terminus_exec",
             "focus": true,
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" -configuration \"debug\"",
             "working_dir": "${project_path:${folder}}",
+            "linux": {
+                "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Debug"
+            },
+            "windows": {
+                "shell_cmd": "python \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Debug",
+            },
+            "variants": [
+                {
+                    "name": "Debug",
+                    "linux": {
+                        "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Debug"
+                    },
+                    "windows": {
+                        "shell_cmd": "python \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Debug",
+                    }
+                },
+                {
+                    "name": "Release",
+                    "linux": {
+                        "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Release"
+                    },
+                    "windows": {
+                        "shell_cmd": "python \"${project_path:${folder}}/buildtools/configureProjects.py\" --build-type Release",
+                    }
+                }
+            ]
         },
         {
-            "name": "PluginInteropUnity - Rebuild - Release",
+            "name": "PluginInteropUnity - Build - Launch Unity",
             "target": "terminus_exec",
             "focus": true,
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" -configuration \"release\"",
+            "linux": {
+                "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/compileProjects.py\" && python3 \"${project_path:${folder}}/buildtools/launchUnity.py\""
+            },
+            "windows": {
+                "shell_cmd": "python \"${project_path:${folder}}/buildtools/compileProjects.py\" && python \"${project_path:${folder}}/buildtools/launchUnity.py\""
+            },
             "working_dir": "${project_path:${folder}}",
         },
         {
-            "name": "PluginInteropUnity - Rebuild - Launch Unity",
+            "name": "PluginInterop - Packaged Unity",
             "target": "terminus_exec",
             "focus": true,
             "timeit": false,
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"rebuild\" && powershell.exe  -File ${project_path:${folder}}\\buildtools\\launchUnity.ps1",
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "PluginInteropUnity - Clean",
-            "target": "terminus_exec",
-            "focus": true,
-            "timeit": false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\compileProjects.ps1 -project \"all\" -action \"clean\"",
-            "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "Packaged Unity",
-            "target": "terminus_exec",
-            "focus": true,
-            "timeit": false,
-            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-            "cancel": "terminus_cancel_build",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\packageUnity.ps1 \"..\\com.studio-nyx.interop-unity-cuda.\"",
+            "linux": {
+                "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/packageUnity.py\""
+            },
+            "windows": {
+                "shell_cmd": "python \"${project_path:${folder}}/buildtools/packageUnity.py\""
+            },
             "working_dir": "${project_path:${folder}}",
         },
         {
@@ -84,26 +104,31 @@
         },
         {
             "name": "PluginInterop - Unity",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\launchUnity.ps1",
-            "shell": true,
+            "target": "terminus_exec",
+            "focus": true,
+            "timeit": false,
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "cancel": "terminus_cancel_build",
+            "linux": {
+                "shell_cmd": "python3 \"${project_path:${folder}}/buildtools/launchUnity.py\""
+            },
+            "windows": {
+                "shell_cmd": "python \"${project_path:${folder}}/buildtools/launchUnity.py\""
+            },
+            "working_dir": "${project_path:${folder}}",
         },
         {
             "name": "PluginInterop - Clean",
             "cmd": [
                 "echo",
-                "Removing bin directory...",
+                "Removing build directory...",
                 "&&",
                 "rm",
                 "-rf",
-                "${project_path:${folder}}/bin"
+                "${project_path:${folder}}/build"
             ],
             "shell": true,
             "working_dir": "${project_path:${folder}}",
-        },
-        {
-            "name": "PluginInterop - CMake",
-            "shell_cmd": "powershell.exe  -File ${project_path:${folder}}\\buildtools\\configureProjects.ps1",
-            "shell": true,
         },
     ]
 }
