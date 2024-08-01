@@ -57,6 +57,16 @@ class Buffer
      * @brief      Map resources to CUDA return an array of T* defined on device
      * memory and which can be edited in CUDA.
      *
+     * @warning    Map needs to be done at least once to read/write the array in
+     * CUDA. But, in addition, it needs to be map once again each time the
+     * buffer is written in Unity.
+     * If you don't remap/unmap the buffer after their used in Unity, Unity will
+     * just CRASH. Therefore, if you want to write in the vertex buffer with
+     * Unity and CUDA at update, don't forget to map and unmap the array at
+     * update too ! However, this function caused an large overhead, especially
+     * for OpenGL graphics API, that's why we advise to make all the write in
+     * CUDA parts.
+     *
      * @param      bufferPtr  The pointer of the buffer.
      *
      * @tparam     T          The type of the buffer

@@ -14,6 +14,18 @@ inline int ActionSampleVertexBuffer::Start()
     int ret = _vertexBuffer->registerBufferInCUDA();
     GRUMBLE(ret, "There has been an error during the registration of "
                  "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");
+
+    // We map the ressources to d_vertexArray, which is a "classical" device
+    // array readable/writable by CUDA. We can apply the mapResources in Start
+    // and unmapResources in Destroy, because the vertexBuffer is only read in
+    // Unity. Indeed, if Unity writes into the vertexBuffer at the same time
+    // that CUDA do, without mapping it before use each frame, it makes Unity
+    // crash.
+    // Therefore, if you want to write in the vertex buffer with Unity and CUDA
+    // at update, don't forget to map and unmap the array at update too !
+    // However, this function caused an large overhead, especially
+    // for OpenGL graphics API, that's why we advise to make all the write in
+    // CUDA parts.
     ret = _vertexBuffer->mapResources<float4>(&d_vertexArray);
     GRUMBLE(ret, "There has been an error during the map of "
                  "the vertex buffer in CUDA. Abort ActionSampleVertexBuffer !");

@@ -15,6 +15,17 @@ inline int ActionSampleStructBuffer::Start()
     GRUMBLE(ret, "There has been an error during the registration of "
                  "the struct buffer in CUDA. Abort ActionSampleStructBuffer !");
 
+    // We map the ressources to d_arraySampleInterop, which is a "classical"
+    // device array readable/writable by CUDA. We can apply the mapResources in
+    // Start and unmapResources in Destroy, because the structBuffer is only
+    // read in Unity. Indeed, if Unity writes into the structBuffer at the same
+    // time that CUDA do, without mapping it before use each frame, it makes
+    // Unity crash. Therefore, if you want to write in the struct buffer with
+    // Unity and CUDA at update, don't forget to map and unmap the array at
+    // update too !
+    // However, this function caused an large overhead, especially
+    // for OpenGL graphics API, that's why we advise to make all the write in
+    // CUDA parts.
     ret =
         _structBuffer->mapResources<SampleStructInterop>(&d_arraySampleInterop);
     GRUMBLE(ret, "There has been an error during the map of "
