@@ -50,6 +50,7 @@ class ActionSampleStructBuffer : public Action
      * @brief     A point to the buffer that will be written.
      */
     Buffer *_structBuffer;
+    SampleStructInterop *d_arraySampleInterop;
 };
 } // namespace SampleBasic
 
