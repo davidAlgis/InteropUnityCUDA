@@ -50,6 +50,11 @@ class ActionSampleVertexBuffer : public Action
      * @brief     A point to the buffer that will be written.
      */
     Buffer *_vertexBuffer;
+
+    /**
+     * @brief     Vertex array readable/writable by CUDA after map.
+     */
+    float4 *d_vertexArray;
 };
 } // namespace SampleBasic
 
