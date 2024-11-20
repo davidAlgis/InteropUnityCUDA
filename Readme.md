@@ -1,70 +1,68 @@
-# Interoperability between Unity Engine and CUDA
+# Interoperability Between Unity Engine and CUDA
 
-This repository shows a demonstration of interoperability between Unity Engine and CUDA. More specifically it proposes to create and render graphics objects (eg. texture) in Unity and editing them directly through CUDA kernel. This permit to bypass compute shader and to benefits of the full capacity of CUDA.
+This repository demonstrates and gives tools for interoperability between the Unity Engine and CUDA. Specifically, it showcases how to create and render graphical objects (e.g., textures) in Unity and edit them directly through CUDA kernels. This approach bypasses compute shaders, leveraging the full capabilities of CUDA.
 
+## Plugins
 
-# Plugins
+The `Plugin` folder contains the C++ libraries used for interoperability. These libraries can be regenerated using CMake. Assuming you are at the root of the `interopUnityCUDA` repository, execute the following commands:
 
-The `Plugin` folder contains the c++ library used for interoperability. They can be regenerated with CMake. Assuming you are at the root of interopUnityCUDA, here are the commands to execute:
-
-```
-cd .\Plugin 
+```bash
+cd ./Plugin
 mkdir build
 cmake -B build
 ```
 
-Then to compile it :
+To compile the libraries:
 
-```
+```bash
 cmake --build build --config Release
 cmake --build build --config Debug
 ```
 
-Moreover, to use the library in you unity project, you need to copy the content of the folder `Debug` and `Release` to your unity project. 
+To use the library in your Unity project, copy the contents of the `Debug` and `Release` folders to your Unity project.
 
-The C++ projet consists of three library : 
+The C++ project consists of three libraries:
 
-## 1. Utilities
+### 1. Utilities
 
-This library include a singleton logger to simplify debugging between Unity and Native Plugin. Moreover it contains Unity native plugin API used by the other library.
+This library includes a singleton logger to simplify debugging between Unity and the native plugin. It also contains Unity's native plugin API, which is used by the other libraries.
 
-## 2. PluginInteropUnityCUDA
+### 2. PluginInteropUnityCUDA
 
-This library contains the class that handle interoperability between Unity, Graphics API and CUDA. Moreover, it has function to register and call new `Action`. 
+This library provides the classes that handle interoperability between Unity, the graphics API, and CUDA. Additionally, it includes functions to register and invoke new `Action` objects.
 
-An `Action` is a base class from which we can inherits to override functions. These functions will be called on render thread which is a necessary condition to make interoperability works.
+An `Action` is a base class from which you can inherit to override specific functions. These functions are executed on the render thread, which is a necessary condition for making interoperability work.
 
-## 3. SampleBasic
+### 3. SampleBasic
 
-This library contains two basics examples of actions :
-- ActionSampleTexture : it register a Unity __texture__ into CUDA and write some color into it.
-- ActionSampleTextureArray : it register a Unity __texture array__ into CUDA and write some color into each texture slice.
-- ActionSampleVertexBuffer : it register a Unity __vertex buffer of `float4`__ into CUDA and change their values. 
+This library contains two basic examples of actions:
+- **ActionSampleTexture**: Registers a Unity **texture** with CUDA and writes some color data to it.
+- **ActionSampleTextureArray**: Registers a Unity **texture array** with CUDA and writes color data to each texture slice.
+- **ActionSampleVertexBuffer**: Registers a Unity **vertex buffer of `float4`** with CUDA and modifies its values.
 
-# InteropUnityCUDA the Unity project
+## InteropUnityCUDA Unity Project
 
-The folder `InteropUnityCUDA` contains the Unity project with the script to handle actions and call them in render thread. Furthermore, there is a script to display in Unity the log informations of the different plugin that use logger of Utilities (see. above).
+The `InteropUnityCUDA` folder contains the Unity project, which includes scripts for handling actions and invoking them on the render thread. Additionally, there is a script for displaying log information in Unity, using the logger from the Utilities library (see above).
 
-The project has only one scene that demonstrate the three simple actions describe above. 
+The project includes a single scene demonstrating the three basic actions described earlier.
 
-# Generate and add InteropUnityCUDA package to your project
+## Generate and Add the InteropUnityCUDA Package to Your Project
 
 [See the dedicated documentation here.](Plugin/Documentation/GenerateUnityPackage.md)
 
-# Create your own action
+## Create Your Own Action
 
 [See the dedicated documentation here.](Plugin/Documentation/CreateAction.md)
 
+## Platform Availability
 
-# Platform availability
+This project has been tested with Unity 2021.1 and CUDA 12.2. It currently supports only OpenGL and DirectX11 graphics APIs. The plugin is designed for Windows but can also be compiled for Linux.
 
-It has been tested only on Unity 2021.1 and CUDA 12.2. At the moment it only work with OpenGL and DirectX11 graphics API. The plugin has been made for windows, but it can be compile with Linux too. 
+### Limitations
 
-## Limitation
+- For DirectX11, textures work only with the `Texture2D` type, not with `RenderTexture` ([see issue #2](https://github.com/davidAlgis/InteropUnityCUDA/issues/2)).
+- Buffers cannot be written by both Unity **and** CUDA without remapping/unmapping the buffer after each write operation in CUDA ([see issue #12](https://github.com/davidAlgis/InteropUnityCUDA/issues/12)).
 
-- For DirectX11 texture only works with `Texture2D` type not with `RenderTexture` (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/2).
-- Buffer cannot be written by Unity __and__ CUDA without remapping/unmapping the buffer after each write in CUDA (see. https://github.com/davidAlgis/InteropUnityCUDA/issues/12).
+## Meta
 
-# Meta
-
-This repository has been developed within the scopes of the thesis of David Algis in collaboration with XLIM and Studio Nyx.
+This repository was developed as part of David Algis' thesis in collaboration with XLIM and Studio Nyx.

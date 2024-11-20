@@ -1,91 +1,88 @@
-# Create your own action
+# Create Your Own Action
 
-## Native plugin code
+## Native Plugin Code
 
-To program your own `Action` and benefit of CUDA and interoperability you have to :
-1. include `PluginInteropUnityCuda` into your library ;
-2. create a class (in our example `MyAction`) that's derived from `Action` in `Action.h` ;
+To create your own `Action` and benefit from CUDA and interoperability, follow these steps:
 
-```
+1. Include `PluginInteropUnityCUDA` in your library.
+2. Create a class (in this example, `MyAction`) that derives from `Action` in `Action.h`:
+
+```cpp
 #include "action.h"
 
-class MyAction: public Action {
+class MyAction : public Action {
 ```
 
-3. create a constructor that will have the necessary information (in our example a pointer toward a unity texture and the resolution of this texture) ;
+3. Create a constructor that takes the necessary parameters (e.g., a pointer to a Unity texture and the texture's resolution):
 
-```
+```cpp
 #include "unityPlugin.h"
 #include "texture.h"
 
 MyAction(void* textureUnityPtr, int resolutionTexture) : Action() 
 {
     _resolutionTexture = resolutionTexture;
-    // Create an object Texture that can be register/map to CUDA
-    _texture = CreateTextureInterop(texturePtr
-        , resolutionTexture, resolutionTexture);
+    // Create a Texture object that can be registered/mapped to CUDA
+    _texture = CreateTextureInterop(textureUnityPtr, resolutionTexture, resolutionTexture);
 }
 ```
 
-4. create a function that will be call in Unity to get a pointer on `MyAction` to register it in `PluginInteropUnityCUDA` ;
+4. Define a function to be called from Unity to get a pointer to `MyAction` and register it in `PluginInteropUnityCUDA`:
 
-```
+```cpp
 // for mangling
 extern "C" {
-    // to make possible to create and have MyAction in Unity C#
+    // Enables Unity C# to create and interact with MyAction
     UNITY_INTERFACE_EXPORT MyAction* UNITY_INTERFACE_API 
-        createMyAction(void* textureUnityPtr, int resolutionTexture)
+    createMyAction(void* textureUnityPtr, int resolutionTexture)
     {
         return (new MyAction(textureUnityPtr, resolutionTexture));            
     }
 }
 ```
-5. Override the functions `Start()`, `Update()` and `OnDestroy()` in function of your purpose (in our example it only register and map the texture in CUDA call a simple kernel) 
 
+5. Override the functions `Start()`, `Update()`, and `OnDestroy()` as needed. In this example, we register and map the texture in CUDA and call a simple kernel:
 
-```
+```cpp
 int Start() override
 {
-    // this has to be done once at start
+    // Perform one-time setup at start
     _texture->registerTextureInCUDA();
-    // this will map the registered texture in cuda
     _texture->mapTextureToSurfaceObject();
     return 0;
 }
 
 int Update() override
 {       
-    // call your kernel here
-    // you can write into a texture using `surf2Dwrite` function
-    // (see. https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=surf2dwrite#surf2dwrite)
-    // to get the cudaSurfaceObject_t you can use getter getSurfaceObjectArray()
+    // Call your kernel here
+    // Use the `surf2Dwrite` function to write into the texture
+    // (see https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=surf2dwrite#surf2dwrite)
+    // Use getSurfaceObjectArray() to get the cudaSurfaceObject_t
     return 0;
 }
 
 int OnDestroy() override
 {
-    // unmap it
+    // Unmap and unregister the texture
     _texture->unmapTextureToSurfaceObject();
     _texture->unRegisterTextureInCUDA();
     return 0;
 }
 ```
 
-Here is the complete code :
+### Complete Example Code
 
-```
+```cpp
 #include "action.h"
 
-class MyAction: public Action {
+class MyAction : public Action {
 public:
-    // Some arguments to initialize my action, for 
-    // example a pointer toward a texture from Unity, etc.
+    // Constructor with initialization arguments, such as a Unity texture pointer
     MyAction(void* textureUnityPtr, int resolutionTexture) : Action() 
     {
         _resolutionTexture = resolutionTexture;
-        // Create an object Texture that can be register/map to CUDA
-        _texture = CreateTextureInterop(texturePtr
-            , resolutionTexture, resolutionTexture);
+        // Create a Texture object that can be registered/mapped to CUDA
+        _texture = CreateTextureInterop(textureUnityPtr, resolutionTexture, resolutionTexture);
     }
 
     int Start() override
@@ -97,99 +94,105 @@ public:
 
     int Update() override
     {       
-        // this kernel can be found in SampleBasic project and sample_kernels.cu
-        kernelCallerWriteTexture(_texture->getDimGrid(), _texture->getDimBlock(),
-                             _texture->getSurfaceObject(), GetTime(),
-                             _texture->getWidth(), _texture->getHeight());
+        // Example kernel call (see SampleBasic project and sample_kernels.cu)
+        kernelCallerWriteTexture(
+            _texture->getDimGrid(), 
+            _texture->getDimBlock(),
+            _texture->getSurfaceObject(), 
+            GetTime(),
+            _texture->getWidth(), 
+            _texture->getHeight()
+        );
         return 0;
     }
 
     int OnDestroy() override
     {
-        _texture->unmapTextureToSurfaceObject(surf);
-        _texture->unregisterTextureInCUDA();
+        _texture->unmapTextureToSurfaceObject();
+        _texture->unRegisterTextureInCUDA();
         return 0;
     }
 
 private:
-    // Some attributes that I will use in my action
     Texture* _texture;
     int _resolutionTexture;
 };
 
 extern "C" {
-
     UNITY_INTERFACE_EXPORT MyAction* UNITY_INTERFACE_API 
-        createMyAction(void* textureUnityPtr, int resolutionTexture)
+    createMyAction(void* textureUnityPtr, int resolutionTexture)
     {
-        // to make possible to create and have MyAction in Unity C#
         return (new MyAction(textureUnityPtr, resolutionTexture));            
     }
 }
-
 ```
 
-## Unity code
+---
 
-To plug your action in Unity and register it in plugin `PluginInteropUnityCUDA` you need to : 
+## Unity Code
 
-6. create a C# class (in our example `MyActionUnity`) that's derived from `ActionUnity` in `ActionUnity.cs`. This class carry the informations of our action in the native code (in our example `MyAction`) ;
-7. import the function that was created above in step 4. (in our example `createMyAction`);
-8. set the member `_actionPtr` to the return type of the imported function (in our example `MyAction*`);  
+To integrate your action in Unity and register it with the `PluginInteropUnityCUDA`, follow these steps:
 
-```
+6. Create a C# class (e.g., `MyActionUnity`) derived from `ActionUnity` in `ActionUnity.cs`. This class represents your native `MyAction` object in Unity.
+
+7. Import the function created in step 4 (e.g., `createMyAction`) into your Unity C# code.
+
+8. Set the `_actionPtr` member to the return value of the imported function (e.g., `MyAction*`):
+
+```csharp
 public class MyActionUnity : ActionUnity
 {
-    // Here put the dll name
-    const string _myDllName = "MyDllName";
+    const string _myDllName = "MyDllName"; // Specify your DLL name
 
     [DllImport(_myDllName)]
     private static extern IntPtr createMyAction(IntPtr textureUnityPtr, int resolutionTexture);
 
-    // we create the object MyAction in constructor of MyActionUnity
+    // Constructor to create the MyAction object
     public MyActionUnity(RenderTexture rt) : base()
     {
-        // the pointer toward our object MyAction is set in _actionPtr
+        // Set the pointer to the native MyAction object
         _actionPtr = createMyAction(rt.GetNativeTexturePtr(), rt.width);
     }
 }
 ```
 
-9. create a C# class (in our example `MyInteropHandler`) that's derived from `InteropHandler` in `InteropHandler.cs`. This class will create our action in Unity (in our example `MyActionUnity.cs`) and it'll call the function of the plugin `PluginInteropUnityCUDA` to register and call the action ;
+9. Create another C# class (e.g., `MyInteropHandler`) derived from `InteropHandler` in `InteropHandler.cs`. This class will handle the Unity-side initialization and registration of your action.
 
-10. override the function `InitializeActions()` to initialize the actions in `PluginInteropUnityCUDA`, construct your action with the constructor of step 8. register it with function `RegisterActionUnity` and by defining a registrationKey and call the function `CallActionStart` to call the `Start` function has been vo.
+10. Override the `InitializeActions()` function to construct your action, register it with `PluginInteropUnityCUDA`, and call its `Start()` function:
 
-```
+```csharp
 protected override void InitializeActions()
 {
-    // create a render texture in _renderTexture
+    // Create a RenderTexture
+    RenderTexture _renderTexture = new RenderTexture(...);
 
-    // construct an action using constructor of step 8.
-    MyAction myAction = new MyAction(_renderTexture);
-    // register the action in PluginInteropUnityCyda
+    // Construct the action
+    MyActionUnity myAction = new MyActionUnity(_renderTexture);
+
+    // Register the action with PluginInteropUnityCUDA
     RegisterActionUnity(myAction, "myRegistrationKey");
-    // we call the start function that was override in step 5
+
+    // Call the overridden Start function
     CallActionStart("myRegistrationKey");
 }
 ```
 
-11. override the function `CallUpdateActions` to call the `Update` function override in step 5 ;
+11. Override the `CallUpdateActions()` function to call the overridden `Update()` function:
 
-
-```
+```csharp
 protected override void CallUpdateActions()
 {
-    // we call the update function that was override in step 5
+    // Call the overridden Update function
     CallActionUpdate("myRegistrationKey");
 }
 ```
 
-12. override the function `CallOnDestroy()` to call the the `OnDestroy` function override in step 5 ;
+12. Override the `CallOnDestroy()` function to call the overridden `OnDestroy()` function:
 
-```
+```csharp
 protected override void CallOnDestroy()
 {
-    // we call the on destroy function that was override in step 5
+    // Call the overridden OnDestroy function
     CallActionOnDestroy("myRegistrationKey");
 }
 ```
