@@ -1,6 +1,7 @@
 #pragma once
 #include "cuda_runtime.h"
 #include "log.h"
+#include <cstdint>
 #include <stdexcept>
 
 // use this macro if you want to check cuda function
