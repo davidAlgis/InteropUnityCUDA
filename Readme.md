@@ -1,6 +1,7 @@
 # Interoperability Between Unity Engine and CUDA
 
-This repository demonstrates and gives tools for interoperability between the Unity Engine and CUDA. Specifically, it showcases how to create and render graphical objects (e.g., textures) in Unity and edit them directly through CUDA kernels. This approach bypasses compute shaders, leveraging the full capabilities of CUDA.
+This repository demonstrates and gives tools for interoperability between the Unity Engine and CUDA. Specifically, it showcases how to create and render graphical objects (e.g., textures) in Unity and edit them directly through CUDA kernels. This approach bypasses compute shaders, leveraging the full capabilities of CUDA. For more details about this project you can read our article [**_InteropUnityCUDA: A Tool for Interoperability Between Unity and CUDA_**](https://doi.org/10.1002/spe.3414).
+
 
 ## Plugins
 
@@ -66,3 +67,17 @@ This project has been tested with Unity 2021.1 and CUDA 12.2. It currently suppo
 ## Meta
 
 This repository was developed as part of David Algis' thesis in collaboration with XLIM and Studio Nyx.
+
+If you find this project useful, please consider citing our associated publication:
+
+**Algis, D., Bramas, B., Darles, E., & Aveneau, L. (2025). InteropUnityCUDA: A Tool for Interoperability Between Unity and CUDA. _Software: Practice and Experience._** [https://doi.org/10.1002/spe.3414](https://doi.org/10.1002/spe.3414)
+
+```bibtex
+@article{algis2025interopunitycuda,
+  author = {Algis, David and Bramas, Berenger and Darles, Emmanuelle and Aveneau, Lilian},
+  title = {InteropUnityCUDA: A Tool for Interoperability Between Unity and CUDA},
+  journal = {Software: Practice and Experience},
+  year = {2025},
+  doi = {10.1002/spe.3414},
+  url = {https://onlinelibrary.wiley.com/doi/10.1002/spe.3414}
+}

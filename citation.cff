@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the following work:"
+authors:
+  - family-names: Algis
+    given-names: David
+  - family-names: Bramas
+    given-names: Berenger
+  - family-names: Darles
+    given-names: Emmanuelle
+  - family-names: Aveneau
+    given-names: Lilian
+title: "InteropUnityCUDA: A Tool for Interoperability Between Unity and CUDA"
+version: 1.0.0
+doi: 10.1002/spe.3414
+date-released: 2025-02-12
+url: https://onlinelibrary.wiley.com/doi/abs/10.1002/spe.3414
