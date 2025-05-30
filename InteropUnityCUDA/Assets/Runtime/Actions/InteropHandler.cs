@@ -85,7 +85,7 @@ namespace ActionUnity
         ///     Create and register your actions in this function
         ///     This function is called by MonoBehaviour::Start()
         /// </summary>
-        protected virtual void InitializeActions()
+        public virtual void InitializeActions()
         {
         }
 
@@ -100,7 +100,7 @@ namespace ActionUnity
         ///     Call the update functions of your actions in
         ///     This function is called by MonoBehaviour::Update()
         /// </summary>
-        protected virtual void UpdateActions()
+        public virtual void UpdateActions()
         {
         }
 
@@ -113,7 +113,7 @@ namespace ActionUnity
         ///     Call the on destroy functions of your actions in
         ///     This function is called by MonoBehaviour::OnDestroy()
         /// </summary>
-        protected virtual void OnDestroyActions()
+        public virtual void OnDestroyActions()
         {
         }
 

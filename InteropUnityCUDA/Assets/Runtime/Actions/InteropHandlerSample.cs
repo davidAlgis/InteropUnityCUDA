@@ -125,7 +125,7 @@ namespace ActionUnity
         ///     Create the texture and the buffer. Construct action from them. Register these action in InteropUnityCUDA and
         ///     call start function on it
         /// </summary>
-        protected override void InitializeActions()
+        public override void InitializeActions()
         {
             base.InitializeActions();
 
@@ -170,7 +170,7 @@ namespace ActionUnity
         /// <summary>
         ///     call update function of the two registered actions
         /// </summary>
-        protected override void UpdateActions()
+        public override void UpdateActions()
         {
             base.UpdateActions();
             CallFunctionUpdateInAction(_ActionTextureName);
@@ -185,7 +185,7 @@ namespace ActionUnity
         /// <summary>
         ///     call onDestroy function of the two registered actions
         /// </summary>
-        protected override void OnDestroyActions()
+        public override void OnDestroyActions()
         {
             base.OnDestroyActions();
             CallFunctionOnDestroyInAction(_ActionTextureName);
